@@ -65,6 +65,15 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 " install tender theme
 Plug 'jacoborus/tender.vim'
+
+" ファイルオープンを便利に
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimfiler'
+Plug 'Shougo/vimproc'
+
+" Unite.vimで最近使ったファイルを表示できるようにする
+Plug 'Shougo/neomru.vim'
+
 call plug#end()
 filetype plugin indent on
 let mapleader="\<Space>"
@@ -403,7 +412,7 @@ set whichwrap=b,s,h,l,<,>,[,]
 " lucid
 " colorscheme lucius
 " materialbox
-colorscheme meta5
+" colorscheme meta5
 " minimalist
 " molokai
 " molokayo
@@ -476,4 +485,44 @@ if exists('g:loaded_webdevicons')
     call webdevicons#refresh()
 endif
 inoremap <silent> jj <ESC>
+
+" Split window
+nmap ss :split<Return><C-w>w
+nmap sv :vsplit<Return><C-w>w
+" Move window
+nmap <Space> <C-w>w
+map s<left> <C-w>h
+map s<up> <C-w>k
+map s<down> <C-w>j
+map s<right> <C-w>l
+map sh <C-w>h
+map sk <C-w>k
+map sj <C-w>j
+map sl <C-w>l
+" Resize window
+nmap <C-w><left> <C-w><
+nmap <C-w><right> <C-w>>
+nmap <C-w><up> <C-w>+
+nmap <C-w><down> <C-w>-
+
+" VimFiler
+nmap sf :VimFilerBufferDir<Return>
+nmap sF :VimFilerExplorer -find<Return>
+nmap sb :Unite buffer<Return>
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_safe_mode_by_default = 0
+let g:vimfiler_enable_auto_cd = 0
+let g:vimfiler_tree_leaf_icon = ''
+let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_marked_file_icon = '✓'
+
+" open current directory
+nmap te :tabedit
+" List tabs
+nmap tl :Unite tab
+
+" カーソルの移動を速くする
+set nocursorline
+set norelativenumber
 
