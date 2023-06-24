@@ -1,6 +1,8 @@
 
 # Definition for alias
 
+alias g='git'
+
 # command
 alias ll='ls -l'
 alias la='ls -la'
