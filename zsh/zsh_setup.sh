@@ -11,3 +11,12 @@ do
 
     ln -s `readlink -f $file` $HOME/.zsh.d/$file
 done
+
+ZSH_GIT=(_git git-completion.bash git-prompt.sh)
+
+for file_git in ${ZSH_GIT[@]}
+do
+    echo $file_git
+
+    ln -s `readlink -f $file_git` $HOME/.zsh/$file_git
+done
