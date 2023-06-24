@@ -1,0 +1,207 @@
+{
+  "title": "browser",
+  "rules": [
+    {
+      "description": "q,w to Cmd-Opt-Right(Left) (Select Next(Previous) Tab), 次(前)のタブを表示)",
+      "extra_descriptions": [
+        "For Chrome, Safari and VSCode(Next/Previous only)",
+        "x: tab close",
+        "t: tab open"
+      ],
+      "extra_description_level": 1,
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "spacebar",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "fn",
+              "lazy": true
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "spacebar"
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "w",
+            "modifiers": {
+              "mandatory": [
+                "fn"
+              ],
+              "optional": [
+                "shift",
+                "control",
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "close_bracket",
+              "modifiers": [
+                "command",
+                "shift"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$",
+                "^com\\.apple\\.Safari$",
+                "^com\\.microsoft\\.VSCode$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "q",
+            "modifiers": {
+              "mandatory": [
+                "fn"
+              ],
+              "optional": [
+                "shift",
+                "control",
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "open_bracket",
+              "modifiers": [
+                "command",
+                "shift"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$",
+                "^com\\.apple\\.Safari$",
+                "^com\\.microsoft\\.VSCode$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "x",
+            "modifiers": {
+              "mandatory": [
+                "fn"
+              ],
+              "optional": [
+                "shift",
+                "control",
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "w",
+              "modifiers": [
+                "command"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$",
+                "^com\\.apple\\.Safari$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "t",
+            "modifiers": {
+              "mandatory": [
+                "fn"
+              ],
+              "optional": [
+                "shift",
+                "control",
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "t",
+              "modifiers": [
+                "command"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$",
+                "^com\\.apple\\.Safari$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "r",
+            "modifiers": {
+              "mandatory": [
+                "fn"
+              ],
+              "optional": [
+                "shift",
+                "control",
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "r",
+              "modifiers": [
+                "command"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$",
+                "^com\\.apple\\.Safari$"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
