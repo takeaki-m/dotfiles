@@ -1,0 +1,20 @@
+[alias]
+    co = checkout
+    br = branch
+    st = status
+    ct = commit
+    logo = log --oneline
+    logn = log --name-status --oneline
+    logg = log --graph --pretty=format:‘%x09%C(auto) %h %Cgreen %ar %Creset%x09by%C(cyan ul)%an%Creset %x09%C(auto)%s %d’
+    sts = status --short
+    cv = commit -v
+    fp = fetch --prune
+    fpv = fetch --prune -v
+    sw = switch
+    swc = switch -c
+    ap = add -p
+    cb = checkout -b
+    po = push origin
+    poc = push origin `git rev-parse --abbrev-ref HEAD`
+    bra = branch -a
+
