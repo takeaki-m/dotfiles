@@ -1,0 +1,26 @@
+{
+  "title": "space-berをenterに変更する",
+  "rules": [
+    {
+      "description": "space-berをenterに変更する",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "spacebar",
+            "modifiers": {
+              "mandatory": [
+                "left_control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "return_or_enter"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
