@@ -18,6 +18,16 @@
             {
               "key_code": "return_or_enter"
             }
+          ],
+                    "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$",
+                "^com\\.tinyspeck\\.slackmacgap$",
+                "^com\\.apple\\.Safari$"
+              ]
+            }
           ]
         }
       ]
