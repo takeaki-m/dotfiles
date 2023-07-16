@@ -25,7 +25,8 @@
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
                 "^com\\.tinyspeck\\.slackmacgap$",
-                "^com\\.apple\\.Safari$"
+                "^com\\.apple\\.Safari$",
+                "^notion\\.id\\$"
               ]
             }
           ]
