@@ -1,0 +1,78 @@
+{
+  "title": "emacs key bindings",
+  "rules": [
+    {
+      "description": "ctrl+h to backspace",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "h",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ],
+              "optional":[
+              "caps_lock",
+              "option"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "delete_or_backspace"
+            }
+          ],
+                      "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$",
+                "^com\\.tinyspeck\\.slackmacgap$",
+                "^com\\.apple\\.Safari$",
+                "^notion\\.id\\$"
+              ]
+            }
+
+          ]
+        }
+      ]
+    },
+ {
+      "description": "ctrl+d to delete",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "d",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ],
+              "optional":[
+                "caps_lock",
+                "option"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "delete_forward"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$",
+                "^com\\.tinyspeck\\.slackmacgap$",
+                "^com\\.apple\\.Safari$",
+                "^notion\\.id\\$"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
