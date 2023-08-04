@@ -2,7 +2,7 @@
   "title": "space-berをenterに変更する",
   "rules": [
     {
-      "description": "space-berをenterに変更する",
+      "description": "space-barをenterに変更する",
       "manipulators": [
         {
           "type": "basic",
@@ -26,7 +26,41 @@
                 "^com\\.google\\.Chrome$",
                 "^com\\.tinyspeck\\.slackmacgap$",
                 "^com\\.apple\\.Safari$",
-                "^notion\\.id\\$"
+                "^notion\\.id\\$",
+                "^com\\.googlecode\\.iterm2$"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+{
+      "description": "semicolonをenterに変更する",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "semicolon",
+            "modifiers": {
+              "mandatory": [
+                "left_control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "return_or_enter"
+            }
+          ],
+                    "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$",
+                "^com\\.tinyspeck\\.slackmacgap$",
+                "^com\\.apple\\.Safari$",
+                "^notion\\.id\\$",
+                "^com\\.googlecode\\.iterm2$"
               ]
             }
           ]
