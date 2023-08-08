@@ -64,14 +64,19 @@ alias vim='nvim'
 
 alias g='git'
 
+alias d='docker'
+alias dc='docker compose'
+
 alias gupdev='g co develop; g pull'
 alias szs='source ~/.zshrc'
 alias gpb='git log --oneline | head -1 | awk '\''{print $2" "$3}'\'' | sed -e '\''s/\r\n//g'\'' | pbcopy'
+
 
 # カレントディレクトリのパスをコピー。末尾の改行を削除する
 alias pcopy='pwd | sed "s/^\(.*\)$/'\''\1'\''/" | tr -d '\''\n'\'' | pbcopy'
 # xman関数を定義
 function xman() { open x-man-page://$@ ; }
+
 
 # postgres
 alias postgres='postgres -D /usr/local/var/postgres'
