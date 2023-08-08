@@ -35,12 +35,12 @@
       ]
     },
 {
-      "description": "semicolonをenterに変更する",
+      "description": "Jをenterに変更する",
       "manipulators": [
         {
           "type": "basic",
           "from": {
-            "key_code": "semicolon",
+            "key_code": "j",
             "modifiers": {
               "mandatory": [
                 "left_control"
