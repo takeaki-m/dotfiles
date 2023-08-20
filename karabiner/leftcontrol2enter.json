@@ -19,22 +19,17 @@
               "key_code": "return_or_enter"
             }
           ],
-                    "conditions": [
+          "conditions": [
             {
-              "type": "frontmost_application_if",
+              "type": "frontmost_application_unless",
               "bundle_identifiers": [
-                "^com\\.google\\.Chrome$",
-                "^com\\.tinyspeck\\.slackmacgap$",
-                "^com\\.apple\\.Safari$",
-                "^notion\\.id\\$",
-                "^com\\.googlecode\\.iterm2$"
               ]
             }
           ]
         }
       ]
     },
-{
+    {
       "description": "Jをenterに変更する",
       "manipulators": [
         {
@@ -52,15 +47,10 @@
               "key_code": "return_or_enter"
             }
           ],
-                    "conditions": [
+          "conditions": [
             {
-              "type": "frontmost_application_if",
+              "type": "frontmost_application_unless",
               "bundle_identifiers": [
-                "^com\\.google\\.Chrome$",
-                "^com\\.tinyspeck\\.slackmacgap$",
-                "^com\\.apple\\.Safari$",
-                "^notion\\.id\\$",
-                "^com\\.googlecode\\.iterm2$"
               ]
             }
           ]
