@@ -48,7 +48,6 @@ function change-codecommit-credential() {
 }
 alias ccc='change-codecommit-credential'
 
-function code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 
 # Definition for alias
 # aliases
