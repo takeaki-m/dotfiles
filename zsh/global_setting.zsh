@@ -25,6 +25,16 @@ fpath=(~/.zsh $fpath)
 zstyle ':completion:*:*:git*' script ~/.zsh/git-completion.bash
 autoload -Uz compinit && compinit
 
+# github cli completion
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+fi
+
 ## prompt options
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUNTRACEDFILES=true
