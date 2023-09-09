@@ -24,7 +24,8 @@
               "type": "frontmost_application_unless",
               "bundle_identifiers": [
                 "^at\\.eggerapps\\.Postico$",
-                "^net\\.java\\.openjdk\\.java$"
+                "^net\\.java\\.openjdk\\.java$",
+                "^com\\.jetbrains\\.WebStorm$"
               ]
             }
           ]
