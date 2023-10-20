@@ -24,35 +24,11 @@
               "type": "frontmost_application_unless",
               "bundle_identifiers": [
                 "^at\\.eggerapps\\.Postico$",
-                "^net\\.java\\.openjdk\\.java$"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "description": "Jをenterに変更する",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "j",
-            "modifiers": {
-              "mandatory": [
-                "left_control"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "return_or_enter"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_unless",
-              "bundle_identifiers": [
+                "^net\\.java\\.openjdk\\.java$",
+                "^com\\.jetbrains\\.intellij$",
+                "^com\\.jetbrains\\.pycharm$",
+                "^com\\.jetbrains\\.rubymine$",
+                "^com\\.microsoft\\.VSCode$"
               ]
             }
           ]
