@@ -90,6 +90,15 @@ function xman() { open x-man-page://$@ ; }
 # postgres
 alias postgres='postgres -D /usr/local/var/postgres'
 
+# colordiff
+# installされていない環境ではcolordiffではなくdiffを利用する
+if [[ -x `which colordiff` ]]; then
+  alias diff='colordiff -u'
+else
+  alias diff='diff -u'
+fi
+
+
 # sshの背景変える方法うまくいかないからコメントアウト
 # alias ssh='~/bin/ssh-change-bg'
 #
