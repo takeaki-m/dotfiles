@@ -3,9 +3,11 @@
     br = branch
     st = status
     ct = commit
+    cm = commit -m
     logo = log --oneline
     logn = log --name-status --oneline
     logg = log --graph --pretty=format:‘%x09%C(auto) %h %Cgreen %ar %Creset%x09by%C(cyan ul)%an%Creset %x09%C(auto)%s %d’
+    logp = log -p
     sts = status --short
     cv = commit -v
     fp = fetch --prune
