@@ -1,10 +1,10 @@
 #!/bin/bash
 
-KARABINER_JSONS=(*.json)
+karabiner_json_path=$HOME/settings/dotfiles/karabiner
 
-for file in ${KARABINER_JSONS[@]}
-do
-    echo $file
-
-    ln -s `readlink -f $file` $HOME/.config/karabiner/assets/complex_modifications/$file
+for json_file in *.json; do
+	echo "$json_file"
+	if [[ -f "$json_file" ]]; then
+		ln -s $(readlink -f $karabiner_json_path/$json_file) $HOME/.config/karabiner/assets/complex_modifications/$json_file
+	fi
 done
