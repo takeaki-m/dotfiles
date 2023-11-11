@@ -82,7 +82,11 @@ alias dc='docker compose'
 
 alias gupdev='g co develop; g pull'
 alias szs='source ~/.zshrc'
-alias gpb='git log --oneline | head -1 | awk '\''{print $2" "$3}'\'' | sed -e '\''s/\r\n//g'\'' | pbcopy'
+alias reload='exec $SHELL -l'
+
+# nvim
+alias nvimconfig='nvim ~/.config/nvim/init.lua'
+# alias v='nvim'
 
 
 # カレントディレクトリのパスをコピー。末尾の改行を削除する
