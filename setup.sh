@@ -1,8 +1,13 @@
 #!/bin/bash
 
-DOT_FILES=(.tmux.conf .vimrc .zshenv .zshrc)
+/Users/takeaki/settings/dotfiles/setup.sh
+DOTFILES_ROOT_PATH=$HOME/settings/dotfiles
 
-for file in ${DOT_FILES[@]}
-do
-    ln -s $HOME/settings/dotfiles/$file $HOME/$file
-done
+echo " 各種設定ファイルを呼び出してdotifilesの設定を行います"
+sh $DOTFILES_ROOT_PATH/vim_setup.sh
+sh $DOTFILES_ROOT_PATH/tmux_setup.sh
+sh $DOTFILES_ROOT_PATH/homebrew_install.sh
+sh $DOTFILES_ROOT_PATH/zsh/zsh_setup.sh
+sh $DOTFILES_ROOT_PATH/karabiner/karabiner_setup.sh
+sh $DOTFILES_ROOT_PATH/gitconfig/git_setup.sh
+sh $DOTFILES_ROOT_PATH/hammerspoon/hammerspoon_setup.sh
