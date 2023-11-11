@@ -1,6 +1,12 @@
 #!/bin/bash
 
-ln -s `readlink -f .zshrc` $HOME/.zshrc 
+
+echo 'make .zsh folder at $HOME'
+mkdir $HOME/.zsh
+echo 'make .zsh.d folder at $HOME'
+mkdir $HOME/.zsh.d
+
+ln -s `readlink -f .zshrc` $HOME/.zshrc
 ln -s `readlink -f .zshenv` $HOME/.zshenv
 
 ZSH=(global_setting.zsh)
