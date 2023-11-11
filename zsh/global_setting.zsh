@@ -99,7 +99,7 @@ alias postgres='postgres -D /usr/local/var/postgres'
 if [[ -x `which colordiff` ]]; then
   alias diff='colordiff -u'
 else
-  alias diff='diff -u'
+    alias diff='diff'
 fi
 
 
