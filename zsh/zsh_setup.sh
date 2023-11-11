@@ -1,28 +1,36 @@
 #!/bin/bash
 
+ZSH_DOTFILE_PATH=$HOME/settings/dotfiles/zsh
 
-echo 'make .zsh folder at $HOME'
-mkdir $HOME/.zsh
-echo 'make .zsh.d folder at $HOME'
-mkdir $HOME/.zsh.d
+if [ -d $HOME/.zsh ]; then
+	echo "$HOME配下に.zshフォルダは作成済み"
+else
+	echo "$HOME配下に.zshフォルダは作成前。フォルダを作成します"
+	mkdir $HOME/.zsh
+fi
 
-ln -s `readlink -f .zshrc` $HOME/.zshrc
-ln -s `readlink -f .zshenv` $HOME/.zshenv
+if [ -d $HOME/.zsh.d ]; then
+	echo "$HOME配下に.zshフォルダは作成済み"
+else
+	echo "$HOME配下に.zshフォルダは作成前。フォルダを作成します"
+	mkdir $HOME/.zsh.d
+fi
+
+ln -s $(readlink -f $ZSH_DOTFILE_PATH/.zshrc) $HOME/.zshrc
+ln -s $(readlink -f $ZSH_DOTFILE_PATH/.zshenv) $HOME/.zshenv
 
 ZSH=(global_setting.zsh)
 
-for file in ${ZSH[@]}
-do
-    echo $file
+for file in ${ZSH[@]}; do
+	echo $file
 
-    ln -s `readlink -f $file` $HOME/.zsh.d/$file
+	ln -s $(readlink -f $ZSH_DOTFILE_PATH/$file) $HOME/.zsh.d/$file
 done
 
 ZSH_GIT=(_git git-completion.bash git-prompt.sh)
 
-for file_git in ${ZSH_GIT[@]}
-do
-    echo $file_git
+for file_git in ${ZSH_GIT[@]}; do
+	echo $file_git
 
-    ln -s `readlink -f $file_git` $HOME/.zsh/$file_git
+	ln -s $(readlink -f $ZSH_DOTFILE_PATH/$file_git) $HOME/.zsh/$file_git
 done
