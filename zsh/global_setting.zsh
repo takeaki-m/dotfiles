@@ -29,10 +29,10 @@ autoload -Uz compinit && compinit
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 if type brew &>/dev/null
 then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
-  autoload -Uz compinit
-  compinit
+    autoload -Uz compinit
+    compinit
 fi
 
 ## prompt options
@@ -49,8 +49,8 @@ setopt PROMPT_SUBST ; PS1='%F{blue}%~%f %F{cyan}$(__git_ps1 "(%s)")%f
 function change-codecommit-credential() {
     local selected_dir=$(find ~ -maxdepth 1 | grep netrc_ | peco --query "$LBUFFER")
     if [ -n "$selected_dir" ]; then
-	  \cp -f ${selected_dir} ~/.netrc
-    	fi
+        \cp -f ${selected_dir} ~/.netrc
+    fi
     echo '----------------------------------------'
     echo 'view current "~/.netrc" settings'
     echo '----------------------------------------'
@@ -80,7 +80,6 @@ alias gmd='gupdev; g co - ; g merge develop'
 alias d='docker'
 alias dc='docker compose'
 
-alias gupdev='g co develop; g pull'
 alias szs='source ~/.zshrc'
 alias reload='exec $SHELL -l'
 
@@ -101,7 +100,7 @@ alias postgres='postgres -D /usr/local/var/postgres'
 # colordiff
 # installされていない環境ではcolordiffではなくdiffを利用する
 if [[ -x `which colordiff` ]]; then
-  alias diff='colordiff -u'
+    alias diff='colordiff -u'
 else
     alias diff='diff'
 fi
