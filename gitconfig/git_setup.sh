@@ -2,18 +2,20 @@
 
 echo "### check if .gitconfig exists ###"
 if [ -e ~/.gitconfig ]; then
-  echo ".gitconfig file exists. continue to settings"
+	echo ".gitconfig file exists. continue to settings"
 else
-  echo ".gitconfig does not exists. make .gitconfig file and continue to settings"
-  touch ~/.gitconfig
+	echo ".gitconfig does not exists. make .gitconfig file and continue to settings"
+	touch ~/.gitconfig
 fi
 
 echo "### start .gitconfig settings ###"
-git config --global include.path `readlink -f gitconfig/.gitconfig_shared`
+git config --global include.path $(readlink -f gitconfig/.gitconfig_shared)
 
 echo "### start .gitignore settings ###"
-git config --global core.excludesfile `readlink -f gitconfig/.gitignore_global`
+git config --global core.excludesfile $(readlink -f gitconfig/.gitignore_global)
 
+echo "### set core editor nvim ###"
+git config --global core.editor "nvim"
 
 RET_CD=$?
 exit ${RET_CD}
