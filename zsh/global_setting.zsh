@@ -76,6 +76,7 @@ alias gpoc='git push origin `git rev-parse --abbrev-ref HEAD` | gpb'
 alias gpb='git log --oneline | head -1 | awk '\''{print $2" "$3}'\'' | sed -e '\''s/\r\n//g'\'' | pbcopy'
 alias gupdev='g fetch origin; g co develop; g pull'
 alias gmd='gupdev; g co - ; g merge develop'
+alias gbrmd='git branch -d `git branch --merged`'
 
 alias d='docker'
 alias dc='docker compose'
