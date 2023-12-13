@@ -106,6 +106,16 @@ else
     alias diff='diff'
 fi
 
+# convert-windows-path-with-mac
+function win-to-mac() {
+    windows_path="$1"
+    google_drive_path=`readlink ~/Google\ Drive`
+
+    mac_path=$(echo "$windows_path" | sed -e 's|^G:||' -e 's|\\|\/|g')
+    echo "$google_drive_path$mac_path" | pbcopy
+}
+
+
 
 # sshの背景変える方法うまくいかないからコメントアウト
 # alias ssh='~/bin/ssh-change-bg'
