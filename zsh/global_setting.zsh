@@ -111,7 +111,8 @@ function win-to-mac() {
     windows_path="$1"
     google_drive_path=`readlink ~/Google\ Drive`
 
-    mac_path=$(echo "$windows_path" | sed -e 's|^G:||' -e 's|\\|\/|g')
+    # convert drive letter with mac google drive path, change file paths and change space with \space
+    mac_path=$(echo "$windows_path" | sed -e 's|^G:||' -e 's|\\|\/|g' -e 's| |\\ |g')
     echo "$google_drive_path$mac_path" | pbcopy
 }
 
