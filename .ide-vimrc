@@ -1,0 +1,39 @@
+" use space as Leader
+let g:mapleder = "\<Space>"
+
+"Save file with space + w
+nnoremap <Leader>w :w<CR>
+
+"increment and decrement"
+nnoremap + <C-a>
+nnoremap - <C-x>
+
+
+"show line number
+set number
+set smartindent
+set autoindent
+"tab with 2 half-width spaces"
+set expandtab
+"display width of tab character at the begining of a line"
+set tabstop=2
+"display width of tab character outside the begining of a line"
+set shiftwidth=2
+
+
+set cursorline
+"user clipboard"
+set clipboard+=unnamed
+
+"途中から検索開始する
+set incsearch
+"Search regardless of case if the search character is lowercase"
+set ignorecase
+"case sensitive if search characters are uppercase"
+set smartcase
+
+" hilight search words"
+set hlsearch
+"hilight off in two ESC times"
+nmap <silent> <Esc><Esc> ;nohlsearch<CR>
+

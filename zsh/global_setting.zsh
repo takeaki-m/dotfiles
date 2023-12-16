@@ -76,6 +76,7 @@ alias gpoc='git push origin `git rev-parse --abbrev-ref HEAD` | gpb'
 alias gpb='git log --oneline | head -1 | awk '\''{print $2" "$3}'\'' | sed -e '\''s/\r\n//g'\'' | pbcopy'
 alias gupdev='g fetch origin; g co develop; g pull'
 alias gmd='gupdev; g co - ; g merge develop'
+alias gbrmd='git branch -d `git branch --merged`'
 
 alias d='docker'
 alias dc='docker compose'
@@ -104,6 +105,17 @@ if [[ -x `which colordiff` ]]; then
 else
     alias diff='diff'
 fi
+
+# convert-windows-path-with-mac
+function win-to-mac() {
+    windows_path="$1"
+    google_drive_path=`readlink ~/Google\ Drive`
+
+    # convert drive letter with mac google drive path, change file paths and change space with \space
+    mac_path=$(echo "$windows_path" | sed -e 's|^G:||' -e 's|\\|\/|g' -e 's| |\\ |g')
+    echo "$google_drive_path$mac_path" | pbcopy
+}
+
 
 
 # take effect back command history with ctrl s
