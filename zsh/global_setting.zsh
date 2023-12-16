@@ -106,6 +106,9 @@ else
 fi
 
 
+# take effect back command history with ctrl s
+stty stop undef
+
 # sshの背景変える方法うまくいかないからコメントアウト
 # alias ssh='~/bin/ssh-change-bg'
 #
