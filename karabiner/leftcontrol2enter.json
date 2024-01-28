@@ -28,7 +28,7 @@
                 "^com\\.jetbrains\\.intellij$",
                 "^com\\.jetbrains\\.pycharm$",
                 "^com\\.jetbrains\\.rubymine$",
-                "^com\\.microsoft\\.VSCode$"
+                "^com\\.microsoft\\.VSCode$",
                 "^com\\.jetbrains\\.WebStorm$"
               ]
             }
