@@ -1,13 +1,13 @@
 {
-  "title": "convert ctrl-g to tab",
+  "title": "convert ctrl-y to tab",
   "rules": [
     {
-      "description": "convert ctrl-g to tab",
+      "description": "convert ctrl-y to tab",
       "manipulators": [
         {
           "type": "basic",
           "from": {
-            "key_code": "g",
+            "key_code": "y",
             "modifiers": {
               "mandatory": [
                 "left_control"
