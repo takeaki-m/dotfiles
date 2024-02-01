@@ -1,13 +1,13 @@
 {
-  "title": "convert ctrl-l to tab",
+  "title": "convert ctrl-comma to tab",
   "rules": [
     {
-      "description": "convert ctrl-l to tab",
+      "description": "convert ctrl-comma to tab",
       "manipulators": [
         {
           "type": "basic",
           "from": {
-            "key_code": "l",
+            "key_code": "comma",
             "modifiers": {
               "mandatory": [
                 "left_control"
