@@ -1,0 +1,26 @@
+{
+  "title": "convert ctrl-g to tab",
+  "rules": [
+    {
+      "description": "convert ctrl-g to tab",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "g",
+            "modifiers": {
+              "mandatory": [
+                "left_control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "tab"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
