@@ -37,3 +37,9 @@ set hlsearch
 "hilight off in two ESC times"
 nmap <silent> <Esc><Esc> ;nohlsearch<CR>
 
+" automatically go to next line
+set whichwrap=b,s,h,l,<,>,[,],~
+
+" show relative line number
+set relativenumber
+
