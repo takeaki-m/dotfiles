@@ -69,7 +69,7 @@ alias ls='ls -G'
 alias ll='ls -l'
 alias la='ls -la'
 
-alias vim='nvim'
+# alias vim='nvim'
 
 alias g='git'
 alias gpoc='git push origin `git rev-parse --abbrev-ref HEAD` | gpb'
@@ -114,6 +114,19 @@ function win-to-mac() {
     # convert drive letter with mac google drive path, change file paths and change space with \space
     mac_path=$(echo "$windows_path" | sed -e 's|^G:||' -e 's|\\|\/|g' -e 's| |\\ |g')
     echo "$google_drive_path$mac_path" | pbcopy
+}
+
+# Pythonの仮想環境が有効な場合には、仮想環境名を表示する
+
+function prompt_venv() {
+  if [[ -n "$VIRTUAL_ENV" && -n "$PROMPT" ]]; then
+    PYTHON_VIRTUAL_ENV_STRING="(`basename $VIRTUAL_ENV`)"
+  fi
+}
+
+# PROMPTにvenvの設定追加
+function setprompt(){
+  PROMPT="${PYTHON_VIRTUAL_ENV_STRING}${PROMPT}"
 }
 
 
