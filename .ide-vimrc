@@ -37,3 +37,7 @@ set hlsearch
 "hilight off in two ESC times"
 nmap <silent> <Esc><Esc> ;nohlsearch<CR>
 
+
+"codesnipetts"
+abbr _sh #!/bin/bash
+
