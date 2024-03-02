@@ -40,4 +40,9 @@ nmap <silent> <Esc><Esc> ;nohlsearch<CR>
 
 "codesnipetts"
 abbr _sh #!/bin/bash
+" automatically go to next line
+set whichwrap=b,s,h,l,<,>,[,],~
+
+" show relative line number
+set relativenumber
 
