@@ -130,6 +130,8 @@ function setprompt(){
 }
 
 
+ alias uvim='vim -u essential.vim'
+
 
 # take effect back command history with ctrl s
 stty stop undef
