@@ -1,5 +1,5 @@
 " Source your .vimrc
-source ~/.ide-vimrc
+source $HOME/settings/dotfiles/.ide-vimrc
 
 
 " 以下は過去の設定。最近は利用しないため、全てコメントアウトする
