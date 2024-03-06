@@ -1,6 +1,18 @@
 " use space as Leader
 let g:mapleder = "\<Space>"
 
+" colorscheme
+set background=dark
+"colorscheme iceberg
+"colorscheme ayu
+"colorscheme molokai
+"colorscheme gruvbox
+"colorscheme nord
+"colorscheme monokai
+"colorscheme jellybeans
+"colorscheme default
+
+
 "Save file with space + w
 nnoremap <Leader>w :w<CR>
 
@@ -11,6 +23,9 @@ nnoremap - <C-x>
 
 "show line number
 set number
+" show relative line number
+set relativenumber
+
 set smartindent
 set autoindent
 "tab with 2 half-width spaces"
@@ -40,6 +55,19 @@ nmap <silent> <Esc><Esc> ;nohlsearch<CR>
 " automatically go to next line
 set whichwrap=b,s,h,l,<,>,[,],~
 
-" show relative line number
-set relativenumber
+" set syntax highlighting
+syntax enable
+
+
+"highlight CursorLine cterm=NONE ctermfg=white ctermbg=DarkGray
+
+
+" カーソル行のハイライトを有効にする
+set cursorline
+" カーソル行のハイライトスタイルを設定
+highlight CursorLine cterm=underline ctermfg=NONE ctermbg=NONE guifg=NONE guibg=NONE gui=underline
+" カーソル列のハイライトを有効にする
+"set cursorcolumn
+"highlight Cursor ctermbg=252 ctermfg=234 guibg=#c6c8d1 guifg=#161821
+highlight Cursor ctermbg=234 ctermfg=252 guibg=#161821 guifg=#c6c8d1
 
