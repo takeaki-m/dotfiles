@@ -68,6 +68,7 @@ alias rm='rm -i'
 alias ls='ls -G'
 alias ll='ls -l'
 alias la='ls -la'
+alias rf='readlink -f'
 
 # alias vim='nvim'
 
