@@ -70,7 +70,7 @@ alias ll='ls -l'
 alias la='ls -la'
 alias rf='readlink -f'
 
-# alias vim='nvim'
+alias vim='nvim'
 
 alias g='git'
 alias gpoc='git push origin `git rev-parse --abbrev-ref HEAD` | gpb'
