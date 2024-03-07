@@ -15,6 +15,14 @@ set background=dark
 ]]
 
 -- set syntax highlighting
-vim.cmd [[
-syntax enable
-]]
+-- vim.cmd [[
+-- syntax enable
+-- ]]
+--
+--
+-- require('trim').setup {
+--   trim_last_line = false,
+--     patterns = {
+--       [[%s/\n*\%$/\r/]],
+--     },
+-- }
