@@ -75,7 +75,7 @@
                 "^com\\.sublimetext\\.",
                 "^com\\.microsoft\\.VSCode$",
                 "^org\\.eclipse\\.platform\\.ide$",
-                "^com\\.jetbrains\\.*$",
+                "com\\.jetbrains\\.intellij$"
               ]
             }
           ]
