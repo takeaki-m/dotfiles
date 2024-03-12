@@ -75,7 +75,7 @@
                 "^com\\.sublimetext\\.",
                 "^com\\.microsoft\\.VSCode$",
                 "^org\\.eclipse\\.platform\\.ide$",
-                "^com\\.jetbrains\\.*$",
+                "com\\.jetbrains\\.intellij$"
               ]
             }
           ]
@@ -168,7 +168,18 @@
           },
           "to": [
             {
-              "key_code": "return_or_enter"
+              "key_code": "return_or_enter",
+              "modifiers": ["left_command"]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.tinyspeck\\.slackmacgap$",
+                "^com\\.apple\\.Safari$",
+                "^com\\.google\\.Chrome$"
+              ]
             }
           ]
         },
@@ -643,3 +654,4 @@
     }
   ]
 }
+
