@@ -15,6 +15,9 @@ unset case_glob #globeを大文字小文字を区別しない
 setopt correct  # スペルミスを修正する
 setopt correct_all #コマンドライン引数の全てのスペルミスを修正
 
+# コマンド履歴検索で戻るを実現するためにscrelln rockを未定義にする
+stty stop undef
+
 # 入力補完
 autoload -Uz compinit && compinit
 
