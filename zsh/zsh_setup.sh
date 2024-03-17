@@ -19,7 +19,7 @@ fi
 ln -s $(readlink -f $ZSH_DOTFILE_PATH/.zshrc) $HOME/.zshrc
 ln -s $(readlink -f $ZSH_DOTFILE_PATH/.zshenv) $HOME/.zshenv
 
-ZSH=(global_setting.zsh)
+ZSH=(global_setting.zsh global_env.zsh)
 
 for file in ${ZSH[@]}; do
 	echo $file
@@ -34,3 +34,4 @@ for file_git in ${ZSH_GIT[@]}; do
 
 	ln -s $(readlink -f $ZSH_DOTFILE_PATH/$file_git) $HOME/.zsh/$file_git
 done
+
