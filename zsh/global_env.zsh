@@ -1,8 +1,8 @@
 # editor
-export EDITOR=vim
-export CVSEDITOR="${EDITOR}"
-export SVN_EDITOR="${EDITOR}"
-export GIT_EDITOR="${EDITOR}"
+#export EDITOR=vim
+#export CVSEDITOR="${EDITOR}"
+#export SVN_EDITOR="${EDITOR}"
+#export GIT_EDITOR="${EDITOR}"
 
 # include home folder with cd command path
 export CDPATH=$HOME:$HOME/develop:$HOME/doc:/usr/local
