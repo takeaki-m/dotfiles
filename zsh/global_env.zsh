@@ -5,7 +5,7 @@
 #export GIT_EDITOR="${EDITOR}"
 
 # include home folder with cd command path
-export CDPATH=$HOME:$HOME/development:$HOME/doc:/usr/local
+export CDPATH=$HOME:$HOME/develop:$HOME/doc:/usr/local
 
 # history
 # size recorded on memory
