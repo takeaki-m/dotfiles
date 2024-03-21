@@ -3,7 +3,8 @@ require("keymaps")
 
 -- colorscheme settings
 vim.cmd 'set background=dark'
-vim.cmd 'colorscheme default'
+-- vim.cmd 'colorscheme default'
+vim.cmd 'colorscheme shine'
 
 
 -- activate vim loader to use plugin manager

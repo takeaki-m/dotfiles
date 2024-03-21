@@ -165,17 +165,29 @@ function ssh() {
     if [[ -n $(printenv TMUX) ]] ; then
         # 現在のペインIDを記録
         local pane_id=$(tmux display -p '#{pane_id}')
-        # 接続先ホスト名に応じて背景色を切り替え
-        # if [[ `echo $1 | grep 'prd'` ]] ; then
-        #     tmux select-pane -P 'bg=colour52,fg=white'
-        # elif [[ `echo $1 | grep 'stg'` ]] ; then
-        #     tmux select-pane -P 'bg=colour25,fg=white'
-        # fi
-        # tmux select-pane -P 'bg=colour58,fg=white'
+        #接続先ホスト名に応じて背景色を切り替え
+        if [[ `echo $1 | grep 'prod'` ]] ; then
+            tmux select-pane -P 'bg=colour52,fg=white'
+        elif [[ `echo $1 | grep 'vl'` ]] ; then
+            tmux select-pane -P 'bg=colour52,fg=white'
+        # test環境はec2端末ごとに色味の違いがあり、共通して見やすい色が設定できないため適用対象外とする
+        #elif [[ `echo $1 | grep 'st'` ]] ; then
+            #tmux select-pane -P 'bg=gray,fg=black'
+            #tmux select-pane -P 'bg=green,fg=white'
+        #else
+            #tmux select-pane -P 'bg=green,fg=white'
+        fi
+        #tmux select-pane -P 'bg=colour58,fg=white'
+        #tmux select-pane -P 'bg=colour52,fg=white'
+        #tmux select-pane -P 'bg=colour9,fg=white'
+        #tmux select-pane -P 'bg=colour182,fg=black'
+        #tmux select-pane -P 'bg=palevioletred,fg=black'
+        #tmux select-pane -P 'bg=darkkhaki,fg=black'
+        #tmux select-pane -P 'bg=olive,fg=white'
+        #tmux select-pane -P 'bg=lightsteelblue,fg=black'
+        #tmux select-pane -P 'bg=lightslategray,fg=black'
 
-        tmux select-pane -P 'bg=colour52,fg=white'
-
-        # 通常通りssh続行
+       # 通常通りssh続行
         command ssh $@
 
       # デフォルトの背景色に戻す
