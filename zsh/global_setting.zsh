@@ -73,6 +73,9 @@ alias ll='ls -l'
 alias la='ls -la'
 alias rf='readlink -f'
 
+# set xterm to TERM for older terminals that does not support xterm-256color
+alias term='export TERM=xterm'
+
 alias vim='nvim'
 
 alias g='git'
