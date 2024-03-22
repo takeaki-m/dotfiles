@@ -168,13 +168,17 @@ function ssh() {
         #接続先ホスト名に応じて背景色を切り替え
         if [[ `echo $1 | grep 'prod'` ]] ; then
             tmux select-pane -P 'bg=colour52,fg=white'
+            # tmux set-option -g status-bg "colour238"
         elif [[ `echo $1 | grep 'vl'` ]] ; then
             tmux select-pane -P 'bg=colour52,fg=white'
+            # tmux set-option -g status-bg "colour238"
         # test環境はec2端末ごとに色味の違いがあり、共通して見やすい色が設定できないため適用対象外とする
         #elif [[ `echo $1 | grep 'st'` ]] ; then
+            #tmux set-option -g status-bg "colour238"
             #tmux select-pane -P 'bg=gray,fg=black'
             #tmux select-pane -P 'bg=green,fg=white'
-        #else
+        else
+            #tmux set-option -g status-bg "colour238"
             #tmux select-pane -P 'bg=green,fg=white'
         fi
         #tmux select-pane -P 'bg=colour58,fg=white'
@@ -189,8 +193,8 @@ function ssh() {
 
        # 通常通りssh続行
         command ssh $@
-
       # デフォルトの背景色に戻す
+      # tmux set-option -t $pane_id -g status-bg 'default'
       tmux select-pane -t $pane_id -P 'default'
   else
       command ssh $@
