@@ -65,7 +65,6 @@ set whichwrap=b,s,h,l,<,>,[,],~
 " set syntax highlighting
 syntax enable
 
-
 "highlight CursorLine cterm=NONE ctermfg=white ctermbg=DarkGray
 
 

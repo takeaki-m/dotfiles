@@ -1,4 +1,3 @@
-
 local opts = {
   noremap = true,
   silent = true,
@@ -20,6 +19,10 @@ keymap('n', '-', '<C-x>', opts)
 -- hilight off in two ESC times
 keymap('n', '<Esc><Esc>', ':nohlsearch<CR>', opts)
 
+-- move to specified line with <CR> insted of G
+keymap('n', '<CR>', 'G', opts)
+-- move top of file with <BS> instead of gg
+keymap('n', '<BS>', 'gg', opts)
 
 -- add newline at endofthefile
 _G.add_new_line = function()
@@ -34,4 +37,7 @@ vim.cmd([[
     autocmd BufWritePre * lua _G.add_new_line()
   augroup END
 ]])
+
+-- vp doesn't replace paste buffer
+keymap('x', 'p', '"_dP', {noremap = true})
 
