@@ -41,3 +41,12 @@ vim.cmd([[
 -- vp doesn't replace paste buffer
 keymap('x', 'p', '"_dP', {noremap = true})
 
+function PasteCommandOutput(command)
+  local output = vim.fn.system(command)
+  output = output:gsub("[\r\n]+", "")  -- 改行を削除する
+  output = output:gsub("%z", "")  -- NUL文字を削除する
+  vim.api.nvim_put({output}, '', true, true)
+end
+
+vim.api.nvim_set_keymap('n', '<Leader>rp', ':lua PasteCommandOutput("readlink -f " .. vim.fn.expand("%"))<CR>', {noremap = true, silent = true})
+
