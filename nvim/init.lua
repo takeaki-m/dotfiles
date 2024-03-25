@@ -4,7 +4,7 @@ require("keymaps")
 -- colorscheme settings
 vim.cmd 'set background=dark'
 -- vim.cmd 'colorscheme default'
-vim.cmd 'colorscheme koehler'
+vim.cmd 'colorscheme torte'
 
 
 -- activate vim loader to use plugin manager
