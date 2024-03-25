@@ -12,3 +12,4 @@ sh $DOTFILES_ROOT_PATH/karabiner/karabiner_setup.sh
 sh $DOTFILES_ROOT_PATH/gitconfig/git_setup.sh
 sh $DOTFILES_ROOT_PATH/hammerspoon/hammerspoon_setup.sh
 sh $DOTFILES_ROOT_PATH/ideavim_setup.sh
+
