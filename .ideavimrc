@@ -37,3 +37,13 @@ Plug 'tpope/vim-commentary'
 "" Map \b to toggle the breakpoint on the current line
 "map \b <Action>(ToggleLineBreakpoint)
 
+" ================================
+" bewlow is my own settings
+" ================================
+" move to errors
+nmap [q <Action>(GotoPreviousError)
+nmap ]q <Action>(GotoNextError)
+
+" show hover info
+nmap <Leader>k <Action>(ShowHoverInfo)
+

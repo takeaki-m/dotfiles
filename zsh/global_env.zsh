@@ -36,3 +36,6 @@ setopt share_history
 # no beep
 setopt no_beep
 
+# set path to toggle mac os backsounds
+export PATH=$HOME/settings/dotfiles/macos/:$PATH
+
