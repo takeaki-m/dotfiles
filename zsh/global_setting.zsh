@@ -74,7 +74,7 @@ alias la='ls -la'
 alias rf='readlink -f'
 
 # set xterm to TERM for older terminals that does not support xterm-256color
-alias term='export TERM=xterm'
+alias term='export TERM=xterm; echo $TERM'
 
 alias vim='nvim'
 
