@@ -1,14 +1,17 @@
 require("options")
 require("keymaps")
+-- to use indent-blankline
+-- require("ibl").setup()
 
 -- colorscheme settings
 vim.cmd 'set background=dark'
--- vim.cmd 'colorscheme default'
-vim.cmd 'colorscheme torte'
+vim.cmd 'colorscheme lunaperche'
+
 
 
 -- activate vim loader to use plugin manager
 vim.loader.enable()
+
 
 -- activate pkcr vim
 local function bootstrap_pckr()
@@ -34,8 +37,12 @@ local keys = require('pckr.loader.keys')
 
 require('pckr').add{
   'nvim-treesitter/nvim-treesitter';
-  'folke/tokyonight.nvim';
-
+  'nvim-lua/plenary.nvim';
+  'BurntSushi/ripgrep';
+  'sharkdp/fd';
+  'nvim-telescope/telescope.nvim';
+  'lukas-reineke/indent-blankline.nvim';
+  'lambdalisue/fern.vim'
   -- My plugins here
   -- 'foo1/bar1.nvim';
   -- 'foo2/bar2.nvim';

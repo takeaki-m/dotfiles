@@ -24,13 +24,6 @@ keymap('n', '<CR>', 'G', opts)
 -- move top of file with <BS> instead of gg
 keymap('n', '<BS>', 'gg', opts)
 
--- add newline at endofthefile
-_G.add_new_line = function()
-  local n_lines = vim.api.nvim_buf_line_count(0)
-  local last_nonblank = vim.fn.prevnonblank(n_lines)
-  if last_nonblank <= n_lines then vim.api.nvim_buf_set_lines(0, last_nonblank, n_lines, true, { '' }) end
-end
-
 vim.cmd([[
   augroup AddNewlineOnSave
     autocmd!
