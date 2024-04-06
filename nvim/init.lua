@@ -42,7 +42,10 @@ require('pckr').add{
   'sharkdp/fd';
   'nvim-telescope/telescope.nvim';
   'lukas-reineke/indent-blankline.nvim';
-  'lambdalisue/fern.vim'
+  'lambdalisue/fern.vim';
+  -- colortheme
+  'rose-pine/neovim';
+  'craftzdog/solarized-osaka.nvim';
   -- My plugins here
   -- 'foo1/bar1.nvim';
   -- 'foo2/bar2.nvim';
