@@ -1,4 +1,14 @@
 local options = {
+  encoding = 'utf-8',
+  fileencoding = 'utf-8',
+  title = true,
+  backup = false,
+  showcmd = true,
+  cmdheight = 2,
+  laststatus = 2,
+  helplang = 'ja',
+  swapfile = false,
+  wrap = true,
   -- show line number
   number = true,
   -- show relative line number
