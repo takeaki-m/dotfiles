@@ -1,8 +1,10 @@
 " use space as Leader
 let g:mapleder = "\<Space>"
+let mapleader = ' '
+
 
 " colorscheme
-set background=dark
+"set background=dark
 "colorscheme iceberg
 "colorscheme ayu
 "colorscheme molokai
