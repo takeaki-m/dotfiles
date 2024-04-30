@@ -77,6 +77,7 @@ alias rf='readlink -f'
 alias term='export TERM=xterm; echo $TERM'
 
 alias vim='nvim'
+alias v='vim'
 
 alias g='git'
 alias gpoc='git push origin `git rev-parse --abbrev-ref HEAD` | gpb'
