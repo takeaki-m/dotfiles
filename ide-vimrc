@@ -23,9 +23,9 @@ nnoremap + <C-a>
 nnoremap - <C-x>
 
 " move to specified line with Enter. replace with G
-noremap <CR> G
+"noremap <CR> G
 " move top of file with gg
-noremap <BS> gg
+"noremap <BS> gg
 
 "show line number
 set number
