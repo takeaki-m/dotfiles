@@ -1,0 +1,112 @@
+{
+  "title": "hotkeys to switch app",
+  "rules":
+  [
+    {
+      "description": "ctrl-1 to iTerm2",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "1",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "open -a 'iTerm'"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "ctrl-2 to chrome",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "2",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "open -a 'Google Chrome'"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "ctrl-3 to Slack",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "3",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "open -a 'Slack'"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "ctrl-4 to Google Calendar",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "4",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "open -a \"$HOME/Applications/Chrome Apps.localized/Google Calendar Google Task.app\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "ctrl-5 to Google Meet",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "5",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "open -a \"$HOME/Applications/Chrome Apps.localized/Google Meet.app\""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
