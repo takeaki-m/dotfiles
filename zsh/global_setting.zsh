@@ -91,6 +91,7 @@ alias dc='docker compose'
 
 alias szs='source ~/.zshrc'
 alias reload='exec $SHELL -l'
+alias tm='tmux'
 
 # nvim
 alias nvimconfig='nvim ~/.config/nvim/init.lua'
