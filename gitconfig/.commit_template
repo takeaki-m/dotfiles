@@ -1,0 +1,38 @@
+# Title: Summary, imperative, start upper case, don't end with a period
+# No more than 50 chars. #### 50 chars is here:  #
+prefix: {description}
+# prefix
+# feat: 新しい機能を追加する場合
+# fix: バグを修正する場合
+# docs: 文書を更新する場合
+# style: スタイルを変更する場合
+# refactor: リファクタリングを行う場合
+# test: テストを変更する場合
+# chore: ビルドプロセスなどの環境構築の変更を行う場合
+
+# Body: Explain *what* and *why* (not *how*). Include task ID (Jira issue).
+# Wrap at 72 chars. ################################## which is here:  #
+[optional body]
+
+[optional footer]
+
+# BREAKING CHANGE: use JavaScript features not available in Node 6.
+# Refs: #123
+
+# Rules
+# ================================
+# 1. Separate subject from body with a blank line
+# 2. Limit the subject line to 50 characters
+# 3. Capitalize the subject line
+# 4. Do not end the subject line with a period
+# 5. Use the imperative mood in the subject line
+# 6. Wrap the body at 72 characters
+# 7. Use the body to explain what and why vs. how
+# ================================
+
+# At the end: Include Co-authored-by for all contributors. 
+# Include at least one empty line before it. Format: 
+# Co-authored-by: name <user@users.noreply.github.com>
+#
+# How to Write a Git Commit Message:
+# https://chris.beams.io/posts/git-commit/

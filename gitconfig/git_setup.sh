@@ -8,14 +8,20 @@ else
 	touch ~/.gitconfig
 fi
 
+GIT_SET_PATH=$HOME/settings/dotfiles/gitconfig
+
 echo "### start .gitconfig settings ###"
-git config --global include.path $(readlink -f gitconfig/.gitconfig_shared)
+git config --global include.path $(readlink -f $GIT_SET_PATH/.gitconfig_shared)
 
 echo "### start .gitignore settings ###"
-git config --global core.excludesfile $(readlink -f gitconfig/.gitignore_global)
+git config --global core.excludesfile $(readlink -f $GIT_SET_PATH/.gitignore_global)
+
+echo "### start .gitignore settings ###"
+git config --global commit.template $(readlink -f $GIT_SET_PATH/.commit_template)
 
 echo "### set core editor nvim ###"
 git config --global core.editor "nvim"
+
 
 RET_CD=$?
 exit ${RET_CD}
