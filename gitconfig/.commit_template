@@ -12,10 +12,9 @@ prefix: {description}
 
 # Body: Explain *what* and *why* (not *how*). Include task ID (Jira issue).
 # Wrap at 72 chars. ################################## which is here:  #
-[optional body]
+#[optional body]
 
-[optional footer]
-
+#[optional footer]
 # BREAKING CHANGE: use JavaScript features not available in Node 6.
 # Refs: #123
 
