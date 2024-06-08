@@ -41,6 +41,7 @@ require('pckr').add{
   'nvim-telescope/telescope.nvim';
   'lukas-reineke/indent-blankline.nvim';
   'lambdalisue/fern.vim';
+  'lewis6991/gitsigns.nvim';
   -- colortheme
   'rose-pine/neovim';
   'craftzdog/solarized-osaka.nvim';
