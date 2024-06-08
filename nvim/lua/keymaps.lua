@@ -19,10 +19,18 @@ keymap('n', '-', '<C-x>', opts)
 -- hilight off in two ESC times
 keymap('n', '<Esc><Esc>', ':nohlsearch<CR>', opts)
 
+-- telescope find files
+keymap('n', '<C-p>', ':Telescope find_files<CR>', opts)
+-- telescope find character
+keymap('n', '<C-s>', ':Telescope live_grep<CR>', opts)
+
+-- fern
+keymap('n', '<C-n>', ':Fern . -reveal=% -drawer -toggle -width=30<CR>', opts)
+
 -- move to specified line with <CR> insted of G
-keymap('n', '<CR>', 'G', opts)
+-- keymap('n', '<CR>', 'G', opts)
 -- move top of file with <BS> instead of gg
-keymap('n', '<BS>', 'gg', opts)
+-- keymap('n', '<BS>', 'gg', opts)
 
 vim.cmd([[
   augroup AddNewlineOnSave
