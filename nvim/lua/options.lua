@@ -34,6 +34,9 @@ local options = {
   hlsearch = true,
   -- automatically go to next line
   whichwrap = "b,s,h,l,<,>,[,],~",
+  -- visualize space and tabs
+  list = true,
+  listchars = "eol:$,tab:>.,space:_,trail:-",
 }
 
 -- active all options

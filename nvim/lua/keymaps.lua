@@ -18,7 +18,8 @@ keymap('n', '-', '<C-x>', opts)
 
 -- hilight off in two ESC times
 keymap('n', '<Esc><Esc>', ':nohlsearch<CR>', opts)
-
+keymap('n', '<C-j>', ':bnext<CR>', opts)
+keymap('n', '<C-k>', ':bprev<CR>', opts)
 -- telescope find files
 keymap('n', '<C-p>', ':Telescope find_files<CR>', opts)
 -- telescope find character
@@ -32,12 +33,12 @@ keymap('n', '<C-n>', ':Fern . -reveal=% -drawer -toggle -width=30<CR>', opts)
 -- move top of file with <BS> instead of gg
 -- keymap('n', '<BS>', 'gg', opts)
 
-vim.cmd([[
-  augroup AddNewlineOnSave
-    autocmd!
-    autocmd BufWritePre * lua _G.add_new_line()
-  augroup END
-]])
+--vim.cmd([[
+--  augroup AddNewlineOnSave
+--    autocmd!
+--    autocmd BufWritePre * lua _G.add_new_line()
+--  augroup END
+--]])
 
 -- vp doesn't replace paste buffer
 keymap('x', 'p', '"_dP', {noremap = true})
