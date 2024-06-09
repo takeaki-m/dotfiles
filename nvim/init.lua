@@ -2,10 +2,8 @@ require("options")
 require("keymaps")
 
 -- colorscheme settings
-vim.cmd 'set background=dark'
-vim.cmd 'colorscheme lunaperche'
-
-
+--vim.cmd 'set background=dark'
+--vim.cmd 'colorscheme lunaperche'
 
 -- activate vim loader to use plugin manager
 vim.loader.enable()
@@ -42,9 +40,11 @@ require('pckr').add{
   'lukas-reineke/indent-blankline.nvim';
   'lambdalisue/fern.vim';
   'lewis6991/gitsigns.nvim';
+  'nvim-lualine/lualine.nvim';
   -- colortheme
   'rose-pine/neovim';
   'craftzdog/solarized-osaka.nvim';
 }
 -- activate indent-blankline.nvim
 require('ibl').setup()
+require('lualine').setup()
