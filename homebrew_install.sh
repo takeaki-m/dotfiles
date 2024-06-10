@@ -68,6 +68,7 @@ formulas=(
     zsh-git-prompt
     zsh-syntax-highlighting
     alfred
+    ripgrep
 )
 
 echo "start brew install apps..."
