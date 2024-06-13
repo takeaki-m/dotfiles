@@ -28,6 +28,13 @@ keymap('n', '<C-s>', ':Telescope live_grep<CR>', opts)
 -- fern
 keymap('n', '<C-n>', ':Fern . -reveal=% -drawer -toggle -width=30<CR>', opts)
 
+-- 補完表示時のEnterで改行をしない
+keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', { expr = true, noremap = true })
+
+-- 補完表示時の<C-n>と<C-p>の挙動を設定
+keymap('i', '<C-n>', 'pumvisible() ? "<Down>" : "<C-n>"', { expr = true, noremap = true })
+keymap('i', '<C-p>', 'pumvisible() ? "<Up>" : "<C-p>"', { expr = true, noremap = true })
+
 -- move to specified line with <CR> insted of G
 -- keymap('n', '<CR>', 'G', opts)
 -- move top of file with <BS> instead of gg

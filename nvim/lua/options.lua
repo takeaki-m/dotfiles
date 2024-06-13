@@ -37,8 +37,10 @@ local options = {
   -- visualize space and tabs
   list = true,
   listchars = "eol:$,tab:>.,space:_,trail:-",
+  -- menuone:対象が1件しかなくても常に補完ウィンドウを表示
+  -- noinsert:補完ウィンドウを表示時に挿入しない
+  completeopt = 'menuone,noinsert'
 }
-
 -- active all options
 for k, v in pairs(options) do
   vim.opt[k] = v
