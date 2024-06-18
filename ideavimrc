@@ -47,3 +47,75 @@ nmap ]q <Action>(GotoNextError)
 " show hover info
 nmap <Leader>k <Action>(ShowHoverInfo)
 
+" map default completion to vim shorcut
+"imap <C-n> <ESC>:action HippieCompletion<CR>a
+"imap <C-p> <ESC>:action HippieBackwardCompletion<CR>a
+
+set surround
+
+" reload ideavimrc
+nmap <Leader>sv :<C-u>source ~/.ideavimrc<CR>
+"
+" search
+" nnoremap / :<C-u>action Find<CR>
+" code jump
+nnoremap <C-o> :<C-u>action Back<CR>
+nnoremap <C-i> :<C-u>action Forward<CR>
+nnoremap <C-S-o> <C-o>
+nnoremap <C-S-i> <C-i>
+
+" method definition
+nnoremap [m :<C-u>action MethodUp<CR>
+nnoremap ]m :<C-u>action MethodDown<CR>
+
+" vcs
+nmap [c <Action>(VcsShowPrevChangeMarker)
+nmap ]c <Action>(VcsShowNextChangeMarker)
+
+
+nmap gi <Action>(GotoImplementation)
+nmap gu <Action>(FindUsages)
+nmap <Leader>gd <Action>(GotoDeclaration)
+nmap <Leader>gt <Action>(GotoTypeDeclaration)
+nmap <Leader>gs <Action>(GotoSuperMethod)
+nmap <Leader>ts <Action>(GotoTest)
+
+" search IDE Actions
+nmap <Leader>fa <Action>(GotoAction)
+" search everywhere alias of Shift*2
+nmap <Leader>ff <Action>(SearchEverywhere)
+" find in files
+nmap <Leader>fp <Action>(FindInPath)
+" tab
+nmap <Leader>q <Action>(CloseContent)
+nmap <Leader>Q <Action>(ReopenCloedTab)
+nmap <Leader>bc <Action>(CloseAllEditorsButActive)
+nmap <Leader>bC <Action>(CloseAllEditors)
+
+" window
+" alias of cmd+1
+nmap <Leader>e <Action>(ActivateProjectToolWindow)
+nmap <Leader>la <Action>(ShowIntentionActions)
+nmap <Leader>ls <Action>(ActivateStructureToolWindow)
+nmap <Leader>ps <Action>(FileStructurePopup)
+nmap <Leader>o <Action>(EditorEscape)
+nmap <Leader>th <Action>(ActivateTerminalToolWindow)
+nmap <Leader>H <Action>(HideAllWindows)
+
+" file edit
+nmap <Leader>G <Action>(Generate)
+nmap <Leader>gn <Action>(NewClass)
+
+" comment
+nmap <Leader>/ <Action>(CommentByLineComment)
+" refactor
+nmap <Leader>cr <Action>(RenameElement)
+nmap <Leader>cs <Action>(ChangeSignature)
+nmap <Leader>cts <Action>(ChangeTypeSignature)
+nmap <Leader>= <Action>(ReformatCode)
+
+nmap [b <Action>(PreviousTab)
+nmap ]b <Action>(NextTab)
+" jumptochange
+nmap <Leader>g; <Action>(JumpToLastChange)
+nmap <Leader>g, <Action>(JumpToNextChange)
