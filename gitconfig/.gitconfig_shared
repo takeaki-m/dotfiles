@@ -20,6 +20,8 @@
     poc = push origin `git rev-parse --abbrev-ref HEAD`
     bra = branch -a
     md = merge develop
+    rs = restore --staged
+
 [core]
 	editor = nvim
 
