@@ -41,6 +41,7 @@ require('pckr').add{
   'lambdalisue/fern.vim';
   'lewis6991/gitsigns.nvim';
   'nvim-lualine/lualine.nvim';
+  'kdheepak/lazygit.nvim';
   -- colortheme
   'rose-pine/neovim';
   'craftzdog/solarized-osaka.nvim';
