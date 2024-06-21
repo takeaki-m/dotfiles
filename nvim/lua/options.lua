@@ -39,7 +39,7 @@ local options = {
   listchars = "eol:$,tab:>.,space:_,trail:-",
   -- menuone:対象が1件しかなくても常に補完ウィンドウを表示
   -- noinsert:補完ウィンドウを表示時に挿入しない
-  completeopt = 'menuone,noinsert'
+  completeopt = 'menu,menuone,noinsert,noselect'
 }
 -- active all options
 for k, v in pairs(options) do
