@@ -52,16 +52,17 @@ keymap('n', '<Leader>lg', ':LazyGit<CR>', opts)
 --]])
 
 -- vp doesn't replace paste buffer
-keymap('x', 'p', '"_dP', {noremap = true})
+keymap('x', 'p', '"_dP', { noremap = true })
 
 function PasteCommandOutput(command)
   local output = vim.fn.system(command)
-  output = output:gsub("[\r\n]+", "")  -- 改行を削除する
-  output = output:gsub("%z", "")  -- NUL文字を削除する
-  vim.api.nvim_put({output}, '', true, true)
+  output = output:gsub("[\r\n]+", "") -- 改行を削除する
+  output = output:gsub("%z", "")      -- NUL文字を削除する
+  vim.api.nvim_put({ output }, '', true, true)
 end
 
-vim.api.nvim_set_keymap('n', '<Leader>rp', ':lua PasteCommandOutput("readlink -f " .. vim.fn.expand("%"))<CR>', {noremap = true, silent = true})
+keymap('n', '<Leader>rp', ':lua PasteCommandOutput("readlink -f " .. vim.fn.expand("%"))<CR>',
+  { noremap = true, silent = true })
 
 
 -- Mappings.
@@ -93,4 +94,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
     keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
   end,
 })
-
