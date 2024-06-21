@@ -28,6 +28,9 @@ keymap('n', '<C-s>', ':Telescope live_grep<CR>', opts)
 -- fern
 keymap('n', '<C-n>', ':Fern . -reveal=% -drawer -toggle -width=30<CR>', opts)
 
+-- buffer
+keymap ('n', '<C-H>', ':ls<CR>:buf', opts)
+
 -- 補完表示時のEnterで改行をしない
 keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', { expr = true, noremap = true })
 
