@@ -3,7 +3,6 @@ require("keymaps")
 
 -- colorscheme settings
 --vim.cmd 'set background=dark'
---vim.cmd 'colorscheme lunaperche'
 
 -- activate vim loader to use plugin manager
 vim.loader.enable()
@@ -47,7 +46,6 @@ require('pckr').add{
   'williamboman/mason.nvim';
   'williamboman/mason-lspconfig.nvim';
   'L3MON4D3/LuaSnip';
-
   'hrsh7th/nvim-cmp';
   'hrsh7th/cmp-nvim-lsp';
   'hrsh7th/cmp-buffer';
