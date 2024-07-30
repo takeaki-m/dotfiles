@@ -21,6 +21,7 @@
     bra = branch -a
     md = merge develop
     rs = restore --staged
+    rsh = reset --soft HEAD^
 
 [core]
 	editor = nvim
