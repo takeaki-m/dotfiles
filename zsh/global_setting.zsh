@@ -76,7 +76,13 @@ alias rf='readlink -f'
 # set xterm to TERM for older terminals that does not support xterm-256color
 alias term='export TERM=xterm; echo $TERM'
 
-alias vim='(){cd $1 && nvim .}'
+alias vim='() {
+  if [ -f "$(readlink -f "$1")" ]; then
+    nvim "$1";
+  else
+    cd "$1" && nvim .;
+  fi
+}'
 alias v='vim'
 
 alias g='git'
