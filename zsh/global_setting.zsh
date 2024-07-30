@@ -76,7 +76,7 @@ alias rf='readlink -f'
 # set xterm to TERM for older terminals that does not support xterm-256color
 alias term='export TERM=xterm; echo $TERM'
 
-alias vim='nvim'
+alias vim='(){cd $1 && nvim .}'
 alias v='vim'
 
 alias g='git'
