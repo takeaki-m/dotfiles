@@ -39,3 +39,7 @@ setopt no_beep
 # set path to toggle mac os backsounds
 export PATH=$HOME/settings/dotfiles/macos/:$PATH
 
+# autocomplete command line
+# https://formulae.brew.sh/formula/zsh-autocomplete
+# https://github.com/marlonrichert/zsh-autocomplete
+source $HOMEBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
