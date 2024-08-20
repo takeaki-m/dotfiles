@@ -50,7 +50,7 @@ setopt PROMPT_SUBST ; PS1='%F{blue}%~%f %F{cyan}$(__git_ps1 "(%s)")%f
 
 # change netrc account
 function change-codecommit-credential() {
-    local selected_dir=$(find ~ -maxdepth 1 | grep netrc_ | peco --query "$LBUFFER")
+    local selected_dir=$(find ~/netrc -mindepth 1 -maxdepth 1 | peco --query "$LBUFFER")
     if [ -n "$selected_dir" ]; then
         \cp -f ${selected_dir} ~/.netrc
     fi
