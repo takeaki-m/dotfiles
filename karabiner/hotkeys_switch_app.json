@@ -3,12 +3,12 @@
   "rules":
   [
     {
-      "description": "ctrl-1 to iTerm2",
+      "description": "ctrl-3 to iTerm2",
       "manipulators": [
         {
           "type": "basic",
           "from": {
-            "key_code": "1",
+            "key_code": "3",
             "modifiers": {
               "mandatory": [
                 "control"
@@ -45,27 +45,6 @@
       ]
     },
     {
-      "description": "ctrl-3 to Slack",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "3",
-            "modifiers": {
-              "mandatory": [
-                "control"
-              ]
-            }
-          },
-          "to": [
-            {
-              "shell_command": "open -a 'Slack'"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "description": "ctrl-4 to Google Calendar",
       "manipulators": [
         {
@@ -80,7 +59,7 @@
           },
           "to": [
             {
-              "shell_command": "open -a \"$HOME/Applications/Chrome Apps.localized/Google Calendar Google Task.app\""
+              "shell_command": "open -a \"$HOME/Applications/Chrome Apps.localized/Google Calendar.app\""
             }
           ]
         }
