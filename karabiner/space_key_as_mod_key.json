@@ -1,0 +1,43 @@
+{
+  "title": "Space Key as Space or Left Control + Left Command",
+  "rules": [
+    {
+      "description": "Space key as Space or Left Control + Left Command",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "spacebar",
+            "modifiers": {
+              "optional": ["any"]
+            }
+          },
+          "to_if_alone": [
+            {
+              "key_code": "spacebar"
+            }
+          ],
+          "to": [
+            {
+              "key_code": "left_control",
+              "modifiers": ["left_command"]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "device_unless",
+              "identifiers": [
+                {
+                  "vendor_id": 7504,
+                  "product_id": 24868,
+                  "description": "ultimate hacking keyboard"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
