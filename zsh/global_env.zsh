@@ -39,6 +39,9 @@ setopt no_beep
 # set path to toggle mac os backsounds
 export PATH=$HOME/settings/dotfiles/macos/:$PATH
 
+# github
+# to use vim with github cli
+export GIT_EDITOR=nvim
 # autocomplete command line
 # https://formulae.brew.sh/formula/zsh-autocomplete
 # https://github.com/marlonrichert/zsh-autocomplete
