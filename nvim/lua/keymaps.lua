@@ -38,6 +38,7 @@ keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', { expr = true, noremap = 
 keymap('i', '<C-n>', 'pumvisible() ? "<Down>" : "<C-n>"', { expr = true, noremap = true })
 keymap('i', '<C-p>', 'pumvisible() ? "<Up>" : "<C-p>"', { expr = true, noremap = true })
 
+keymap("t", "fj", "<C-\\><C-n>", opts)
 keymap('n', '<Leader>lg', ':LazyGit<CR>', opts)
 -- move to specified line with <CR> insted of G
 -- keymap('n', '<CR>', 'G', opts)
