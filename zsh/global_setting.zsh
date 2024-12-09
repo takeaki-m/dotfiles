@@ -18,25 +18,26 @@ setopt correct_all #コマンドライン引数の全てのスペルミスを修
 # コマンド履歴検索で戻るを実現するためにscrelln rockを未定義にする
 stty stop undef
 
-# 入力補完
-autoload -Uz compinit && compinit
 
 # git
 # git show branch name on terminal
 source ~/.zsh/git-prompt.sh
 fpath=(~/.zsh $fpath)
 zstyle ':completion:*:*:git*' script ~/.zsh/git-completion.bash
-autoload -Uz compinit && compinit
+
+# zsh-autocompleteのinstallによってコメントアウト
+#autoload -Uz compinit && compinit
 
 # github cli completion
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-if type brew &>/dev/null
-then
-    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-
-    autoload -Uz compinit
-    compinit
-fi
+# zsh-autocompleteのinstallによってコメントアウト
+#FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+#if type brew &>/dev/null
+#then
+#    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+#
+#    autoload -Uz compinit
+#    compinit
+#fi
 
 ## prompt options
 GIT_PS1_SHOWDIRTYSTATE=true
@@ -157,10 +158,20 @@ stty stop undef
 # ╚══════╝╚══════╝╚═╝  ╚═╝
 
 # 補完機能を有効にする
-autoload -Uz compinit
-compinit
-zstyle ':completion:*:default' menu select=1
+# 前方一致
+# 入力補完
 
+source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# zsh-autocompleteのキーバインドを変更する
+bindkey              '^I'         menu-complete
+bindkey "$terminfo[kcbt]" reverse-menu-complete
+# zsh-autocompleteのinstallによってコメントアウト
+# autoload -Uz compinit && compinit
+# default
+zstyle ':completion:*:default' menu select
+# interactive
+# zstyle ':completion:*:default' menu select interactive
+#
 # sudo の後ろでコマンド名を補完する
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \ /user/sbin /usr/bin /bin /usr/X11R6/bin
 fpath=(/usr/local/share/zsh-completions $fpath)
@@ -206,4 +217,3 @@ function ssh() {
       command ssh $@
   fi
 }
-
