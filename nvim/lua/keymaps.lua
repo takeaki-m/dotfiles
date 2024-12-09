@@ -2,6 +2,7 @@ local opts = {
   noremap = true,
   silent = true,
 }
+
 local keymap = vim.api.nvim_set_keymap
 
 -- use space as Leader
@@ -39,6 +40,7 @@ keymap('i', '<C-n>', 'pumvisible() ? "<Down>" : "<C-n>"', { expr = true, noremap
 keymap('i', '<C-p>', 'pumvisible() ? "<Up>" : "<C-p>"', { expr = true, noremap = true })
 
 keymap("t", "fj", "<C-\\><C-n>", opts)
+
 keymap('n', '<Leader>lg', ':LazyGit<CR>', opts)
 -- move to specified line with <CR> insted of G
 -- keymap('n', '<CR>', 'G', opts)
@@ -71,6 +73,10 @@ keymap('n', '<Leader>rp', ':lua PasteCommandOutput("readlink -f " .. vim.fn.expa
 keymap('n', '<space>e', '<cmd>:lua vim.diagnostic.open_float()<CR>', opts)
 keymap('n', '[d', '<cmd>:lua vim.diagnostic.goto_prev()<CR>', opts)
 keymap('n', ']d', '<cmd>:lua vim.diagnostic.goto_next()<CR>', opts)
+
+
+vim.api.nvim_create_user_command('CopyFullBufferPath', "let @+=expand('%:p')", {})
+vim.api.nvim_create_user_command('CopyBufferName', "let @* = expand('%:t')",{})
 
 
 -- LSPサーバアタッチ時の処理
