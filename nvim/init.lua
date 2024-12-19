@@ -46,6 +46,7 @@ require('pckr').add{
   'neovim/nvim-lspconfig';
   'williamboman/mason.nvim';
   'williamboman/mason-lspconfig.nvim';
+  'artempyanykh/marksman';
   'L3MON4D3/LuaSnip';
   'hrsh7th/nvim-cmp';
   'hrsh7th/cmp-nvim-lsp';
@@ -64,13 +65,22 @@ require('lualine').setup()
 -- lsp
 require("mason").setup()
 require("mason-lspconfig").setup()
-require("mason-lspconfig").setup_handlers {
-  function(server_name)
-    require("lspconfig")[server_name].setup {}
-  end,
-}
+
 -- lspのハンドラーに設定
 CAPABILITIES = require("cmp_nvim_lsp").default_capabilities()
+
+require("mason-lspconfig").setup_handlers {
+  function(server_name)
+    require("lspconfig")[server_name].setup {
+      CAPABILITIES = CAPABILITIES,
+    }
+  end,
+  ["marksman"] = function()
+    require("lspconfig").marksman.setup{
+      CAPABILITIES = CAPABILITIES,
+    }
+  end,
+}
 
 -- lspの設定後に追加
 
