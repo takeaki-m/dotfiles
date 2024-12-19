@@ -1,7 +1,9 @@
 require("options")
+require("colorscheme")
+require("command")
 require("keymaps")
+require("options")
 
--- colorscheme settings
 --vim.cmd 'set background=dark'
 
 -- activate vim loader to use plugin manager

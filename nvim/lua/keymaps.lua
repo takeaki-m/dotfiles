@@ -75,10 +75,19 @@ keymap('n', '[d', '<cmd>:lua vim.diagnostic.goto_prev()<CR>', opts)
 keymap('n', ']d', '<cmd>:lua vim.diagnostic.goto_next()<CR>', opts)
 
 
-vim.api.nvim_create_user_command('CopyFullBufferPath', "let @+=expand('%:p')", {})
-vim.api.nvim_create_user_command('CopyBufferName', "let @* = expand('%:t')",{})
-
-
+-- コマンドラインwindowでの動作を設定する
+--normal modeでも動作してしまい、telescopeの動作と被るためコメントアウト
+--vim.api.nvim_create_autocmd("CmdwinEnter", {
+--    callback = function()
+--        local opts_cursol = { buffer = true, noremap = true }
+--        keymap("n", "<C-p>", "<Up>", opts_cursol)
+--        keymap("n", "<C-n>", "<Down>", opts_cursol)
+--        keymap("n", "<C-b>", "<Left>", opts_cursol)
+--        keymap("n", "<C-f>", "<Right>", opts_cursol)
+--        keymap("n", "<C-a>", "<Home>", opts_cursol)  -- 行頭に移動
+--        keymap("n", "<C-e>", "<End>", opts_cursol)   -- 行末に移動
+--    end,
+--})
 -- LSPサーバアタッチ時の処理
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ctx)
