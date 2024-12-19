@@ -1,4 +1,3 @@
-require("options")
 require("colorscheme")
 require("command")
 require("keymaps")
@@ -52,10 +51,13 @@ require('pckr').add{
   'hrsh7th/cmp-nvim-lsp';
   'hrsh7th/cmp-buffer';
   'saadparwaiz1/cmp_luasnip';
+  'kylechui/nvim-surround';
   -- colortheme
   'rose-pine/neovim';
   'craftzdog/solarized-osaka.nvim';
 }
+-- nvim-surround
+require("nvim-surround").setup()
 -- activate indent-blankline.nvim
 require('ibl').setup()
 require('lualine').setup()
