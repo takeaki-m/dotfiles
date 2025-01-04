@@ -96,6 +96,19 @@ alias szs='source ~/.zshrc'
 alias reload='exec $SHELL -l'
 alias tm='tmux'
 
+pycharm() {
+  open -na "Pycharm.app" --args nosplash "$@"
+}
+
+webstorm() {
+  open -na "WebStorm.app" --args nosplash "$@"
+}
+
+idea() {
+  open -na "IntelliJ IDEA.app" --args nosplash "$@"
+}
+
+#
 # nvim
 alias nvimconfig='nvim ~/.config/nvim/init.lua'
 # alias v='nvim'
