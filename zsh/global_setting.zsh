@@ -18,6 +18,10 @@ setopt correct_all #コマンドライン引数の全てのスペルミスを修
 # コマンド履歴検索で戻るを実現するためにscrelln rockを未定義にする
 stty stop undef
 
+# 入力補完
+autoload -Uz compinit && compinit
+# 大文字小文字を区別しない
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # git
 # git show branch name on terminal
@@ -29,6 +33,13 @@ zstyle ':completion:*:*:git*' script ~/.zsh/git-completion.bash
 #autoload -Uz compinit && compinit
 
 # github cli completion
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+if type brew &>/dev/null
+then
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+    autoload -Uz compinit compinit
+fi
 # zsh-autocompleteのinstallによってコメントアウト
 #FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 #if type brew &>/dev/null
@@ -172,6 +183,8 @@ stty stop undef
 # ╚══════╝╚══════╝╚═╝  ╚═╝
 
 # 補完機能を有効にする
+autoload -Uz compinit compinit
+zstyle ':completion:*:default' menu select=1
 # 前方一致
 # 入力補完
 
