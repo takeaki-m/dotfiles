@@ -38,6 +38,11 @@ keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', { expr = true, noremap = 
 keymap('i', '<C-n>', 'pumvisible() ? "<Down>" : "<C-n>"', { expr = true, noremap = true })
 keymap('i', '<C-p>', 'pumvisible() ? "<Up>" : "<C-p>"', { expr = true, noremap = true })
 
+-- うまく後かないからコメントアウトする
+-- コマンドラインモードでc-n,c-pでも補完を有効にするために方向キーに割り当てる
+--keymap('c', '<C-p>', '<Up>', opts)
+--keymap('c', '<C-n>', '<Down>', opts)
+
 keymap('n', '<Leader>lg', ':LazyGit<CR>', opts)
 -- move to specified line with <CR> insted of G
 -- keymap('n', '<CR>', 'G', opts)
