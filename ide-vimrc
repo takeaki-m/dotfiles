@@ -22,6 +22,14 @@ nnoremap <Leader>w :w<CR>
 nnoremap + <C-a>
 nnoremap - <C-x>
 
+" commandline mord keymap
+cnoremap <C-A> <Home>
+cnoremap <C-F> <Right>
+cnoremap <C-B> <Left>
+cnoremap <Esc>b <S-Left>
+cnoremap <Esc>f <S-Right>
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
 " move to specified line with Enter. replace with G
 "noremap <CR> G
 " move top of file with gg
@@ -69,7 +77,6 @@ syntax enable
 
 "highlight CursorLine cterm=NONE ctermfg=white ctermbg=DarkGray
 
-
 " カーソル行のハイライトを有効にする
 set cursorline
 " カーソル行のハイライトスタイルを設定
@@ -89,4 +96,5 @@ function! s:Repl()
   return "p@=RestoreRegister()\<cr>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
+
 

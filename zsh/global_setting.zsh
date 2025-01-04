@@ -20,6 +20,8 @@ stty stop undef
 
 # 入力補完
 autoload -Uz compinit && compinit
+# 大文字小文字を区別しない
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # git
 # git show branch name on terminal
@@ -34,8 +36,7 @@ if type brew &>/dev/null
 then
     FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
-    autoload -Uz compinit
-    compinit
+    autoload -Uz compinit compinit
 fi
 
 ## prompt options
@@ -157,8 +158,7 @@ stty stop undef
 # ╚══════╝╚══════╝╚═╝  ╚═╝
 
 # 補完機能を有効にする
-autoload -Uz compinit
-compinit
+autoload -Uz compinit compinit
 zstyle ':completion:*:default' menu select=1
 
 # sudo の後ろでコマンド名を補完する
