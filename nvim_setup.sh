@@ -35,7 +35,7 @@ else
 	echo "$NVIM_DOT_FILE $MESSAGE_FILE_EXIST"
 fi
 
-for file in options.lua keymaps.lua; do
+for file in $(ls $NVIM_DOT_FILE_LUA_PATH); do
 	if [ ! -e $NVIM_LUA_PATH/$file ]; then
 		echo "$file $MESSAGE_MAKE_FILE"
 		ln -s $NVIM_DOT_FILE_LUA_PATH/$file $NVIM_LUA_PATH/$file

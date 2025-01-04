@@ -1,0 +1,19 @@
+{
+    "title": "Change ctrl+[ to ESC",
+    "rules": [{
+        "description": "Change ctrl+[ key to Escape key",
+        "manipulators": [{
+            "type": "basic",
+            "from": {
+                "key_code": "open_bracket",
+                "modifiers": {
+                    "mandatory": ["control"]
+                }
+            },
+            "to": [{
+                "key_code": "escape"
+            }]
+        }]
+    }]
+}
+

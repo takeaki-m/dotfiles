@@ -1,7 +1,8 @@
-require("options")
+require("colorscheme")
+require("command")
 require("keymaps")
+require("options")
 
--- colorscheme settings
 --vim.cmd 'set background=dark'
 
 -- activate vim loader to use plugin manager
@@ -45,28 +46,41 @@ require('pckr').add{
   'neovim/nvim-lspconfig';
   'williamboman/mason.nvim';
   'williamboman/mason-lspconfig.nvim';
+  'artempyanykh/marksman';
   'L3MON4D3/LuaSnip';
   'hrsh7th/nvim-cmp';
   'hrsh7th/cmp-nvim-lsp';
   'hrsh7th/cmp-buffer';
   'saadparwaiz1/cmp_luasnip';
+  'kylechui/nvim-surround';
   -- colortheme
   'rose-pine/neovim';
   'craftzdog/solarized-osaka.nvim';
 }
+-- nvim-surround
+require("nvim-surround").setup()
 -- activate indent-blankline.nvim
 require('ibl').setup()
 require('lualine').setup()
 -- lsp
 require("mason").setup()
 require("mason-lspconfig").setup()
-require("mason-lspconfig").setup_handlers {
-  function(server_name)
-    require("lspconfig")[server_name].setup {}
-  end,
-}
+
 -- lspのハンドラーに設定
 CAPABILITIES = require("cmp_nvim_lsp").default_capabilities()
+
+require("mason-lspconfig").setup_handlers {
+  function(server_name)
+    require("lspconfig")[server_name].setup {
+      CAPABILITIES = CAPABILITIES,
+    }
+  end,
+  ["marksman"] = function()
+    require("lspconfig").marksman.setup{
+      CAPABILITIES = CAPABILITIES,
+    }
+  end,
+}
 
 -- lspの設定後に追加
 

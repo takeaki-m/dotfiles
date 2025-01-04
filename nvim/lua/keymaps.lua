@@ -2,6 +2,7 @@ local opts = {
   noremap = true,
   silent = true,
 }
+
 local keymap = vim.api.nvim_set_keymap
 
 -- use space as Leader
@@ -42,6 +43,7 @@ keymap('i', '<C-p>', 'pumvisible() ? "<Up>" : "<C-p>"', { expr = true, noremap =
 -- コマンドラインモードでc-n,c-pでも補完を有効にするために方向キーに割り当てる
 --keymap('c', '<C-p>', '<Up>', opts)
 --keymap('c', '<C-n>', '<Down>', opts)
+keymap("t", "fj", "<C-\\><C-n>", opts)
 
 keymap('n', '<Leader>lg', ':LazyGit<CR>', opts)
 -- move to specified line with <CR> insted of G
@@ -77,6 +79,19 @@ keymap('n', '[d', '<cmd>:lua vim.diagnostic.goto_prev()<CR>', opts)
 keymap('n', ']d', '<cmd>:lua vim.diagnostic.goto_next()<CR>', opts)
 
 
+-- コマンドラインwindowでの動作を設定する
+--normal modeでも動作してしまい、telescopeの動作と被るためコメントアウト
+--vim.api.nvim_create_autocmd("CmdwinEnter", {
+--    callback = function()
+--        local opts_cursol = { buffer = true, noremap = true }
+--        keymap("n", "<C-p>", "<Up>", opts_cursol)
+--        keymap("n", "<C-n>", "<Down>", opts_cursol)
+--        keymap("n", "<C-b>", "<Left>", opts_cursol)
+--        keymap("n", "<C-f>", "<Right>", opts_cursol)
+--        keymap("n", "<C-a>", "<Home>", opts_cursol)  -- 行頭に移動
+--        keymap("n", "<C-e>", "<End>", opts_cursol)   -- 行末に移動
+--    end,
+--})
 -- LSPサーバアタッチ時の処理
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ctx)
