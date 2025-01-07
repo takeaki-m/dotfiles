@@ -6,10 +6,14 @@ PROMPT='%~ %# '
 setopt auto_pushd #自動的にディレクトリスタックに追加
 setopt pushd_ignore_dups #ディレクトリスタックに重複したディレクトリを追加しない
 dirstacksize=20 #ディレクトリスタックの上限数を20に
+# ディレクトリスタックの設定cd -<TAB>で有効化
+zstyle ':completion:*' menu select
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*:descriptions' format '%BCompleting%b %U%d%u'
 
 # path名展開
 set glob_complete #マッチしたパスを一つずつ挿入
-unset case_glob #globeを大文字小文字を区別しない
+unset case_glob # globeを大文字小文字を区別しない
 
 # correct spell miss
 setopt correct  # スペルミスを修正する
@@ -17,6 +21,9 @@ setopt correct_all #コマンドライン引数の全てのスペルミスを修
 
 # コマンド履歴検索で戻るを実現するためにscrelln rockを未定義にする
 stty stop undef
+
+# ディレクトリスタックをcdで使えるようにする
+
 
 # 入力補完
 autoload -Uz compinit && compinit
@@ -187,8 +194,7 @@ autoload -Uz compinit compinit
 zstyle ':completion:*:default' menu select=1
 # 前方一致
 # 入力補完
-
-source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+#source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 # zsh-autocompleteのキーバインドを変更する
 bindkey              '^I'         menu-complete
 bindkey "$terminfo[kcbt]" reverse-menu-complete
