@@ -25,4 +25,4 @@
 
 [core]
 	editor = nvim
-
+  quotepath=false
