@@ -101,6 +101,8 @@ alias ll='ls -l'
 alias la='ls -la'
 alias rf='readlink -f'
 alias beep='afplay /System/Library/Sounds/Ping.aiff'
+# edit clipboard contents with vim
+alias cv='vim +"put +"'
 
 # set xterm to TERM for older terminals that does not support xterm-256color
 alias term='export TERM=xterm; echo $TERM'
