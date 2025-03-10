@@ -33,10 +33,6 @@ setopt hist_no_store
 setopt hist_expand
 setopt share_history
 
-# use terminal default editor vim
-export VISUAL=vim
-export EDITOR=vim
-
 # no beep
 setopt no_beep
 
