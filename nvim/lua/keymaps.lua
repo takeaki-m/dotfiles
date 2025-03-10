@@ -13,6 +13,10 @@ vim.g.maplocalleader = " "
 -- Save file with space + w
 keymap('n', '<Leader>w', ':w<CR>', opts)
 
+--Esc
+keymap('i', 'jj', '<ESC>', { silent = true })
+keymap('i', '<C-j>', '<ESC>', { silent = true })
+
 -- increment and decrement
 keymap('n', '+', '<C-a>', opts)
 keymap('n', '-', '<C-x>', opts)
