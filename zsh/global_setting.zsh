@@ -3,9 +3,9 @@
 # PROMPT='%n@%m %~ %# '
 PROMPT='%~ %# '
 # ディレクトリ移動
-setopt auto_pushd #自動的にディレクトリスタックに追加
+setopt AUTO_PUSHD #自動的にディレクトリスタックに追加
 setopt pushd_ignore_dups #ディレクトリスタックに重複したディレクトリを追加しない
-dirstacksize=20 #ディレクトリスタックの上限数を20に
+DIRSTACKSIZE=20 #ディレクトリスタックの上限数を20に
 # ディレクトリスタックの設定cd -<TAB>で有効化
 zstyle ':completion:*' menu select
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
