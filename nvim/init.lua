@@ -3,7 +3,7 @@ require("command")
 require("keymaps")
 require("options")
 
---vim.cmd 'set background=dark'
+vim.cmd 'set background=light'
 
 -- activate vim loader to use plugin manager
 vim.loader.enable()
