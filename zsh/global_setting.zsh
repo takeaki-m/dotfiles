@@ -220,6 +220,11 @@ zstyle ':completion:*:default' menu select
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \ /user/sbin /usr/bin /bin /usr/X11R6/bin
 fpath=(/usr/local/share/zsh-completions $fpath)
 
+# tmux接続時にvim keybindになる場合があるため明示的にtmux keybindとする
+if [[ -n "$TMUX" ]]; then
+  bindkey -e
+fi
+
 # ssh 接続で背景を変更する
 function ssh() {
     # tmux起動時
