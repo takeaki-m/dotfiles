@@ -1,0 +1,70 @@
+{
+  "title": "Operation with Space Key",
+  "rules": [
+    {
+      "description": "browser tab move with a and s",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "a",
+            "modifiers": {
+              "mandatory": [
+                "left_control",
+                "left_command"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "left_arrow",
+              "modifiers": ["command", "option"]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "device_unless",
+              "identifiers": [
+                {
+                  "vendor_id": 7504,
+                  "product_id": 24868,
+                  "description": "ultimate hacking keyboard"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "s",
+            "modifiers": {
+              "mandatory": [
+                "left_control",
+                "left_command"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "right_arrow",
+              "modifiers": ["command", "option"]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "device_unless",
+              "identifiers": [
+                {
+                  "vendor_id": 7504,
+                  "product_id": 24868,
+                  "description": "ultimate hacking keyboard"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
