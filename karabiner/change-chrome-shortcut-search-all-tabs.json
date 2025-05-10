@@ -1,0 +1,33 @@
+{
+  "title": "change-chrome-shortcut-search-all-tabs",
+  "rules": [
+    {
+      "description": "change-chrome-shortcut-search-all-tabs",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "s",
+            "modifiers": {
+              "mandatory": ["left_control"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "a",
+              "modifiers": ["command", "shift"]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
