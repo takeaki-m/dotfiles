@@ -124,6 +124,8 @@ alias dc='docker compose'
 alias szs='source ~/.zshrc'
 alias reload='exec $SHELL -l'
 alias tm='tmux'
+alias brew_update='brew update && brew upgrade && brew cleanup'
+alias reader='/usr/bin/open -a Safari `pbpaste`'
 
 pycharm() {
   open -na "Pycharm.app" --args nosplash "$@"
@@ -205,7 +207,7 @@ autoload -Uz compinit compinit
 zstyle ':completion:*:default' menu select=1
 # 前方一致
 # 入力補完
-source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+#source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 # zsh-autocompleteのキーバインドを変更する
 bindkey              '^I'         menu-complete
 bindkey "$terminfo[kcbt]" reverse-menu-complete
