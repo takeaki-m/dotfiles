@@ -40,23 +40,15 @@ formulas=(
     mono
     mpdecimal
     mpfr
-    mysql
     ncurses
     node
-    openssl@1.1
     pcre2
     perl
     pkg-config
-    protobuf
     pwgen
     pyenv
-    python@3.8
-    python@3.9
     readline
-    ruby
-    rust
     sqlite
-    subversion
     tcl-tk
     tmux
     tree
