@@ -16,6 +16,7 @@ keymap('n', '<Leader>w', ':w<CR>', opts)
 --Esc
 keymap('i', 'jj', '<ESC>', { silent = true })
 keymap('i', '<C-j>', '<ESC>', { silent = true })
+keymap('i', 'っj', '<ESC>', { silent = true })
 
 -- increment and decrement
 keymap('n', '+', '<C-a>', opts)
