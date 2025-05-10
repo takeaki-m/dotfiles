@@ -121,8 +121,8 @@
                 "^com\\.OpenText\\.Exceed-TurboX-Client$",
                 "^com\\.realvnc\\.vncviewer$",
                 "^com\\.citrix\\.receiver\\.icaviewer",
-                "^com\\.apple\\.Terminal$",
                 "^com\\.googlecode\\.iterm2$",
+                "^com\\.apple\\.Terminal$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
                 "^io\\.alacritty$",
@@ -208,6 +208,7 @@
             {
               "type": "frontmost_application_unless",
               "bundle_identifiers": [
+                "^com\\.apple\\.Terminal$",
                 "^com\\.googlecode\\.iterm2$"
               ]
             }
@@ -530,7 +531,8 @@
               "bundle_identifiers": [
                 "^com\\.microsoft\\.Excel$",
                 "^com\\.microsoft\\.Powerpoint$",
-                "^com\\.microsoft\\.Word$"
+                "^com\\.microsoft\\.Word$",
+                "^org\\.eclipse\\.platform\\.ide$"
               ]
             }
           ]
