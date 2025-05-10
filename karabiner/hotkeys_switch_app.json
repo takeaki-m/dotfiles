@@ -3,7 +3,7 @@
   "rules":
   [
     {
-      "description": "ctrl-3 to iTerm2",
+      "description": "ctrl-3 to Google Calendar",
       "manipulators": [
         {
           "type": "basic",
@@ -17,7 +17,7 @@
           },
           "to": [
             {
-              "shell_command": "open -a 'iTerm'"
+              "shell_command": "open -a \"$HOME/Applications/Chrome Apps.localized/Calendar.app\""
             }
           ]
         }
@@ -45,7 +45,7 @@
       ]
     },
     {
-      "description": "ctrl-4 to Google Calendar",
+      "description": "ctrl-4 to Google Task",
       "manipulators": [
         {
           "type": "basic",
@@ -59,7 +59,28 @@
           },
           "to": [
             {
-              "shell_command": "open -a \"$HOME/Applications/Chrome Apps.localized/Google Calendar.app\""
+              "shell_command": "open -a \"$HOME/Applications/Chrome Apps.localized/Google ToDo Task.app\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "ctrl-5 to Toggle",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "5",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "open -a \"$HOME/Applications/Chrome Apps.localized/Toggl Track.app\""
             }
           ]
         }
