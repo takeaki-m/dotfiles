@@ -25,7 +25,8 @@
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
                 "^com\\.apple\\.Safari$",
-                "^com\\.microsoft\\.VSCode$"
+                "^com\\.microsoft\\.VSCode$",
+                "^org\\.mozilla\\.firefox$"
               ]
             }
           ]
@@ -52,7 +53,8 @@
               "type": "frontmost_application_if",
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
-                "^com\\.apple\\.Safari$"
+                "^com\\.apple\\.Safari$",
+                "^org\\.mozilla\\.firefox$"
               ]
             }
           ]
@@ -62,8 +64,8 @@
           "from": {
             "key_code": "t",
             "modifiers": {
-                "mandatory": ["left_control", "left_command"],
-                "optional": ["any"]
+              "mandatory": ["left_control", "left_command"],
+              "optional": ["any"]
             }
           },
           "to": [
@@ -79,7 +81,8 @@
               "type": "frontmost_application_if",
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
-                "^com\\.apple\\.Safari$"
+                "^com\\.apple\\.Safari$",
+                "^org\\.mozilla\\.firefox$"
               ]
             }
           ]
@@ -106,7 +109,8 @@
               "type": "frontmost_application_if",
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
-                "^com\\.apple\\.Safari$"
+                "^com\\.apple\\.Safari$",
+                "^org\\.mozilla\\.firefox$"
               ]
             }
           ]
@@ -135,7 +139,8 @@
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
                 "^com\\.apple\\.Safari$",
-                "^com\\.microsoft\\.VSCode$"
+                "^com\\.microsoft\\.VSCode$",
+                "^org\\.mozilla\\.firefox$"
               ]
             }
           ]
