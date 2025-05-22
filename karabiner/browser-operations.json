@@ -285,6 +285,47 @@
           ]
         }
       ]
+    },
+    {
+      "description": "Browser Operation(gemini)",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "g",
+            "modifiers": {
+              "mandatory": ["left_control", "left_command"],
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            { "key_code": "japanese_eisuu" },
+            {
+              "key_code": "l",
+              "modifiers": ["command"]
+            },
+            {
+              "key_code": "2",
+              "modifiers": ["shift"]
+            },
+            { "key_code": "g"},
+            { "key_code": "e"},
+            { "key_code": "m"},
+            { "key_code": "i"},
+            { "key_code": "n"},
+            { "key_code": "i"},
+            { "key_code": "tab"}
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
