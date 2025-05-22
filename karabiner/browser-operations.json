@@ -148,6 +148,32 @@
       ]
     },
     {
+      "description": "Browser Operation(Chrome search tab)",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "s",
+            "modifiers": { "mandatory": ["left_control"] }
+          },
+          "to": [
+             {
+                    "key_code": "a",
+                    "modifiers": ["command", "shift"]
+                }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "description": "Browser Operation(tabs,history)",
       "manipulators": [
         {
@@ -160,6 +186,7 @@
             }
           },
           "to": [
+            { "key_code": "japanese_eisuu" },
             {
               "key_code": "l",
               "modifiers": ["command"]
@@ -194,6 +221,7 @@
             }
           },
           "to": [
+            { "key_code": "japanese_eisuu" },
             {
               "key_code": "l",
               "modifiers": ["command"]
@@ -228,6 +256,7 @@
             }
           },
           "to": [
+            { "key_code": "japanese_eisuu" },
             {
               "key_code": "l",
               "modifiers": ["command"]
