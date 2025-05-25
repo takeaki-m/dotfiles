@@ -53,9 +53,11 @@ nmap <Leader>k <Action>(ShowHoverInfo)
 
 set surround
 
+
 " reload ideavimrc
 nmap <Leader>sv :<C-u>source ~/.ideavimrc<CR>
-"
+nmap <Leader>ev :<C-u>vsplit ~/.ideavimrc<CR>
+nmap <Leader>va <Action>(VimFindActionIdAction)
 " search
 " nnoremap / :<C-u>action Find<CR>
 " code jump
@@ -71,7 +73,6 @@ nnoremap ]m :<C-u>action MethodDown<CR>
 " vcs
 nmap [c <Action>(VcsShowPrevChangeMarker)
 nmap ]c <Action>(VcsShowNextChangeMarker)
-
 
 nmap gi <Action>(GotoImplementation)
 nmap gu <Action>(FindUsages)
@@ -94,28 +95,30 @@ nmap <Leader>bC <Action>(CloseAllEditors)
 
 " window
 " alias of cmd+1
-nmap <Leader>e <Action>(ActivateProjectToolWindow)
+nmap <Leader>fi <Action>(ActivateProjectToolWindow)
 nmap <Leader>la <Action>(ShowIntentionActions)
 nmap <Leader>ls <Action>(ActivateStructureToolWindow)
 nmap <Leader>ps <Action>(FileStructurePopup)
 nmap <Leader>o <Action>(EditorEscape)
 nmap <Leader>th <Action>(ActivateTerminalToolWindow)
 nmap <Leader>H <Action>(HideAllWindows)
+nmap <Leader>pv <Action>(SelectInProjectView)
 
 " file edit
 nmap <Leader>G <Action>(Generate)
 nmap <Leader>gn <Action>(NewClass)
+nmap <Leader>gf <Action>(ReformatCode)
 
 " comment
 nmap <Leader>/ <Action>(CommentByLineComment)
 " refactor
-nmap <Leader>cr <Action>(RenameElement)
 nmap <Leader>cs <Action>(ChangeSignature)
 nmap <Leader>cts <Action>(ChangeTypeSignature)
 nmap <Leader>= <Action>(ReformatCode)
-
 nmap [b <Action>(PreviousTab)
 nmap ]b <Action>(NextTab)
-" jumptochange
+" jump to change
 nmap <Leader>g; <Action>(JumpToLastChange)
 nmap <Leader>g, <Action>(JumpToNextChange)
+
+nmap <Leader>hw <Action>(HideActiveWindow)
