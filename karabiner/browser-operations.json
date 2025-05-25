@@ -287,7 +287,7 @@
       ]
     },
     {
-      "description": "Browser Operation(gemini)",
+      "description": "Browser Operation(gemini,drive)",
       "manipulators": [
         {
           "type": "basic",
@@ -314,6 +314,41 @@
             { "key_code": "i"},
             { "key_code": "n"},
             { "key_code": "i"},
+            { "key_code": "tab"}
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "d",
+            "modifiers": {
+              "mandatory": ["left_control", "left_command"],
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            { "key_code": "japanese_eisuu" },
+            {
+              "key_code": "l",
+              "modifiers": ["command"]
+            },
+            {
+              "key_code": "2",
+              "modifiers": ["shift"]
+            },
+            { "key_code": "d"},
+            { "key_code": "r"},
+            { "key_code": "i"},
+            { "key_code": "v"},
+            { "key_code": "e"},
             { "key_code": "tab"}
           ],
           "conditions": [
