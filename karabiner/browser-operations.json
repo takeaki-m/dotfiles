@@ -157,10 +157,11 @@
             "modifiers": { "mandatory": ["left_control"] }
           },
           "to": [
-             {
-                    "key_code": "a",
-                    "modifiers": ["command", "shift"]
-                }
+            { "key_code": "japanese_eisuu" },
+            {
+              "key_code": "a",
+              "modifiers": ["command", "shift"]
+            }
           ],
           "conditions": [
             {
