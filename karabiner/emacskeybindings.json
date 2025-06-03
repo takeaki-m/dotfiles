@@ -155,38 +155,6 @@
         {
           "type": "basic",
           "from": {
-            "key_code": "m",
-            "modifiers": {
-              "mandatory": [
-                "control"
-              ],
-              "optional": [
-                "caps_lock",
-                "shift",
-                "option"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "return_or_enter",
-              "modifiers": ["left_command"]
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.tinyspeck\\.slackmacgap$",
-                "^com\\.apple\\.Safari$",
-                "^com\\.google\\.Chrome$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
             "key_code": "j",
             "modifiers": {
               "mandatory": [
