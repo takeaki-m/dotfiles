@@ -70,6 +70,8 @@ nnoremap <C-S-i> <C-i>
 nnoremap [m :<C-u>action MethodUp<CR>
 nnoremap ]m :<C-u>action MethodDown<CR>
 
+nnoremap <Esc><Esc> :nohlsearch<CR>
+
 " vcs
 nmap [c <Action>(VcsShowPrevChangeMarker)
 nmap ]c <Action>(VcsShowNextChangeMarker)
