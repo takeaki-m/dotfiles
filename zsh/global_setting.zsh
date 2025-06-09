@@ -101,6 +101,7 @@ alias ll='ls -l'
 alias la='ls -la'
 alias rf='readlink -f'
 alias beep='afplay /System/Library/Sounds/Ping.aiff'
+alias history='history -i'
 # edit clipboard contents with vim
 alias cv='vim +"put +"'
 
