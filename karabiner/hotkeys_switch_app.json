@@ -87,6 +87,27 @@
       ]
     },
     {
+      "description": "ctrl-5 to iTerm",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "5",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "open -a \"$HOME/Applications/iTerm.app\""
+            }
+          ]
+        }
+      ]
+    },
+    {
       "description": "ctrl-5 to Google Meet",
       "manipulators": [
         {
