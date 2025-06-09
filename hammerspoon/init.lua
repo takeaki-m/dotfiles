@@ -1,5 +1,6 @@
+---@diagnostic disable: undefined-global
 hs.window.animationDuration = 0
-units = {
+local units = {
 	right50 = { x = 0.50, y = 0.00, w = 0.50, h = 1.00 },
 	right70 = { x = 0.30, y = 0.00, w = 0.70, h = 1.00 },
 	left50 = { x = 0.00, y = 0.00, w = 0.50, h = 1.00 },
@@ -13,7 +14,7 @@ units = {
 	maximum = { x = 0.00, y = 0.00, w = 1.00, h = 1.00 },
 }
 
-mash = { "ctrl", "cmd" }
+local mash = { "ctrl", "cmd" }
 --mash = { 'ctrl', 'space' }
 hs.hotkey.bind(mash, "l", function()
 	hs.window.focusedWindow():move(units.right50, nil, true)
