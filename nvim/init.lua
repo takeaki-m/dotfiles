@@ -1,22 +1,16 @@
-require("colorscheme")
 require("command")
 require("keymaps")
 require("options")
-
---vim.cmd 'set background=light'
+require("lsp_config")
 
 -- activate vim loader to use plugin manager
 vim.loader.enable()
 
---local cmd = require('pckr.loader.cmd')
---local keys = require('pckr.loader.keys')
-
-
 -- activate pkcr vim
 local function bootstrap_pckr()
   local pckr_path = vim.fn.stdpath("data") .. "/pckr/pckr.nvim"
-
-  if not vim.loop.fs_stat(pckr_path) then
+---@diagnostic disable-next-line: undefined-field
+  if not (vim.ur or vim.loop).fs_stat(pckr_path) then
     vim.fn.system({
       'git',
       'clone',
@@ -25,7 +19,6 @@ local function bootstrap_pckr()
       pckr_path
     })
   end
-
   vim.opt.rtp:prepend(pckr_path)
 end
 
@@ -34,56 +27,144 @@ bootstrap_pckr()
 require('pckr').add{
   'nvim-treesitter/nvim-treesitter';
   'nvim-lua/plenary.nvim';
-  'BurntSushi/ripgrep';
-  'sharkdp/fd';
   'nvim-telescope/telescope.nvim';
   'lukas-reineke/indent-blankline.nvim';
   'lambdalisue/fern.vim';
   'lewis6991/gitsigns.nvim';
   'nvim-lualine/lualine.nvim';
   'kdheepak/lazygit.nvim';
-  'neovim/nvim-lsp';
   'neovim/nvim-lspconfig';
   'williamboman/mason.nvim';
   'williamboman/mason-lspconfig.nvim';
-  'artempyanykh/marksman';
   'L3MON4D3/LuaSnip';
+  'kylechui/nvim-surround';
+  'ixru/nvim-markdown';
+  'folke/lazydev.nvim'; -- luaのcomplitionにnvimの設定を読み込ませる
+  -- complition
   'hrsh7th/nvim-cmp';
   'hrsh7th/cmp-nvim-lsp';
   'hrsh7th/cmp-buffer';
   'saadparwaiz1/cmp_luasnip';
-  'kylechui/nvim-surround';
+  -- lsp
+  'artempyanykh/marksman';
   -- colortheme
   'rose-pine/neovim';
-  'craftzdog/solarized-osaka.nvim';
+  "folke/tokyonight.nvim";
+  "rebelot/kanagawa.nvim";
+  "catppuccin/nvim";
+  "neanias/everforest-nvim";
+  "EdenEast/nightfox.nvim";
 }
+
+require("colorscheme")
+-- luaのlsp server(lua_ls)が、vim関連の関数を認識できるように、他のライブラリよりも優先的に読み込む
+require("lazydev").setup()
 -- nvim-surround
 require("nvim-surround").setup()
 -- activate indent-blankline.nvim
 require('ibl').setup()
-require('lualine').setup()
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {
+      statusline = {},
+      winbar = {},
+    },
+    ignore_focus = {},
+    always_divide_middle = true,
+    always_show_tabline = true,
+    globalstatus = false,
+    refresh = {
+      statusline = 1000,
+      tabline = 1000,
+      winbar = 1000,
+      refresh_time = 16, -- ~60fps
+      events = {
+        'WinEnter',
+        'BufEnter',
+        'BufWritePost',
+        'SessionLoadPost',
+        'FileChangedShellPost',
+        'VimResized',
+        'Filetype',
+        'CursorMoved',
+        'CursorMovedI',
+        'ModeChanged',
+      },
+    }
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  winbar = {},
+  inactive_winbar = {},
+  extensions = {}
+}
 -- lsp
 require("mason").setup()
-require("mason-lspconfig").setup()
 
--- lspのハンドラーに設定
-CAPABILITIES = require("cmp_nvim_lsp").default_capabilities()
+-- mason-lspconfigの推奨される設定方法
+-- capabilitiesはmason-lspconfigではなく、cmp-nvim-lspから取得します
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-require("mason-lspconfig").setup_handlers {
-  function(server_name)
-    require("lspconfig")[server_name].setup {
-      CAPABILITIES = CAPABILITIES,
-    }
-  end,
-  ["marksman"] = function()
-    require("lspconfig").marksman.setup{
-      CAPABILITIES = CAPABILITIES,
-    }
-  end,
-}
+require("mason-lspconfig").setup({
+  -- 自動インストールしたいLSPサーバーがあればここに記述
+  -- 以下の名称はmason.nvimで使われる名称名ではなく、nvim-lspconfigで一般的に使われるサーバー名を指定する必要あり
+  automatic_enable = {};
+  ensure_installed = {
+    "lua_ls",
+    "marksman",
+    "pylsp",
+    "terraformls",
+    --"bashls",
+  },
+})
 
--- lspの設定後に追加
+-- lspconfig で LSP サーバーを設定
+-- mason-lspconfig は lspconfig と連携して、インストールされた LSP サーバーを自動的に設定します。
+-- 個別のLSPサーバーの設定は lspconfig を通して行います。
+local lspconfig = require('lspconfig')
 
+-- lua_ls の設定例 (もし必要なら)
+lspconfig.lua_ls.setup({
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      workspace = {
+        checkThirdParty = false,
+      },
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
+})
+
+-- marksman の設定
+lspconfig.marksman.setup({
+  capabilities = capabilities,
+})
+
+lspconfig.terraformls.setup({})
+
+-- LSP設定後に追加 (cmpの設定)
 local cmp = require("cmp")
 cmp.setup({
   snippet = {
@@ -107,3 +188,4 @@ cmp.setup({
     { name = "buffer" },
   })
 })
+
