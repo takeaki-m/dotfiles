@@ -153,14 +153,18 @@ lspconfig.lua_ls.setup({
       },
     },
   },
+  disabled_filetypes = false,
+  filetypes = { "lua" },
 })
 
 -- marksman の設定
 lspconfig.marksman.setup({
   capabilities = capabilities,
+  filetypes =  { "markdown", "md", },
 })
-
-lspconfig.terraformls.setup({})
+lspconfig.terraformls.setup({
+  filetypes =  { "terraform", "tf", },
+})
 
 -- LSP設定後に追加 (cmpの設定)
 local cmp = require("cmp")
