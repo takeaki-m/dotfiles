@@ -48,12 +48,10 @@ require('pckr').add{
   -- lsp
   'artempyanykh/marksman';
   -- colortheme
-  'rose-pine/neovim';
   "folke/tokyonight.nvim";
   "rebelot/kanagawa.nvim";
-  "catppuccin/nvim";
-  "neanias/everforest-nvim";
   "EdenEast/nightfox.nvim";
+  "catppuccin/nvim";
 }
 
 require("colorscheme")
