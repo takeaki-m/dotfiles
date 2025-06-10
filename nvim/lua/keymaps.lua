@@ -45,12 +45,12 @@ keymap('i', '<C-n>', 'pumvisible() ? "<Down>" : "<C-n>"', { expr = true, noremap
 keymap('i', '<C-p>', 'pumvisible() ? "<Up>" : "<C-p>"', { expr = true, noremap = true })
 
 -- indent
-keymap('n', '<Leader>ii', '>>',  opts)
-keymap('n', '<Leader>id', '<<',  opts)
-keymap('v', '<Leader>ii', '>gv', opts)
-keymap('v', '<Leader>id', '<gv', opts)
-keymap('i', '<Leader>ii', '<C-o>>>', opts) -- 挿入モードからノーマルモードに戻る
-keymap('i', '<Leader>id', '<C-o><<', opts) -- 挿入モードからノーマルモードに戻る
+keymap('n', '<C-;>', '>>',  opts)
+keymap('n', '<C-l>', '<<',  opts)
+keymap('v', '<C-;>', '>gv', opts)
+keymap('v', '<C-l>', '<gv', opts)
+keymap('i', '<C-;>', '<C-o>>>', opts) -- 挿入モードからノーマルモードに戻る
+keymap('i', '<C-l>', '<C-o><<', opts) -- 挿入モードからノーマルモードに戻る
 
 -- うまく後かないからコメントアウトする
 -- コマンドラインモードでc-n,c-pでも補完を有効にするために方向キーに割り当てる
