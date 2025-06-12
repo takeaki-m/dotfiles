@@ -9,7 +9,7 @@ vim.loader.enable()
 -- activate pkcr vim
 local function bootstrap_pckr()
   local pckr_path = vim.fn.stdpath("data") .. "/pckr/pckr.nvim"
----@diagnostic disable-next-line: undefined-field
+  ---@diagnostic disable-next-line: undefined-field
   if not (vim.ur or vim.loop).fs_stat(pckr_path) then
     vim.fn.system({
       'git',
@@ -24,38 +24,38 @@ end
 
 bootstrap_pckr()
 
-require('pckr').add{
-  'nvim-treesitter/nvim-treesitter';
-  'nvim-lua/plenary.nvim';
-  'nvim-telescope/telescope.nvim';
-  'lukas-reineke/indent-blankline.nvim';
-  'lambdalisue/fern.vim';
-  'lewis6991/gitsigns.nvim';
-  'nvim-lualine/lualine.nvim';
-  'kdheepak/lazygit.nvim';
-  'neovim/nvim-lspconfig';
-  'williamboman/mason.nvim';
-  'williamboman/mason-lspconfig.nvim';
-  'L3MON4D3/LuaSnip';
-  'kylechui/nvim-surround';
-  'ixru/nvim-markdown';
-  'folke/lazydev.nvim'; -- luaのcomplitionにnvimの設定を読み込ませる
-  'nvim-tree/nvim-web-devicons'; -- icons
-  'lambdalisue/nerdfont.vim';                -- fern icons
-  'lambdalisue/fern-renderer-nerdfont.vim';  -- fern icons
-  'lambdalisue/glyph-palette.vim';          -- fern icons
+require('pckr').add {
+  'nvim-treesitter/nvim-treesitter',
+  'nvim-lua/plenary.nvim',
+  'nvim-telescope/telescope.nvim',
+  'lukas-reineke/indent-blankline.nvim',
+  'lambdalisue/fern.vim',
+  'lewis6991/gitsigns.nvim',
+  'nvim-lualine/lualine.nvim',
+  'kdheepak/lazygit.nvim',
+  'neovim/nvim-lspconfig',
+  'williamboman/mason.nvim',
+  'williamboman/mason-lspconfig.nvim',
+  'L3MON4D3/LuaSnip',
+  'kylechui/nvim-surround',
+  'ixru/nvim-markdown',
+  'folke/lazydev.nvim',                     -- luaのcomplitionにnvimの設定を読み込ませる
+  'nvim-tree/nvim-web-devicons',            -- icons
+  'lambdalisue/nerdfont.vim',               -- fern icons
+  'lambdalisue/fern-renderer-nerdfont.vim', -- fern icons
+  'lambdalisue/glyph-palette.vim',          -- fern icons
   -- complition
-  'hrsh7th/nvim-cmp';
-  'hrsh7th/cmp-nvim-lsp';
-  'hrsh7th/cmp-buffer';
-  'saadparwaiz1/cmp_luasnip';
+  'hrsh7th/nvim-cmp',
+  'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-buffer',
+  'saadparwaiz1/cmp_luasnip',
   -- lsp
-  'artempyanykh/marksman';
+  'artempyanykh/marksman',
   -- colortheme
-  "folke/tokyonight.nvim";
-  "rebelot/kanagawa.nvim";
-  "EdenEast/nightfox.nvim";
-  "catppuccin/nvim";
+  "folke/tokyonight.nvim",
+  "rebelot/kanagawa.nvim",
+  "EdenEast/nightfox.nvim",
+  "catppuccin/nvim",
 }
 
 require("colorscheme")
@@ -69,8 +69,8 @@ require('lualine').setup {
   options = {
     icons_enabled = true,
     theme = 'auto',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
+    component_separators = { left = '', right = '' },
+    section_separators = { left = '', right = '' },
     disabled_filetypes = {
       statusline = {},
       winbar = {},
@@ -99,18 +99,18 @@ require('lualine').setup {
     }
   },
   sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
+    lualine_a = { 'mode' },
+    lualine_b = { 'branch', 'diff', 'diagnostics' },
+    lualine_c = { 'filename' },
+    lualine_x = { 'encoding', 'fileformat', 'filetype' },
+    lualine_y = { 'progress' },
+    lualine_z = { 'location' }
   },
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
+    lualine_c = { 'filename' },
+    lualine_x = { 'location' },
     lualine_y = {},
     lualine_z = {}
   },
@@ -129,7 +129,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 require("mason-lspconfig").setup({
   -- 自動インストールしたいLSPサーバーがあればここに記述
   -- 以下の名称はmason.nvimで使われる名称名ではなく、nvim-lspconfigで一般的に使われるサーバー名を指定する必要あり
-  automatic_enable = {};
+  automatic_enable = {},
   ensure_installed = {
     "lua_ls",
     "marksman",
@@ -164,10 +164,10 @@ lspconfig.lua_ls.setup({
 -- marksman の設定
 lspconfig.marksman.setup({
   capabilities = capabilities,
-  filetypes =  { "markdown", "md", },
+  filetypes = { "markdown", "md", },
 })
 lspconfig.terraformls.setup({
-  filetypes =  { "terraform", "tf", },
+  filetypes = { "terraform", "tf", },
 })
 
 -- LSP設定後に追加 (cmpの設定)

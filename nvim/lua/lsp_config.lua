@@ -22,7 +22,7 @@ end
 vim.diagnostic.config({
   severity_sort = true,
   float = {
-    source =  true,
+    source = true,
     focusable = false,
     border = "single",
     header = "",
@@ -50,8 +50,8 @@ vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.setqflist()]]
 -- 診断関連のグローバルキーマップ
 -- これらのキーマップはLSPアタッチとは関係なく、常に利用可能です。
 keymap("n", "<leader>d", function() vim.diagnostic.open_float() end, { desc = "Show diagnostic" })
-keymap("n", "[d", function() vim.diagnostic.jump({count = 1}) end, { desc = "Go to previous diagnostic"})
-keymap("n", "]d", function() vim.diagnostic.jump({count = -1}) end, { desc = "Go to next diagnostic" })
+keymap("n", "[d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Go to previous diagnostic" })
+keymap("n", "]d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "Go to next diagnostic" })
 
 
 -- ==============================

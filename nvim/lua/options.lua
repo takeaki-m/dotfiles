@@ -47,7 +47,7 @@ for k, v in pairs(options) do
 end
 
 -- fern settings
-vim.cmd[[let g:fern#default_hidden=1]]
+vim.cmd [[let g:fern#default_hidden=1]]
 -- Nerdfont を使う
 vim.cmd('let g:fern#renderer="nerdfont"')
 -- アイコンに色をつける
