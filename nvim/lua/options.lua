@@ -46,4 +46,15 @@ for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
+-- fern settings
 vim.cmd[[let g:fern#default_hidden=1]]
+-- Nerdfont を使う
+vim.cmd('let g:fern#renderer="nerdfont"')
+-- アイコンに色をつける
+vim.cmd([[
+  augroup my-glyph-palette
+    autocmd! *
+    autocmd FileType fern call glyph_palette#apply()
+    autocmd FileType nerdtree,startify call glyph_palette#apply()
+  augroup END
+]])

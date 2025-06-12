@@ -40,6 +40,10 @@ require('pckr').add{
   'kylechui/nvim-surround';
   'ixru/nvim-markdown';
   'folke/lazydev.nvim'; -- luaのcomplitionにnvimの設定を読み込ませる
+  'nvim-tree/nvim-web-devicons'; -- icons
+  'lambdalisue/nerdfont.vim';                -- fern icons
+  'lambdalisue/fern-renderer-nerdfont.vim';  -- fern icons
+  'lambdalisue/glyph-palette.vim';          -- fern icons
   -- complition
   'hrsh7th/nvim-cmp';
   'hrsh7th/cmp-nvim-lsp';
@@ -190,4 +194,6 @@ cmp.setup({
     { name = "buffer" },
   })
 })
+
+require("nvim-web-devicons").setup()
 
