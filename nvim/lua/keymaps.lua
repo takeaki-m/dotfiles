@@ -31,11 +31,11 @@ keymap('n', '<C-p>', ':Telescope find_files<CR>', opts)
 -- telescope find character
 keymap('n', '<C-s>', ':Telescope live_grep<CR>', opts)
 
--- fern
+-- fern keybinding
 keymap('n', '<C-n>', ':Fern . -reveal=% -drawer -toggle -width=30<CR>', opts)
 
 -- buffer
-keymap ('n', '<C-H>', ':ls<CR>:buf', opts)
+keymap ('n', '<C-b>', ':ls<CR>:buf', opts)
 
 -- 補完表示時のEnterで改行をしない
 keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', { expr = true, noremap = true })
@@ -44,13 +44,13 @@ keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', { expr = true, noremap = 
 keymap('i', '<C-n>', 'pumvisible() ? "<Down>" : "<C-n>"', { expr = true, noremap = true })
 keymap('i', '<C-p>', 'pumvisible() ? "<Up>" : "<C-p>"', { expr = true, noremap = true })
 
--- indent
-keymap('n', '<C-;>', '>>',  opts)
-keymap('n', '<C-l>', '<<',  opts)
-keymap('v', '<C-;>', '>gv', opts)
-keymap('v', '<C-l>', '<gv', opts)
-keymap('i', '<C-;>', '<C-o>>>', opts) -- 挿入モードからノーマルモードに戻る
-keymap('i', '<C-l>', '<C-o><<', opts) -- 挿入モードからノーマルモードに戻る
+---- indent
+keymap('n', '<C-l>', '>>',  opts)
+keymap('n', '<C-h>', '<<',  opts)
+keymap('v', '<C-l>', '>gv', opts)
+keymap('v', '<C-h>', '<gv', opts)
+keymap('i', '<C-l>', '<C-o>>>', opts) -- 挿入モードからノーマルモードに戻る
+keymap('i', '<C-h>', '<C-o><<', opts) -- 挿入モードからノーマルモードに戻る
 
 -- うまく後かないからコメントアウトする
 -- コマンドラインモードでc-n,c-pでも補完を有効にするために方向キーに割り当てる
