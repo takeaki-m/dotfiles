@@ -196,4 +196,17 @@ cmp.setup({
 })
 
 require("nvim-web-devicons").setup()
-
+require("telescope").setup({
+  defaults = {
+    -- 検索対象から除外するファイル
+    file_ignore_patterns = {
+      "%.git/",
+    },
+  },
+  -- 隠しファイル表示する
+  pickers = {
+    find_files = {
+      hidden = true,
+    },
+  },
+})
