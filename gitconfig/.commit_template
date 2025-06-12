@@ -1,6 +1,6 @@
-# Title: Summary, imperative, start upper case, don't end with a period
+
 # No more than 50 chars. #### 50 chars is here:  #
-prefix: {description}
+# Title: Summary, imperative, start upper case, don't end with a period
 # prefix
 # build:  ビルド
 # ci:  CI
@@ -18,15 +18,15 @@ prefix: {description}
 #[optional body]
 #
 #[optional footer(s)]
-
+#
 # Body: Explain *what* and *why* (not *how*). Include task ID (Jira issue).
 # Wrap at 72 chars. ################################## which is here:  #
 #[optional body]
-
+#
 #[optional footer]
 # BREAKING CHANGE: use JavaScript features not available in Node 6.
 # Refs: #123
-
+#
 # Rules
 # ================================
 # 1. Separate subject from body with a blank line
