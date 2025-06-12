@@ -128,6 +128,8 @@ alias tm='tmux'
 alias brew_update='brew update && brew upgrade && brew cleanup'
 alias reader='/usr/bin/open -a Safari `pbpaste`'
 
+alias dotfiles='cd ~/settings/dotfiles && vim .'
+
 pycharm() {
   open -na "Pycharm.app" --args nosplash "$@"
 }
@@ -186,9 +188,7 @@ function setprompt(){
   PROMPT="${PYTHON_VIRTUAL_ENV_STRING}${PROMPT}"
 }
 
-
- alias uvim='vim -u essential.vim'
-
+alias uvim='vim -u essential.vim'
 
 # take effect back command history with ctrl s
 stty stop undef
