@@ -26,16 +26,22 @@ keymap('n', '-', '<C-x>', opts)
 keymap('n', '<Esc><Esc>', ':nohlsearch<CR>', opts)
 keymap('n', '<C-j>', ':bnext<CR>', opts)
 keymap('n', '<C-k>', ':bprev<CR>', opts)
+
+-- telescope
 -- telescope find files
-keymap('n', '<C-p>', ':Telescope find_files<CR>', opts)
+keymap('n', '<Leader>ff', ':Telescope find_files<CR>', opts)
 -- telescope find character
-keymap('n', '<C-s>', ':Telescope live_grep<CR>', opts)
+keymap('n', '<Leader>fg', ':Telescope live_grep<CR>', opts)
+-- telescope find buffers
+keymap('n', '<Leader>fb', ':Telescope buffers<CR>', opts)
+
 
 -- fern keybinding
 keymap('n', '<C-n>', ':Fern . -reveal=% -drawer -toggle -width=30<CR>', opts)
 
 -- buffer
-keymap ('n', '<C-b>', ':ls<CR>:buf', opts)
+--keymap ('n', '<C-b>', ':ls<CR>:buf', opts)
+--keymap ('n', '<Leader>b', ':b<Space>', opts)
 
 -- 補完表示時のEnterで改行をしない
 keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', { expr = true, noremap = true })
@@ -45,8 +51,8 @@ keymap('i', '<C-n>', 'pumvisible() ? "<Down>" : "<C-n>"', { expr = true, noremap
 keymap('i', '<C-p>', 'pumvisible() ? "<Up>" : "<C-p>"', { expr = true, noremap = true })
 
 ---- indent
-keymap('n', '<C-l>', '>>',  opts)
-keymap('n', '<C-h>', '<<',  opts)
+keymap('n', '<C-l>', '>>', opts)
+keymap('n', '<C-h>', '<<', opts)
 keymap('v', '<C-l>', '>gv', opts)
 keymap('v', '<C-h>', '<gv', opts)
 --keymap('i', '<C-l>', '<C-o>>>', opts) -- 挿入モードからノーマルモードに戻る
