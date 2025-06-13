@@ -42,8 +42,15 @@ require('pckr').add {
   'folke/lazydev.nvim',                     -- luaのcomplitionにnvimの設定を読み込ませる
   'nvim-tree/nvim-web-devicons',            -- icons
   'lambdalisue/nerdfont.vim',               -- fern icons
-  'lambdalisue/fern-renderer-nerdfont.vim', -- fern icons
   'lambdalisue/glyph-palette.vim',          -- fern icons
+  {
+    'lambdalisue/fern-renderer-nerdfont.vim', -- fern icons
+    dependencies = {
+      'lambdalisue/fern.vim',
+      'lambdalisue/nerdfont.vim',
+      'lambdalisue/glyph-palette.vim',
+    },
+  },
   -- complition
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-nvim-lsp',

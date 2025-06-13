@@ -215,6 +215,42 @@
         {
           "type": "basic",
           "from": {
+            "key_code": "y",
+            "modifiers": {
+              "mandatory": ["left_control", "left_command"],
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            { "key_code": "japanese_eisuu" },
+            {
+              "key_code": "l",
+              "modifiers": ["command"]
+            },
+            {
+              "key_code": "c",
+              "modifiers": ["command"]
+            },
+            {
+              "key_code": "escape"
+            },
+            {
+              "key_code": "escape"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$",
+                "^org\\.mozilla\\.firefox$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
             "key_code": "f",
             "modifiers": {
               "mandatory": ["left_control", "left_command"],
@@ -243,6 +279,33 @@
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
                 "^org\\.mozilla\\.firefox$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "s",
+            "modifiers": {
+              "mandatory": ["left_control"],
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "backslash",
+              "modifiers": {
+                "mandatory": ["left_shift", "left_command"],
+                "optional": ["any"]
+              }
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.apple\\.Safari$"
               ]
             }
           ]
