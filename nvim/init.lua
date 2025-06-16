@@ -43,14 +43,7 @@ require('pckr').add {
   'nvim-tree/nvim-web-devicons',            -- icons
   'lambdalisue/nerdfont.vim',               -- fern icons
   'lambdalisue/glyph-palette.vim',          -- fern icons
-  {
-    'lambdalisue/fern-renderer-nerdfont.vim', -- fern icons
-    dependencies = {
-      'lambdalisue/fern.vim',
-      'lambdalisue/nerdfont.vim',
-      'lambdalisue/glyph-palette.vim',
-    },
-  },
+  'numToStr/Comment.nvim',
   -- complition
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-nvim-lsp',
@@ -222,3 +215,5 @@ require("telescope").setup({
     },
   },
 })
+
+require('Comment').setup()
