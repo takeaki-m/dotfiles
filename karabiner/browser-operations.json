@@ -25,6 +25,7 @@
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
                 "^com\\.apple\\.Safari$",
+                "^app\\.zen-browser\\.zen",
                 "^com\\.microsoft\\.VSCode$",
                 "^org\\.mozilla\\.firefox$"
               ]
@@ -54,6 +55,7 @@
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
                 "^com\\.apple\\.Safari$",
+                "^app\\.zen-browser\\.zen",
                 "^org\\.mozilla\\.firefox$"
               ]
             }
@@ -82,6 +84,7 @@
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
                 "^com\\.apple\\.Safari$",
+                "^app\\.zen-browser\\.zen",
                 "^org\\.mozilla\\.firefox$"
               ]
             }
@@ -110,6 +113,7 @@
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
                 "^com\\.apple\\.Safari$",
+                "^app\\.zen-browser\\.zen",
                 "^org\\.mozilla\\.firefox$"
               ]
             }
@@ -140,6 +144,7 @@
                 "^com\\.google\\.Chrome$",
                 "^com\\.apple\\.Safari$",
                 "^com\\.microsoft\\.VSCode$",
+                "^app\\.zen-browser\\.zen",
                 "^org\\.mozilla\\.firefox$"
               ]
             }
@@ -243,6 +248,7 @@
               "type": "frontmost_application_if",
               "bundle_identifiers": [
                 "^com\\.google\\.Chrome$",
+                "^app\\.zen-browser\\.zen",
                 "^org\\.mozilla\\.firefox$"
               ]
             }
