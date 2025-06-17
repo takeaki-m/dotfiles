@@ -12,4 +12,3 @@
 　└ profile.zsh
 　└ global_setting.zsh
 ```
-# github-test
