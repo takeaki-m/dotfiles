@@ -58,3 +58,12 @@ vim.cmd([[
     autocmd FileType nerdtree,startify call glyph_palette#apply()
   augroup END
 ]])
+
+-- show line number at terminal buffer
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "*",
+  callback = function()
+    vim.opt_local.number = true
+    vim.opt_local.relativenumber = true
+  end,
+})
