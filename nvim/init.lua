@@ -39,10 +39,10 @@ require('pckr').add {
   'L3MON4D3/LuaSnip',
   'kylechui/nvim-surround',
   'ixru/nvim-markdown',
-  'folke/lazydev.nvim',                     -- luaのcomplitionにnvimの設定を読み込ませる
-  'nvim-tree/nvim-web-devicons',            -- icons
-  'lambdalisue/nerdfont.vim',               -- fern icons
-  'lambdalisue/glyph-palette.vim',          -- fern icons
+  'folke/lazydev.nvim',            -- luaのcomplitionにnvimの設定を読み込ませる
+  'nvim-tree/nvim-web-devicons',   -- icons
+  'lambdalisue/nerdfont.vim',      -- fern icons
+  'lambdalisue/glyph-palette.vim', -- fern icons
   'numToStr/Comment.nvim',
   -- complition
   'hrsh7th/nvim-cmp',
