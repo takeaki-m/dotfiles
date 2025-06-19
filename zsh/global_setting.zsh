@@ -130,6 +130,10 @@ alias reader='/usr/bin/open -a Safari `pbpaste`'
 
 alias dotfiles='cd ~/settings/dotfiles && vim .'
 
+# github cli
+alias ghie='gh issue edit $(gh issue list | fzf | awk '\''{print $1}'\'')'
+alias ghpre='gh pr edit $(gh pr list | fzf | awk '\''{print $1}'\'')'
+
 pycharm() {
   open -na "Pycharm.app" --args nosplash "$@"
 }
