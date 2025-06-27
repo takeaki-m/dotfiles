@@ -114,6 +114,8 @@ nmap <Leader>gf <Action>(ReformatCode)
 " comment
 nmap <Leader>/ <Action>(CommentByLineComment)
 " refactor
+EditorRight
+nmap <Leader>rn  <Action>(EditorPaste)
 nmap <Leader>cs <Action>(ChangeSignature)
 nmap <Leader>cts <Action>(ChangeTypeSignature)
 nmap <Leader>= <Action>(ReformatCode)
