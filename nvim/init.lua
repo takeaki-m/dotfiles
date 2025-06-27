@@ -135,6 +135,8 @@ require("mason-lspconfig").setup({
     "marksman",
     "pylsp",
     "terraformls",
+    "ts_ls",
+    "biome",
     --"bashls",
   },
 })
@@ -170,6 +172,14 @@ lspconfig.terraformls.setup({
   filetypes = { "terraform", "tf", },
 })
 
+lspconfig.ts_ls.setup({
+  capabilities = capabilities,
+  filetypes = {"tsx","ts","typescript", "typescriptreact"},
+})
+
+lspconfig.biome.setup({
+  filetypes = {"tsx","ts","typescript","typescriptreact"},
+})
 -- LSP設定後に追加 (cmpの設定)
 local cmp = require("cmp")
 cmp.setup({
