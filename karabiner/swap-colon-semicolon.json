@@ -1,0 +1,55 @@
+{
+
+	"title": "Space Key as Space or Left Control + Left Command",
+		"rules": [
+		{
+			"description": "Swap key pairs: ; <-> :",
+			"manipulators": [
+			{
+				"description": "; to :",
+				"from": {
+					"key_code": "semicolon",
+					"modifiers": {
+						"optional": [
+							"caps_lock",
+						"fn",
+						"option"
+						]
+					}
+				},
+				"to": [
+				{
+					"key_code": "semicolon",
+					"modifiers": [
+						"shift"
+					]
+				}
+				],
+				"type": "basic"
+			},
+			{
+				"description": "Shift+; (originally :) to ;",
+				"from": {
+					"key_code": "semicolon",
+					"modifiers": {
+						"mandatory": [
+							"shift"
+						],
+						"optional": [
+							"caps_lock",
+						"fn",
+						"option"
+						]
+					}
+				},
+				"to": [
+				{
+					"key_code": "semicolon"
+				}
+				],
+				"type": "basic"
+			}
+			]
+		}
+	]
+}
