@@ -125,6 +125,8 @@ alias dc='docker compose'
 alias szs='source ~/.zshrc'
 alias reload='exec $SHELL -l'
 alias tm='tmux'
+alias brew_add='vim ~/.Brewfile'
+alias brew_install='brew bundle --global'
 alias brew_update='brew update && brew upgrade && brew cleanup'
 alias reader='/usr/bin/open -a Safari `pbpaste`'
 
