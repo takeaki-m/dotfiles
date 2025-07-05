@@ -16,6 +16,7 @@ else
 	mkdir $HOME/.zsh.d
 fi
 
+ln -s $(readlink -f $ZSH_DOTFILE_PATH/.zprofile) $HOME/.zprofile
 ln -s $(readlink -f $ZSH_DOTFILE_PATH/.zshrc) $HOME/.zshrc
 ln -s $(readlink -f $ZSH_DOTFILE_PATH/.zshenv) $HOME/.zshenv
 
