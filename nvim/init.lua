@@ -44,6 +44,15 @@ require('pckr').add {
   'lambdalisue/nerdfont.vim',      -- fern icons
   'lambdalisue/glyph-palette.vim', -- fern icons
   'numToStr/Comment.nvim',
+  {
+    'iamcco/markdown-preview.nvim',
+    build = 'cd app && npm install',
+    config = function()
+      vim.g.mkdp_filetypes = { "markdown" };
+      vim.g.mkdp_auto_start = 0;
+    end;
+    ft = { 'markdown', 'md'},
+  },
   -- complition
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-nvim-lsp',
