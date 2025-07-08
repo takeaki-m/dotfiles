@@ -131,6 +131,7 @@ alias brew_update='brew update && brew upgrade && brew cleanup'
 alias reader='/usr/bin/open -a Safari `pbpaste`'
 
 alias dotfiles='cd ~/settings/dotfiles && vim .'
+alias lg='lazygit'
 
 # github cli
 alias ghie='gh issue edit $(gh issue list | fzf | awk '\''{print $1}'\'')'
