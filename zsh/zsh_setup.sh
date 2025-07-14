@@ -20,12 +20,12 @@ ln -s $(readlink -f $ZSH_DOTFILE_PATH/.zprofile) $HOME/.zprofile
 ln -s $(readlink -f $ZSH_DOTFILE_PATH/.zshrc) $HOME/.zshrc
 ln -s $(readlink -f $ZSH_DOTFILE_PATH/.zshenv) $HOME/.zshenv
 
-ZSH=(global_setting.zsh global_env.zsh)
+ZSH=($(find "$ZSH_DOTFILE_PATH" -name "*.zsh" -print0 | xargs -0 -n 1 basename))
 
 for file in ${ZSH[@]}; do
 	echo $file
 
-	ln -s $(readlink -f $ZSH_DOTFILE_PATH/$file) $HOME/.zsh.d/$file
+	ln -s "$(readlink -f "$ZSH_DOTFILE_PATH/$file")" "$HOME/.zsh.d/$file"
 done
 
 ZSH_GIT=(_git git-completion.bash git-prompt.sh)
@@ -33,6 +33,6 @@ ZSH_GIT=(_git git-completion.bash git-prompt.sh)
 for file_git in ${ZSH_GIT[@]}; do
 	echo $file_git
 
-	ln -s $(readlink -f $ZSH_DOTFILE_PATH/$file_git) $HOME/.zsh/$file_git
+	ln -s "$(readlink -f "$ZSH_DOTFILE_PATH/$file_git")" "$HOME/.zsh/$file_git"
 done
 
