@@ -114,13 +114,12 @@ nmap <Leader>gf <Action>(ReformatCode)
 " comment
 nmap <Leader>/ <Action>(CommentByLineComment)
 " refactor
-EditorRight
-nmap <Leader>rn  <Action>(EditorPaste)
+nmap [rn  <Action>(RenameElement)
 nmap <Leader>cs <Action>(ChangeSignature)
 nmap <Leader>cts <Action>(ChangeTypeSignature)
 nmap <Leader>= <Action>(ReformatCode)
-nmap [b <Action>(PreviousTab)
-nmap ]b <Action>(NextTab)
+nmap [t <Action>(PreviousTab)
+nmap ]t <Action>(NextTab)
 " jump to change
 nmap <Leader>g; <Action>(JumpToLastChange)
 nmap <Leader>g, <Action>(JumpToNextChange)
