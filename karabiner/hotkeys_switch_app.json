@@ -141,7 +141,7 @@
           },
           "to": [
             {
-              "key_code": "t",
+              "key_code": "r",
               "modifiers": ["left_option"]
             }
           ],
