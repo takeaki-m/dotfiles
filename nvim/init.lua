@@ -65,6 +65,17 @@ require('pckr').add {
   "rebelot/kanagawa.nvim",
   "EdenEast/nightfox.nvim",
   "catppuccin/nvim",
+  "neanias/everforest-nvim",
+  "Shatur/neovim-ayu",
+  {
+    "zenbones-theme/zenbones.nvim";
+    requires = 'rktjmp/lush.nvim'; -- 依存関係を 'requires' で指定
+    config = function()
+      -- ここに zenbones.nvim の設定オプションを記述
+      -- vim.g.zenbones_darken_comments = 45
+      -- vim.cmd.colorscheme('zenbones') -- colorscheme を設定する場合
+    end;
+  },
 }
 
 require("colorscheme")
