@@ -127,6 +127,27 @@
           ]
         }
       ]
+    },
+    {
+      "description": "terminal toggle",
+      "manipulators": [
+        {
+          "from": {
+            "key_code": "r",
+            "modifiers": {
+              "mandatory": ["left_control", "left_command"],
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "t",
+              "modifiers": ["left_option"]
+            }
+          ],
+          "type": "basic"
+        }
+      ]
     }
   ]
 }
