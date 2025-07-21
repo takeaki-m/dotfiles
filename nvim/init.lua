@@ -44,6 +44,7 @@ require('pckr').add {
   'lambdalisue/nerdfont.vim',      -- fern icons
   'lambdalisue/glyph-palette.vim', -- fern icons
   'numToStr/Comment.nvim',
+  -- markdown
   {
     'iamcco/markdown-preview.nvim',
     build = 'cd app && npm install',
@@ -52,6 +53,11 @@ require('pckr').add {
       vim.g.mkdp_auto_start = 0;
     end;
     ft = { 'markdown', 'md'},
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    after = { 'nvim-treesitter' },
+    requires = { 'nvim-tree/nvim-web-devicons', opt = true },
   },
   -- complition
   'hrsh7th/nvim-cmp',
@@ -228,7 +234,7 @@ cmp.setup({
     { name = "buffer" },
   })
 })
-
+require('render-markdown').setup({})
 require("nvim-web-devicons").setup()
 require("telescope").setup({
   defaults = {
