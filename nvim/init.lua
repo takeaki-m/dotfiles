@@ -60,6 +60,10 @@ require('pckr').add {
   'saadparwaiz1/cmp_luasnip',
   -- lsp
   'artempyanykh/marksman',
+  -- font
+  'lambdalisue/nerdfont.vim',
+  'lambdalisue/fern-renderer-nerdfont.vim',
+  'lambdalisue/glyph-palette.vim',
   -- colortheme
   "folke/tokyonight.nvim",
   "rebelot/kanagawa.nvim",
