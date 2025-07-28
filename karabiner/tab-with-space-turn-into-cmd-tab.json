@@ -1,0 +1,26 @@
+{
+  "title": "tab-with-space-taruned-into-cmd-tab",
+  "rules": [
+    {
+      "description": "tab-with-space-taruned-into-cmd-tab",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "tab",
+            "modifiers": {
+              "mandatory": ["left_control", "left_command"],
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "tab",
+              "modifiers": ["command"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
