@@ -59,6 +59,13 @@ require('pckr').add {
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-buffer',
   'saadparwaiz1/cmp_luasnip',
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = function()
+      require("nvim-autopairs").setup {}
+    end
+  },
   -- lsp
   'artempyanykh/marksman',
   -- font
