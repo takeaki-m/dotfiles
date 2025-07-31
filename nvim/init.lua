@@ -54,11 +54,6 @@ require('pckr').add {
     end;
     ft = { 'markdown', 'md'},
   },
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    after = { 'nvim-treesitter' },
-    requires = { 'nvim-tree/nvim-web-devicons', opt = true },
-  },
   -- complition
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-nvim-lsp',
@@ -234,7 +229,6 @@ cmp.setup({
     { name = "buffer" },
   })
 })
-require('render-markdown').setup({})
 require("nvim-web-devicons").setup()
 require("telescope").setup({
   defaults = {
