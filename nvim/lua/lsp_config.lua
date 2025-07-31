@@ -45,7 +45,37 @@ vim.diagnostic.config({
 })
 
 -- 診断を更新するタイミング: カーソルが静止したときにquickfixリストを更新
-vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.setqflist()]]
+--vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.setqflist()]]
+
+-- 診断を更新するタイミング: カーソルが静止したときにquickfixリストを更新
+-- ★★★ ここを修正します ★★★
+vim.api.nvim_create_autocmd({"CursorHold", "CursorHoldI"}, {
+  group = vim.api.nvim_create_augroup("DiagnosticQuickfix", { clear = true }),
+  callback = function()
+    local bufnr = vim.api.nvim_get_current_buf() -- 現在のバッファIDを取得
+
+    -- --- 最も重要な追加 ---
+    -- バッファが有効でなければ、ここで処理を中断する
+    if not vim.api.nvim_buf_is_valid(bufnr) then
+      return
+    end
+    -- --- ここまで追加 ---
+
+    -- その他のフィルタリング条件
+    if not vim.bo[bufnr].buflisted and
+       vim.bo[bufnr].buftype == "" and
+       not vim.bo[bufnr].readonly and
+       not vim.bo[bufnr].swap == false and
+       vim.fn.bufname(bufnr) ~= "" and
+       not vim.startswith(vim.fn.bufname(bufnr), "NvimTree_") then
+
+      -- Quickfixリストの更新を実行
+      vim.diagnostic.setqflist({ bufnr = bufnr })
+    end
+  end,
+  desc = "Update Quickfix list with diagnostics on CursorHold in editable buffers",
+})
+-- ★★★ ここまで修正 ★★★
 
 -- 診断関連のグローバルキーマップ
 -- これらのキーマップはLSPアタッチとは関係なく、常に利用可能です。
