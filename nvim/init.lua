@@ -147,64 +147,30 @@ require('lualine').setup {
 -- lsp
 require("mason").setup()
 
--- mason-lspconfigの推奨される設定方法
--- capabilitiesはmason-lspconfigではなく、cmp-nvim-lspから取得します
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-require("mason-lspconfig").setup({
-  -- 自動インストールしたいLSPサーバーがあればここに記述
-  -- 以下の名称はmason.nvimで使われる名称名ではなく、nvim-lspconfigで一般的に使われるサーバー名を指定する必要あり
-  automatic_enable = {},
-  ensure_installed = {
-    "lua_ls",
-    "marksman",
-    "pylsp",
-    "terraformls",
-    "ts_ls",
-    "biome",
-    --"bashls",
-  },
+-- common conf for all language server
+vim.lsp.config('*', {
+  capabilities = require("cmp_nvim_lsp").default_capabilities(),
 })
+
+-- masonでinstallしたlsp serverとnvim-lspconfigを繋ぐ役割
+-- optionを記載しないでも、defaultでinstallしてlspが有効化される
+require("mason-lspconfig").setup({})
 
 -- lspconfig で LSP サーバーを設定
 -- mason-lspconfig は lspconfig と連携して、インストールされた LSP サーバーを自動的に設定します。
 -- 個別のLSPサーバーの設定は lspconfig を通して行います。
 local lspconfig = require('lspconfig')
 
--- lua_ls の設定例 (もし必要なら)
-lspconfig.lua_ls.setup({
-  capabilities = capabilities,
-  settings = {
-    Lua = {
-      workspace = {
-        checkThirdParty = false,
-      },
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
-  disabled_filetypes = false,
-  filetypes = { "lua" },
-})
-
+-- lua_ls の設定例 
+vim.lsp.enable('lua_ls')
 -- marksman の設定
-lspconfig.marksman.setup({
-  capabilities = capabilities,
-  filetypes = { "markdown", "md", },
-})
+vim.lsp.enable('marksman')
+vim.lsp.enable('terraformls')
+vim.lsp.enable('ts_ls.setup')
+vim.lsp.enable('biome')
+
 lspconfig.terraformls.setup({
-  filetypes = { "terraform", "tf", },
-})
-
-lspconfig.ts_ls.setup({
-  capabilities = capabilities,
-  filetypes = {"tsx","ts","typescript", "typescriptreact"},
-})
-
-lspconfig.biome.setup({
-  filetypes = {"tsx","ts","typescript","typescriptreact"},
-})
+  settings = {terraform = { logLevel = "DEBUG",}}})
 -- LSP設定後に追加 (cmpの設定)
 local cmp = require("cmp")
 cmp.setup({
