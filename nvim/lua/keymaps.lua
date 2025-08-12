@@ -41,7 +41,40 @@ keymap('n', '<Leader>fb', ':Telescope buffers<CR>', opts)
 keymap('n', '<Leader>fr', ':Telescope registers<CR>', opts)
 
 -- fern keybinding
-keymap('n', '<C-n>', ':Fern . -reveal=% -drawer -toggle -width=30<CR>', opts)
+keymap('n', '<Leader>ft', ':Fern . -reveal=% -drawer -toggle -width=30<CR>', opts)
+
+-- <C-n> のキーマッピング
+vim.keymap.set('n', '<C-n>', function()
+  -- 1. 現在のファイルのフルパスを変数に保存しておく
+  --    vim.fn.expand('%') はカレントバッファのファイル名を取得する関数
+  local current_file_path = vim.fn.expand('%:p')
+
+  -- 2. 'fern' のfiletypeを持つウィンドウを探す
+  local fern_win_id = nil
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == 'fern' then
+      fern_win_id = win
+      break
+    end
+  end
+
+  if fern_win_id then
+    -- 3. Fernウィンドウが見つかった場合の処理
+    --    a. 既存のFernウィンドウにフォーカスを移動する
+    vim.api.nvim_set_current_win(fern_win_id)
+
+    --    b. 保存しておいたパスを使ってrevealを実行する
+    --       vim.fn.fnameescape() はパス中の特殊文字をエスケープするのに役立つ
+    --       この時点ではカレントウィンドウがFernなので、'%'は使えない。
+    if current_file_path ~= '' then
+      vim.cmd('Fern . -reveal=' .. vim.fn.fnameescape(current_file_path))
+    end
+  else
+    -- 4. Fernウィンドウが見つからなかった場合の処理
+    --    新しくDrawerとして開く（このときは'%'が使える）
+    vim.cmd('Fern . -reveal=% -drawer -toggle -width=30')
+  end
+end, opts)
 
 -- buffer
 --keymap ('n', '<C-b>', ':ls<CR>:buf', opts)
