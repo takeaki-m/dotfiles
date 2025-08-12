@@ -28,7 +28,7 @@ require('pckr').add {
   'nvim-treesitter/nvim-treesitter',
   'nvim-lua/plenary.nvim',
   'nvim-telescope/telescope.nvim',
-  'lukas-reineke/indent-blankline.nvim',
+  --'lukas-reineke/indent-blankline.nvim',
   'lambdalisue/fern.vim',
   'lewis6991/gitsigns.nvim',
   'nvim-lualine/lualine.nvim',
@@ -96,7 +96,7 @@ require("lazydev").setup()
 -- nvim-surround
 require("nvim-surround").setup()
 -- activate indent-blankline.nvim
-require('ibl').setup()
+--require('ibl').setup()
 require('lualine').setup {
   options = {
     icons_enabled = true,
@@ -153,7 +153,6 @@ require('lualine').setup {
 }
 -- lsp
 require("mason").setup()
-
 -- common conf for all language server
 vim.lsp.config('*', {
   capabilities = require("cmp_nvim_lsp").default_capabilities(),
@@ -161,7 +160,16 @@ vim.lsp.config('*', {
 
 -- masonでinstallしたlsp serverとnvim-lspconfigを繋ぐ役割
 -- optionを記載しないでも、defaultでinstallしてlspが有効化される
-require("mason-lspconfig").setup({})
+require("mason-lspconfig").setup({
+  ensure_installed = {
+    'lua_ls',
+    'marksman',
+    'terraformls',
+    'ts_ls',
+    'biome',
+    'gh_actions_ls'
+  }
+})
 
 -- lspconfig で LSP サーバーを設定
 -- mason-lspconfig は lspconfig と連携して、インストールされた LSP サーバーを自動的に設定します。
@@ -175,6 +183,7 @@ vim.lsp.enable('marksman')
 vim.lsp.enable('terraformls')
 vim.lsp.enable('ts_ls.setup')
 vim.lsp.enable('biome')
+vim.lsp.enable('gh_actions_ls')
 
 lspconfig.terraformls.setup({
   settings = {terraform = { logLevel = "DEBUG",}}})
