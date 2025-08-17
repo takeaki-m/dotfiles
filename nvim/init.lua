@@ -55,7 +55,17 @@ require('pckr').add {
     end,
     ft = { 'markdown', 'md' },
   },
-  -- complition
+  -- claude
+  {
+    "coder/claudecode.nvim",
+    requires = { "folke/snacks.nvim" },
+    -- commented out
+    --config = true,
+    opt = {
+      terminal_cmd = "/opt/homebrew/bin/claude",
+    },
+  },
+  -- completion
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-buffer',
