@@ -40,6 +40,10 @@ local options = {
   -- menuone:対象が1件しかなくても常に補完ウィンドウを表示
   -- noinsert:補完ウィンドウを表示時に挿入しない
   completeopt = 'menu,menuone,noinsert,noselect',
+  -- 外部ファイルで編集されたら自動的に読み込む(claudecodeなどで編集された場合を想定)
+  autoreload = true,
+  -- 確認を有効化(外部更新とローカル編集が衝突した場合)
+  confirm = true,
 }
 -- active all options
 for k, v in pairs(options) do
@@ -67,3 +71,18 @@ vim.api.nvim_create_autocmd("TermOpen", {
     vim.opt_local.relativenumber = true
   end,
 })
+
+
+-- claudecodeなどで編集された場合に備えて、編集をチェックする
+-- フォーカスを戻した時やバッファ切り替え時に更新チェック
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+  command = "silent! checktime",
+})
+
+-- 読込完了メッセージ（CUIだとコマンドラインに表示されるだけ）
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+  callback = function()
+    vim.notify("Reloaded: " .. vim.fn.expand("<afile>"))
+  end,
+})
+
