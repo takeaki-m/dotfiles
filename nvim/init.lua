@@ -2,6 +2,7 @@ require("command")
 require("keymaps")
 require("options")
 require("lsp_config")
+require("claude")
 
 -- activate vim loader to use plugin manager
 vim.loader.enable()
@@ -10,7 +11,7 @@ vim.loader.enable()
 local function bootstrap_pckr()
   local pckr_path = vim.fn.stdpath("data") .. "/pckr/pckr.nvim"
   ---@diagnostic disable-next-line: undefined-field
-  if not (vim.ur or vim.loop).fs_stat(pckr_path) then
+  if not (vim.uv or vim.loop).fs_stat(pckr_path) then
     vim.fn.system({
       'git',
       'clone',
@@ -39,7 +40,7 @@ require('pckr').add {
   'L3MON4D3/LuaSnip',
   'kylechui/nvim-surround',
   'ixru/nvim-markdown',
-  'folke/lazydev.nvim',            -- luaのcomplitionにnvimの設定を読み込ませる
+  'folke/lazydev.nvim',            -- luaのcompletionにnvimの設定を読み込ませる
   'nvim-tree/nvim-web-devicons',   -- icons
   'lambdalisue/nerdfont.vim',      -- fern icons
   'lambdalisue/glyph-palette.vim', -- fern icons
@@ -49,10 +50,10 @@ require('pckr').add {
     'iamcco/markdown-preview.nvim',
     build = 'cd app && npm install',
     config = function()
-      vim.g.mkdp_filetypes = { "markdown" };
-      vim.g.mkdp_auto_start = 0;
-    end;
-    ft = { 'markdown', 'md'},
+      vim.g.mkdp_filetypes = { "markdown" }
+      vim.g.mkdp_auto_start = 0
+    end,
+    ft = { 'markdown', 'md' },
   },
   -- complition
   'hrsh7th/nvim-cmp',
@@ -68,10 +69,8 @@ require('pckr').add {
   },
   -- lsp
   'artempyanykh/marksman',
-  -- font
-  'lambdalisue/nerdfont.vim',
+  -- font (fern-renderer-nerdfont already includes nerdfont)
   'lambdalisue/fern-renderer-nerdfont.vim',
-  'lambdalisue/glyph-palette.vim',
   -- colortheme
   "folke/tokyonight.nvim",
   "rebelot/kanagawa.nvim",
@@ -80,16 +79,17 @@ require('pckr').add {
   "neanias/everforest-nvim",
   "Shatur/neovim-ayu",
   {
-    "zenbones-theme/zenbones.nvim";
-    requires = 'rktjmp/lush.nvim'; -- 依存関係を 'requires' で指定
+    "zenbones-theme/zenbones.nvim",
+    requires = 'rktjmp/lush.nvim', -- 依存関係を 'requires' で指定
     config = function()
       -- ここに zenbones.nvim の設定オプションを記述
       -- vim.g.zenbones_darken_comments = 45
       -- vim.cmd.colorscheme('zenbones') -- colorscheme を設定する場合
-    end;
+    end,
   },
 }
 
+require("claudecode").setup()
 require("colorscheme")
 -- luaのlsp server(lua_ls)が、vim関連の関数を認識できるように、他のライブラリよりも優先的に読み込む
 require("lazydev").setup()
@@ -176,7 +176,7 @@ require("mason-lspconfig").setup({
 -- 個別のLSPサーバーの設定は lspconfig を通して行います。
 local lspconfig = require('lspconfig')
 
--- lua_ls の設定例 
+-- lua_ls の設定例
 vim.lsp.enable('lua_ls')
 -- marksman の設定
 vim.lsp.enable('marksman')
@@ -186,7 +186,7 @@ vim.lsp.enable('biome')
 vim.lsp.enable('gh_actions_ls')
 
 lspconfig.terraformls.setup({
-  settings = {terraform = { logLevel = "DEBUG",}}})
+  settings = { terraform = { logLevel = "DEBUG", } } })
 -- LSP設定後に追加 (cmpの設定)
 local cmp = require("cmp")
 cmp.setup({
