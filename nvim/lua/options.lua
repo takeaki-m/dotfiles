@@ -41,7 +41,7 @@ local options = {
   -- noinsert:補完ウィンドウを表示時に挿入しない
   completeopt = 'menu,menuone,noinsert,noselect',
   -- 外部ファイルで編集されたら自動的に読み込む(claudecodeなどで編集された場合を想定)
-  autoreload = true,
+  autoread = true,
   -- 確認を有効化(外部更新とローカル編集が衝突した場合)
   confirm = true,
 }
