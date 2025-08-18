@@ -45,6 +45,7 @@ require('pckr').add {
   'lambdalisue/nerdfont.vim',      -- fern icons
   'lambdalisue/glyph-palette.vim', -- fern icons
   'numToStr/Comment.nvim',
+  'lukas-reineke/indent-blankline.nvim',
   -- markdown
   {
     'iamcco/markdown-preview.nvim',
@@ -243,3 +244,4 @@ require("telescope").setup({
 })
 
 require('Comment').setup()
+require('ibl').setup()
