@@ -49,7 +49,8 @@ local options = {
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
-
+-- vim上で起動したterminalにおいてもzshを読み込ませるために設定
+vim.o.shell = "zsh -l"
 -- fern settings
 vim.cmd [[let g:fern#default_hidden=1]]
 -- Nerdfont を使う
