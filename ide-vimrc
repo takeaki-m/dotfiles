@@ -2,7 +2,6 @@
 let g:mapleder = "\<Space>"
 let mapleader = ' '
 
-
 " colorscheme
 "set background=dark
 "colorscheme iceberg
@@ -97,4 +96,6 @@ function! s:Repl()
 endfunction
 vmap <silent> <expr> p <sid>Repl()
 
-
+" serach select text at visual mode
+xnoremap * y/\V<C-R>"<CR>
+xnoremap # y?\V<C-R>"<CR>
