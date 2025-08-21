@@ -3,7 +3,7 @@ local opts = {
   silent = true,
 }
 
-local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 
 -- use space as Leader
 keymap("", "<Space>", "<Nop>", opts)
