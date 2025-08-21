@@ -17,6 +17,8 @@ keymap('i', 'jj', '<ESC>', { silent = true })
 keymap('i', '<C-j>', '<ESC>', { silent = true })
 keymap('i', 'っj', '<ESC>', { silent = true })
 
+-- copy buffer all pages
+keymap('n', '<Leader>y', ':%y<CR>', opts)
 -- increment and decrement
 keymap('n', '+', '<C-a>', opts)
 keymap('n', '-', '<C-x>', opts)
