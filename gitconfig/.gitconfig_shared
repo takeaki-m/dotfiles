@@ -22,7 +22,7 @@
     md = merge develop
     rs = restore --staged
     rsh = reset --soft HEAD^
-    cb = !git branch -a | fzf | xargs git checkout
+    cb = !git branch | fzf | xargs git checkout
 [core]
 	editor = nvim
   quotepath=false
