@@ -24,6 +24,21 @@ stty stop undef
 
 # ディレクトリスタックをcdで使えるようにする
 
+# aws profile
+alias pa='profile_aws'
+profile_aws() {
+  # -n: デフォルトの出力(マッチしない行も出力される)を抑制
+  # p: パターンにマッチした行だけを出力
+  target_profile=$(sed -n 's/^\[profile \(.*\)]/\1/p' ~/.aws/config | fzf)
+  if [[ -z "$target_profile" ]]; then
+    echo "profileが選択されなかったため処理を中断する"
+    return 1
+  fi
+  echo "PROFILE: ${target_profile}"
+  aws sso login --profile ${target_profile}
+  export AWS_PROFILE=${target_profile}
+}
+
 
 # 入力補完
 autoload -Uz compinit && compinit
