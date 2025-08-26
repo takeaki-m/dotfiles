@@ -151,6 +151,7 @@ alias lg='lazygit'
 # github cli
 alias ghie='gh issue edit $(gh issue list | fzf | awk '\''{print $1}'\'')'
 alias ghpre='gh pr edit $(gh pr list | fzf | awk '\''{print $1}'\'')'
+alias approot='GIT_ROOT=$(git rev-parse --show-toplevel) && cd $GIT_ROOT'
 
 pycharm() {
   open -na "Pycharm.app" --args nosplash "$@"
