@@ -40,6 +40,47 @@ profile_aws() {
 }
 
 
+zenn() {
+  echo "zennの記事作成に使う各パラメータを設定してください。"
+  echo "slug:(英数"-"のみ利用) "
+  read slug
+  echo "title: "
+  read title
+  echo "type:"
+  select type in tech idea
+  do
+    if [ -n "$type" ]; then
+      echo "$type が選択されました"
+      break #loopを抜ける
+    else
+      echo "無効な入力です"
+    fi
+  done
+  echo "emoji: "
+  read emoji 
+  echo "実行するコマンドは以下で良いですか？"
+  local cmd="npx zenn new:article --slug $slug --title $title --type $type --emoji $emoji"
+  echo "$cmd"
+  select answer in yes no
+  do
+    case $answer in
+      yes)
+        # yesが選択されたらループを抜ける先に進む
+        break
+        ;;
+      no)
+        echo "コマンドの実行を終了します"
+        return 1
+        ;;
+      *)
+        echo "無効な選択です。yesかnoの番号を入力してください"
+        ;;
+    esac
+  done
+  echo "記事を作成します"
+  eval "$cmd"
+}
+
 # 入力補完
 autoload -Uz compinit && compinit
 # 大文字小文字を区別しない
@@ -169,7 +210,6 @@ idea() {
 # nvim
 alias nvimconfig='nvim ~/.config/nvim/init.lua'
 # alias v='nvim'
-
 
 # カレントディレクトリのパスをコピー。末尾の改行を削除する
 alias pcopy='pwd | sed "s/^\(.*\)$/'\''\1'\''/" | tr -d '\''\n'\'' | pbcopy'
