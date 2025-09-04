@@ -1,0 +1,16 @@
+model_reasoning_effort = "high"
+network_access = true
+
+notify = ["bash", "-lc", "afplay /System/Library/Sounds/Ping.aiff"]
+
+
+[tools]
+web_search = true
+
+[mcp_servers.awslabs_aws-documentation]
+command = "/opt/homebrew/bin/uvx"
+args = ["awslabs.aws-documentation-mcp-server@latest"]
+
+[mcp_servers.mui-mcp]
+command = "npx"
+args = [ "-y", "@mui/mcp@latest" ]
