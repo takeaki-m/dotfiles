@@ -189,6 +189,8 @@ alias reader='/usr/bin/open -a Safari `pbpaste`'
 alias dotfiles='cd ~/settings/dotfiles && vim .'
 alias lg='lazygit'
 
+alias work='vim ~/work/aim/memo.md'
+
 # github cli
 alias ghie='gh issue edit $(gh issue list | fzf | awk '\''{print $1}'\'')'
 alias ghpre='gh pr edit $(gh pr list | fzf | awk '\''{print $1}'\'')'
