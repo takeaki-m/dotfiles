@@ -66,6 +66,11 @@ require('pckr').add {
       terminal_cmd = "/opt/homebrew/bin/claude",
     },
   },
+  -- obsidian
+  {
+      "epwalsh/obsidian.nvim",
+      requires = "nvim-lua/plenary.nvim",
+  },
   -- completion
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-nvim-lsp',
@@ -245,3 +250,22 @@ require("telescope").setup({
 
 require('Comment').setup()
 require('ibl').setup()
+
+require("obsidian").setup({
+  workspaces = {
+    {
+      name = "personal",
+      path = "~/Documents/obsidian",
+    }
+  },
+  overrides = {
+    notes_subdir = "inbox",
+  },
+  daily_notes = {
+    folder = "daily"
+  },
+  templates = {
+    folder = "template",
+  },
+})
+
