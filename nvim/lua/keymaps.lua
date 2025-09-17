@@ -181,3 +181,5 @@ keymap('n', '<Leader>rp', ':lua PasteCommandOutput("readlink -f " .. vim.fn.expa
 --        keymap("n", "<C-e>", "<End>", opts_cursol)   -- 行末に移動
 --    end,
 --})
+-- nvim-markdownのCtrl-i,Tabで見出しを開閉する動作を無効化
+vim.cmd [[map <Plug> <Plug>Markdown_Fold]]
