@@ -262,7 +262,8 @@ require("obsidian").setup({
     notes_subdir = "inbox",
   },
   daily_notes = {
-    folder = "daily"
+    folder = "daily",
+    template = '~/Documents/obsidian/template/frontmatter.md'
   },
   templates = {
     folder = "template",
