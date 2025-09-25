@@ -27,3 +27,21 @@ export SDKMAN_DIR="$HOME/.sdkman"
 if [[ -f /opt/homebrew/opt/git ]] then
   export PATH="/opt/homebrew/opt/git:$PATH"
 fi
+
+# pnpm
+export PNPM_HOME="/Users/take/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/take/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
