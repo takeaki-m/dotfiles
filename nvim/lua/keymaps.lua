@@ -28,6 +28,10 @@ keymap('n', '<Esc><Esc>', ':nohlsearch<CR>', opts)
 keymap('n', '<C-j>', ':bnext<CR>', opts)
 keymap('n', '<C-k>', ':bprev<CR>', opts)
 
+-- terminal
+keymap('n', '<Leader>ter', ':vert botright term<CR>', opts)
+keymap('n', '<Leader>ster', ':bo term<CR>',opts)	-- 分割: :vert botright term
+
 -- telescope
 -- telescope find files
 keymap('n', '<Leader>ff', ':Telescope find_files<CR>', opts)
