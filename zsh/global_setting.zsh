@@ -39,6 +39,19 @@ profile_aws() {
   export AWS_PROFILE=${target_profile}
 }
 
+today(){
+    dir="$HOME/Documents/obsidian/daily"
+    mkdir -p "$dir"
+    file="$dir/$(date +%Y-%m-%d).md"
+
+    if [[ -f "$file" ]]; then
+        # 既存ならそのファイルを普通に開く
+        nvim "$file"
+    else
+        # 未作成なら nvim を開いて専用コマンドを実行
+        nvim -c "ObsidianToday"
+    fi
+}
 
 zenn() {
   echo "zennの記事作成に使う各パラメータを設定してください。"
