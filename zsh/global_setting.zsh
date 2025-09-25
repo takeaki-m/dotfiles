@@ -40,16 +40,26 @@ profile_aws() {
 }
 
 today(){
-    dir="$HOME/Documents/obsidian/daily"
-    mkdir -p "$dir"
-    file="$dir/$(date +%Y-%m-%d).md"
+    local dir="$HOME/Documents/obsidian/daily"
+    local obsidian_home="$HOME/Documents/obsidian"
+    mkdir -p "$dir" || return 1
+
+    local file="$dir/$(date +%Y-%m-%d).md"
+    local monthly_note="$dir/$(date +%Y-%m).md"
+
+    # obsidianのディレクトリを開くように先にディレクトリを移動する
+    # 失敗時には中断する
+    cd $obsidian_home || return 1
 
     if [[ -f "$file" ]]; then
         # 既存ならそのファイルを普通に開く
-        nvim "$file"
+        nvim -c "edit "$file"" \
+          -c "split "$monthly_note""
+
     else
         # 未作成なら nvim を開いて専用コマンドを実行
-        nvim -c "ObsidianToday"
+        nvim -c "ObsidianToday" \
+          -c "split "$monthly_note""
     fi
 }
 
