@@ -10,7 +10,6 @@ vim.loader.enable()
 -- activate pkcr vim
 local function bootstrap_pckr()
   local pckr_path = vim.fn.stdpath("data") .. "/pckr/pckr.nvim"
-  ---@diagnostic disable-next-line: undefined-field
   if not (vim.uv or vim.loop).fs_stat(pckr_path) then
     vim.fn.system({
       'git',
@@ -203,6 +202,17 @@ vim.lsp.enable('gh_actions_ls')
 
 lspconfig.terraformls.setup({
   settings = { terraform = { logLevel = "DEBUG", } } })
+-- lua language severに対して、'vim'はglobal変数なので警告しないように設定
+-- lua language serverは通常のLua環境を前提としているため、vimという変数を未定義として警告するから
+vim.lsp.config.lua_ls = {
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { 'vim' }
+      }
+    }
+  }
+}
 -- LSP設定後に追加 (cmpの設定)
 local cmp = require("cmp")
 cmp.setup({
