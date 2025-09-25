@@ -189,19 +189,16 @@ require("mason-lspconfig").setup({
 -- lspconfig で LSP サーバーを設定
 -- mason-lspconfig は lspconfig と連携して、インストールされた LSP サーバーを自動的に設定します。
 -- 個別のLSPサーバーの設定は lspconfig を通して行います。
-local lspconfig = require('lspconfig')
 
 -- lua_ls の設定例
 vim.lsp.enable('lua_ls')
 -- marksman の設定
 vim.lsp.enable('marksman')
 vim.lsp.enable('terraformls')
-vim.lsp.enable('ts_ls.setup')
+vim.lsp.enable('ts_ls')
 vim.lsp.enable('biome')
 vim.lsp.enable('gh_actions_ls')
 
-lspconfig.terraformls.setup({
-  settings = { terraform = { logLevel = "DEBUG", } } })
 -- lua language severに対して、'vim'はglobal変数なので警告しないように設定
 -- lua language serverは通常のLua環境を前提としているため、vimという変数を未定義として警告するから
 vim.lsp.config.lua_ls = {
