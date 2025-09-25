@@ -1,7 +1,7 @@
 require("command")
 require("keymaps")
 require("options")
-require("lsp_config")
+require("lsp")
 require("claude")
 
 -- activate vim loader to use plugin manager
