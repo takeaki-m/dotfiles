@@ -1,0 +1,69 @@
+{
+  "title": "vimの操作を簡単にするためのkarabinerの設定",
+  "rules": [
+    {
+      "description": "Ctrl-g: switch to Eisu (ASCII) and send Ctrl-g",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "g",
+            "modifiers": {
+              "mandatory": [ "control" ],
+              "optional": [ "any" ]
+            }
+          },
+          "to": [
+            { "key_code": "japanese_eisuu" },
+            {
+              "key_code": "g",
+              "modifiers": [ "left_control" ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.googlecode\\.iterm2$",
+                "^io\\.alacritty$",
+                "^com\\.apple\\.Terminal$"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Ctrl-o: switch to Eisu (ASCII) and send Ctrl-o",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "o",
+            "modifiers": {
+              "mandatory": [ "control" ],
+              "optional": [ "any" ]
+            }
+          },
+          "to": [
+            { "key_code": "japanese_eisuu" },
+            {
+              "key_code": "o",
+              "modifiers": [ "left_control" ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.googlecode\\.iterm2$",
+                "^io\\.alacritty$",
+                "^com\\.apple\\.Terminal$"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
