@@ -82,26 +82,12 @@ require('pckr').add {
       require("nvim-autopairs").setup {}
     end
   },
-  -- lsp
-  'artempyanykh/marksman',
   -- font (fern-renderer-nerdfont already includes nerdfont)
   'lambdalisue/fern-renderer-nerdfont.vim',
   -- colortheme
   "folke/tokyonight.nvim",
   "rebelot/kanagawa.nvim",
   "EdenEast/nightfox.nvim",
-  "catppuccin/nvim",
-  "neanias/everforest-nvim",
-  "Shatur/neovim-ayu",
-  {
-    "zenbones-theme/zenbones.nvim",
-    requires = 'rktjmp/lush.nvim', -- 依存関係を 'requires' で指定
-    config = function()
-      -- ここに zenbones.nvim の設定オプションを記述
-      -- vim.g.zenbones_darken_comments = 45
-      -- vim.cmd.colorscheme('zenbones') -- colorscheme を設定する場合
-    end,
-  },
 }
 
 require("claudecode").setup()
@@ -210,6 +196,10 @@ vim.lsp.config.lua_ls = {
     }
   }
 }
+
+-- 過去にdebugした際に以下設定したが不要と思われるのでコメントアウトする。しばらくして問題なければ削除する
+--lspconfig.terraformls.setup({
+--  settings = { terraform = { logLevel = "DEBUG", } } })
 -- LSP設定後に追加 (cmpの設定)
 local cmp = require("cmp")
 cmp.setup({

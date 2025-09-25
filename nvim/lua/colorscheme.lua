@@ -1,12 +1,4 @@
---vim.cmd("colorscheme defalut")
---vim.cmd("colorscheme tokyonight-night")
---vim.cmd ("colorscheme rose-pine")
---vim.cmd ("colorscheme catppuccin-mocha")
 --vim.cmd ("colorscheme nortfox")
---vim.cmd("colorscheme nightfox")
+vim.cmd("colorscheme nightfox")
 --vim.cmd("colorscheme tokyonight-night")
---vim.cmd("colorscheme everforest")
---vim.cmd("colorscheme ayu")
 --vim.cmd("colorscheme kanagawa")
-vim.cmd("colorscheme nordbones")
-
