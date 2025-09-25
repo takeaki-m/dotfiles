@@ -94,6 +94,35 @@ zenn() {
   eval "$cmd"
 }
 
+ghdev() {
+  echo "GitHub issueと関連付けてブランチを作成します"
+  echo "Issue No:"
+  read issue
+  echo "Branch name:"
+  read branch
+  echo "実行するコマンドは以下で良いですか？"
+  local cmd="gh issue develop $issue --name $branch"
+  echo "$cmd"
+  select answer in yes no
+  do
+    case $answer in
+      yes)
+        # yesが選択されたらループを抜ける先に進む
+        break
+        ;;
+      no)
+        echo "コマンドの実行を終了します"
+        return 1
+        ;;
+      *)
+        echo "無効な選択です。yesかnoの番号を入力してください"
+        ;;
+    esac
+  done
+  echo "ブランチを作成します"
+  eval "$cmd"
+}
+
 # 入力補完
 autoload -Uz compinit && compinit
 # 大文字小文字を区別しない
