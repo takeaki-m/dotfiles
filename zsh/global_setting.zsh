@@ -231,7 +231,9 @@ alias reader='/usr/bin/open -a Safari `pbpaste`'
 alias dotfiles='cd ~/settings/dotfiles && vim .'
 alias lg='lazygit'
 
-alias work='vim ~/work/aim/memo.md'
+alias work='cd ~/work/aim/'
+alias aim='vim ~/work/aim/aim-management -c "cd ~/work/aim/aim-management"'
+alias daily='vim ~/Documents/obsidian'
 
 # github cli
 alias ghie='gh issue edit $(gh issue list | fzf | awk '\''{print $1}'\'')'
