@@ -262,6 +262,8 @@ alias gupdev='g fetch origin; g co develop; g pull'
 alias gmd='gupdev; g co - ; g merge develop'
 alias gbrmd='git branch -d `git branch --merged`'
 alias gpr='gh pr create'
+# 末尾の改行を削除するために-nを利用。標準出力をpipeするとechoで出力されなかったため変数に指定する
+alias cpb='current_branch_name=$(git branch | grep "*" | sed -e "s/\* //g") | echo -n $current_branch_name | pbcopy'
 
 alias d='docker'
 alias dc='docker compose'
