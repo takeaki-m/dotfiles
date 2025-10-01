@@ -160,6 +160,15 @@ ghdev() {
   echo $branch
 }
 
+gwc() {
+    local branch=$(ghdev)
+    branch_with_hyphen=$(echo $branch | tr / -)
+    local worktree_path="../$branch_with_hyphen"
+    git fetch origin $branch
+    git worktree add "$worktree_path" "$branch"
+}
+
+
 # 入力補完
 autoload -Uz compinit && compinit
 # 大文字小文字を区別しない
