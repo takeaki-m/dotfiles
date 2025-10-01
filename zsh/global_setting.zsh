@@ -39,6 +39,28 @@ profile_aws() {
   export AWS_PROFILE=${target_profile}
 }
 
+memo(){
+    local dir="$HOME/Documents/obsidian/daily"
+    local obsidian_home="$HOME/Documents/obsidian"
+    mkdir -p "$dir" || return 1
+
+    local file="$dir/$(date +%Y-%m-%d).md"
+    local monthly_note="$dir/$(date +%Y-%m).md"
+
+    # obsidianのディレクトリを開くように先にディレクトリを移動する
+    # 失敗時には中断する
+    cd $obsidian_home || return 1
+
+    if [[ -f "$file" ]]; then
+        # 既存ならそのファイルを普通に開く
+        nvim -c "edit "$file""
+
+    else
+        # 未作成なら nvim を開いて専用コマンドを実行
+        nvim -c "ObsidianToday"
+    fi
+}
+
 today(){
     local dir="$HOME/Documents/obsidian/daily"
     local obsidian_home="$HOME/Documents/obsidian"
