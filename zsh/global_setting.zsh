@@ -127,15 +127,16 @@ zenn() {
 }
 
 ghdev() {
-  echo "GitHub issueと関連付けてブランチを作成します"
-  echo "Issue No:"
-  read issue
-  echo "Branch name:"
-  read branch
-  echo "実行するコマンドは以下で良いですか？"
-  local cmd="gh issue develop $issue --name $branch"
-  echo "$cmd"
-  select answer in yes no
+  echo "GitHub issueと関連付けてブランチを作成します">&2
+  echo "Issue を選択してください">&2
+  issue_no=$(gh issue list | fzf | awk '{print $1}')
+  echo "選択されたIssue: $issue_no" >&2
+  echo "Branch name:">&2
+  read -r branch
+  echo "実行するコマンドは以下で良いですか？">&2
+  local cmd=( gh issue develop $issue_no --name $branch )
+  echo "$cmd" >&2
+ select answer in yes no
   do
     case $answer in
       yes)
@@ -143,16 +144,20 @@ ghdev() {
         break
         ;;
       no)
-        echo "コマンドの実行を終了します"
+        echo "コマンドの実行を終了します">&2
         return 1
         ;;
       *)
-        echo "無効な選択です。yesかnoの番号を入力してください"
+        echo "無効な選択です。yesかnoの番号を入力してください">&2
         ;;
     esac
   done
-  echo "ブランチを作成します"
-  eval "$cmd"
+  echo "ブランチを作成します" >&2
+  if ! "${cmd[@]}" 1>&2; then
+    echo "gh コマンドの実行に失敗しました" >&2
+  fi
+  # 他で利用するために標準出力にブランチ名を渡す
+  echo $branch
 }
 
 # 入力補完
