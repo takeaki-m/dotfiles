@@ -1,5 +1,9 @@
 export default {
     defaultBrowser: "Zen",
+    options: {
+      // hide the finicky icon from the menu bar
+      hideIcon: true
+    },
     handlers: [
         {
             match: () => {
