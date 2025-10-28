@@ -94,26 +94,36 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local bufopts = { noremap = true, silent = true, buffer = ctx.buf }
 
     -- LSP基本機能
-    keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", bufopts)
-    keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", bufopts)
-    keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", bufopts)
-    keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", bufopts)
-    keymap("n", "<space>k", "<cmd>lua vim.lsp.buf.signature_help()<CR>", bufopts)
-    keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", bufopts)
-    keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", bufopts)
-    keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", bufopts)
-    keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", bufopts)
-    keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format()<CR>", bufopts) -- フォーマッタ設定が別途必要
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+    vim.keymap.set("n", "gf", function ()
+      vim.lsp.buf.format({async = true})
+    end, bufopts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
+    vim.keymap.set("n", "<leader>gt", vim.lsp.buf.type_definition, bufopts)
+    vim.keymap.set("n", "gn", vim.lsp.buf.rename, bufopts)
+    vim.keymap.set("n", "ga", vim.lsp.buf.code_action, bufopts)
+    vim.keymap.set("n", "ge", vim.diagnostic.open_float, bufopts)
+    vim.keymap.set("n", "g]", function ()
+      vim.diagnostic.jump({ count = 1, float = true})
+    end, bufopts)
+    vim.keymap.set("n", "g[", function ()
+      vim.diagnostic.jump({ count = -1, float = true})
+    end, bufopts)
+    vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, bufopts)
 
     -- ワークスペース関連
-    keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", bufopts)
-    keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", bufopts)
-    keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", bufopts)
+    keymap("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
+    keymap("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
+    keymap("n", "<space>wl", function ()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, bufopts)
 
     -- 診断関連
-    -- show_line_diagnostics() は非推奨なので open_float() に変更
-    keymap("n", "<space>e", "<cmd>lua vim.diagnostic.open_float()<CR>", bufopts)
-    keymap("n", "<space>q", "<cmd>lua vim.diagnostic.set_loclist()<CR>", bufopts)
+    keymap("n", "<space>e", vim.diagnostic.open_float, bufopts)
+    keymap("n", "<space>q", vim.diagnostic.setloclist, bufopts)
 
     -- 分割ウィンドウでの定義ジャンプ (オプション)
     -- keymap('n', 'gd<Space>', ':split | lua vim.lsp.buf.definition()<CR>', bufopts)
