@@ -168,7 +168,8 @@ require("mason-lspconfig").setup({
     'terraformls',
     'ts_ls',
     'biome',
-    'gh_actions_ls'
+    'gh_actions_ls',
+    'tailwindcss',
   }
 })
 
@@ -184,7 +185,7 @@ vim.lsp.enable('terraformls')
 vim.lsp.enable('ts_ls')
 vim.lsp.enable('biome')
 vim.lsp.enable('gh_actions_ls')
-
+vim.lsp.enable('tailwindcss')
 -- lua language severに対して、'vim'はglobal変数なので警告しないように設定
 -- lua language serverは通常のLua環境を前提としているため、vimという変数を未定義として警告するから
 vim.lsp.config.lua_ls = {
