@@ -49,7 +49,7 @@ vim.diagnostic.config({
 
 -- 診断を更新するタイミング: カーソルが静止したときにquickfixリストを更新
 -- ★★★ ここを修正します ★★★
-vim.api.nvim_create_autocmd({"CursorHold", "CursorHoldI"}, {
+vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
   group = vim.api.nvim_create_augroup("DiagnosticQuickfix", { clear = true }),
   callback = function()
     local bufnr = vim.api.nvim_get_current_buf() -- 現在のバッファIDを取得
@@ -63,12 +63,11 @@ vim.api.nvim_create_autocmd({"CursorHold", "CursorHoldI"}, {
 
     -- その他のフィルタリング条件
     if not vim.bo[bufnr].buflisted and
-       vim.bo[bufnr].buftype == "" and
-       not vim.bo[bufnr].readonly and
-       not vim.bo[bufnr].swap == false and
-       vim.fn.bufname(bufnr) ~= "" and
-       not vim.startswith(vim.fn.bufname(bufnr), "NvimTree_") then
-
+        vim.bo[bufnr].buftype == "" and
+        not vim.bo[bufnr].readonly and
+        not vim.bo[bufnr].swap == false and
+        vim.fn.bufname(bufnr) ~= "" and
+        not vim.startswith(vim.fn.bufname(bufnr), "NvimTree_") then
       -- Quickfixリストの更新を実行
       vim.diagnostic.setqflist({ bufnr = bufnr })
     end
@@ -80,8 +79,8 @@ vim.api.nvim_create_autocmd({"CursorHold", "CursorHoldI"}, {
 -- 診断関連のグローバルキーマップ
 -- これらのキーマップはLSPアタッチとは関係なく、常に利用可能です。
 keymap("n", "<leader>d", function() vim.diagnostic.open_float() end, { desc = "Show diagnostic" })
-keymap("n", "[d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Go to previous diagnostic" })
-keymap("n", "]d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "Go to next diagnostic" })
+keymap("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Go to previous diagnostic" })
+keymap("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "Go to next diagnostic" })
 
 
 -- ==============================
