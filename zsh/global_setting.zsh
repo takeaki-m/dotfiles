@@ -66,6 +66,7 @@ today(){
     local obsidian_home="$HOME/Documents/obsidian"
     mkdir -p "$dir" || return 1
 
+    local yesterday_note="$dir/$(date -v-1d +%Y-%m-%d).md"
     local file="$dir/$(date +%Y-%m-%d).md"
     local monthly_note="$dir/$(date +%Y-%m).md"
 
@@ -75,13 +76,14 @@ today(){
 
     if [[ -f "$file" ]]; then
         # 既存ならそのファイルを普通に開く
-        nvim -c "edit "$file"" \
-          -c "split "$monthly_note""
-
+        vim $file \
+          -c "split $yesterday_note" \
+          -c "split $monthly_note"
     else
         # 未作成なら nvim を開いて専用コマンドを実行
-        nvim -c "ObsidianToday" \
-          -c "split "$monthly_note""
+        vim $monthly_note \
+          -c "ObsidianToday" \
+          -c "split $yesterday_note"
     fi
 }
 
@@ -248,11 +250,18 @@ alias beep='afplay /System/Library/Sounds/Ping.aiff'
 alias history='history -i'
 # edit clipboard contents with vim
 alias cv='vim +"put +"'
-
+alias vimset='cd $HOME/settings/dotfiles/nvim/ && vim .'
 # set xterm to TERM for older terminals that does not support xterm-256color
 alias term='export TERM=xterm; echo $TERM'
 
-alias vim='nvim'
+vim(){
+    if check_os_theme_is_dark; then
+        nvim -c "colorscheme kanagawa-dragon" "$@"
+    else
+        nvim -c "colorscheme dayfox" "$@"
+    fi
+}
+
 alias v='vim'
 
 alias g='git'
@@ -288,19 +297,15 @@ alias ghie='gh issue edit $(gh issue list | fzf | awk '\''{print $1}'\'')'
 alias ghpre='gh pr edit $(gh pr list | fzf | awk '\''{print $1}'\'')'
 alias approot='GIT_ROOT=$(git rev-parse --show-toplevel) && cd $GIT_ROOT'
 
-pycharm() {
-  open -na "Pycharm.app" --args nosplash "$@"
+alias webstorm='open -na "WebStorm.app" --args .'
+alias idea='open -na "IntelliJ IDEA.app" --args .'
+alias pycharm='open -na "Pycharm.app" --args .'
+
+check_os_theme_is_dark() {
+  osascript -e 'tell application "System Events" to tell appearance preferences to return dark mode' \
+  | grep -qi true
 }
 
-webstorm() {
-  open -na "WebStorm.app" --args nosplash "$@"
-}
-
-idea() {
-  open -na "IntelliJ IDEA.app" --args nosplash "$@"
-}
-
-#
 # nvim
 alias nvimconfig='nvim ~/.config/nvim/init.lua'
 # alias v='nvim'
