@@ -28,6 +28,8 @@ keymap('n', '<Esc><Esc>', ':nohlsearch<CR>', opts)
 keymap('n', '<C-j>', ':bnext<CR>', opts)
 keymap('n', '<C-k>', ':bprev<CR>', opts)
 
+keymap('n', 'g:', 'g;', opts)
+
 -- terminal
 keymap('n', '<Leader>ter', ':vert botright term<CR>', opts)
 keymap('n', '<Leader>ster', ':bo term<CR>',opts)	-- 分割: :vert botright term
@@ -95,12 +97,8 @@ keymap('i', '<C-p>', 'pumvisible() ? "<Up>" : "<C-p>"', { expr = true, noremap =
 ---- indent
 keymap('n', '<C-l>', '>>', opts)
 keymap('n', '<C-h>', '<<', opts)
--- keymap('v', '<C-l>', '>gv', opts)
--- keymap('v', '<C-h>', '<gv', opts)
-keymap('i', '<C-h>', '<C-o>I', opts)
-keymap('i', "<C-l>", '<C-o>A', opts)
---keymap('i', '<C-l>', '<C-o>>>', opts) -- 挿入モードからノーマルモードに戻る
---keymap('i', '<C-h>', '<C-o><<', opts) -- 挿入モードからノーマルモードに戻る
+keymap('v', '<C-l>', '>gv', opts)
+keymap('v', '<C-h>', '<gv', opts)
 
 -- =============================================================================
 -- ビジュアルモードで選択したテキストを検索するキーマッピング
