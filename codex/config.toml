@@ -6,6 +6,13 @@ model_reasoning_effort = "high"
 
 notify = ["osascript", "-e", "display notification \"Task Complete!!!\" with title \"Codex\" subtitle \"Processing is complete.\" sound name \"Pop\""]
 
+
+[tui]
+#　デスクトップ通知に関する設定
+# - "agent-turn-complete": エージェントの１ターン処理が完了した際に通知
+# - "approval-requested": ユーザーの操作や承認が必要な時に通知
+notifications = ["agent-turn-complete","approval-requested"]
+
 [tools]
 web_search = true
 
@@ -21,3 +28,6 @@ args = [ "-y", "@mui/mcp@latest" ]
 command = "docker"
 args = [ "run", "-i", "--rm", "hashicorp/terraform-mcp-server" ]
 
+[mcp_servers.context7]
+args = ["-y", "@upstash/context7-mcp"]
+command = "npx"
