@@ -82,6 +82,24 @@ vim.api.nvim_create_autocmd("TermOpen", {
   end,
 })
 
+-- osがdark modeかどうかを判定する
+local function is_os_dark_mode()
+  local handle = io.popen('osascript -e \'tell application "System Events" to tell appearance preferences to return dark mode\'')
+  if handle then
+    local result = handle:read("*a")
+    handle:close()
+    return result:match("true") ~= nil
+  end
+  -- default is dark mode
+  return true
+end
+
+local lazygit_theme_file = is_os_dark_mode()
+  and vim.fn.expand("$HOME/Library/Application Support/lazygit/theme_dark.yml")
+  or  vim.fn.expand("$HOME/Library/Application Support/lazygit/theme_light.yml")
+
+vim.g.lazygit_use_custom_config_file_path = 1 -- config file path is evaluated if this value is 1
+vim.g.lazygit_config_file_path = { lazygit_theme_file }
 
 -- claudecodeなどで編集された場合に備えて、編集をチェックする
 -- フォーカスを戻した時やバッファ切り替え時に更新チェック
