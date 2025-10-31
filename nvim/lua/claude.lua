@@ -19,7 +19,7 @@ local opts = {
   silent = true,
 }
 
-local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 
 -- AI/Claude Code キーマップ
 keymap('n', '<leader>a', '', vim.tbl_extend('force', opts, { desc = 'AI/Claude Code' }))
@@ -35,8 +35,8 @@ keymap('v', '<leader>as', '<cmd>ClaudeCodeSend<cr>', vim.tbl_extend('force', opt
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "NvimTree", "neo-tree", "oil", "minifiles" },
   callback = function()
-    vim.api.nvim_buf_set_keymap(0, 'n', '<leader>as', '<cmd>ClaudeCodeTreeAdd<cr>', 
-      vim.tbl_extend('force', opts, { desc = 'Add file' }))
+    vim.api.nvim_buf_set_keymap(0, 'n', '<leader>as', '<cmd>ClaudeCodeTreeAdd<cr>',
+    vim.tbl_extend('force', opts, { desc = 'Add file' }))
   end,
 })
 
