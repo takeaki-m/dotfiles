@@ -64,6 +64,9 @@ vim.cmd([[
   augroup END
 ]])
 
+-- netrwを表示しない
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 -- show line number at terminal buffer
 vim.api.nvim_create_autocmd("TermOpen", {
   pattern = "*",
