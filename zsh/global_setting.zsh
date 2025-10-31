@@ -1,5 +1,3 @@
-
-
 # PROMPT='%n@%m %~ %# '
 PROMPT='%~ %# '
 # ディレクトリ移動
@@ -242,15 +240,16 @@ alias vimset='cd $HOME/settings/dotfiles/nvim/ && vim .'
 # set xterm to TERM for older terminals that does not support xterm-256color
 alias term='export TERM=xterm; echo $TERM'
 
-vim(){
+nvim(){
     if check_os_theme_is_dark; then
-        nvim -c "colorscheme kanagawa-dragon" "$@"
+        command nvim -c "colorscheme kanagawa-dragon" "$@"
     else
-        nvim -c "colorscheme dayfox" "$@"
+        command nvim -c "colorscheme dayfox" "$@"
     fi
 }
 
 alias v='vim'
+alias vim='nvim'
 
 alias g='git'
 alias gpoc='git push origin `git rev-parse --abbrev-ref HEAD` | gpb'
