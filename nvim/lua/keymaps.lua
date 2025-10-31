@@ -106,7 +106,7 @@ vim.cmd([[
 -- コマンドラインモードでc-n,c-pでも補完を有効にするために方向キーに割り当てる
 --keymap('c', '<C-p>', '<Up>', opts)
 --keymap('c', '<C-n>', '<Down>', opts)
-keymap("t", "<C-g>", "<C-\\><C-n>", opts)
+keymap("t", "<C-]>", "<C-\\><C-n>", opts)
 
 keymap('n', '<Leader>lg', ':LazyGit<CR>', opts)
 -- move to specified line with <CR> insted of G
