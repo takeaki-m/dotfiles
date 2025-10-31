@@ -200,18 +200,6 @@ fi
 #    compinit
 #fi
 #
-## ghqとの連携。ghqの管理化にあるリポジトリを一覧表示する。ctrl - ]にバインド。
-function peco-src () {
-  local selected_dir=$(ghq list -p | peco --prompt="repositories >" --query "$LBUFFER")
-  if [ -n "$selected_dir" ]; then
-    BUFFER="cd ${selected_dir}"
-    zle accept-line
-  fi
-  zle clear-screen
-}
-zle -N peco-src
-bindkey '^]' peco-src
-
 ## prompt options
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUNTRACEDFILES=true
@@ -368,12 +356,6 @@ stty stop undef
 # 補完機能を有効にする
 autoload -Uz compinit compinit
 zstyle ':completion:*:default' menu select=1
-# 前方一致
-# 入力補完
-#source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-# zsh-autocompleteのキーバインドを変更する
-bindkey              '^I'         menu-complete
-bindkey "$terminfo[kcbt]" reverse-menu-complete
 # zsh-autocompleteのinstallによってコメントアウト
 # autoload -Uz compinit && compinit
 # default
@@ -385,10 +367,6 @@ zstyle ':completion:*:default' menu select
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \ /user/sbin /usr/bin /bin /usr/X11R6/bin
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-# tmux接続時にvim keybindになる場合があるため明示的にtmux keybindとする
-if [[ -n "$TMUX" ]]; then
-  bindkey -e
-fi
 
 # ssh 接続で背景を変更する
 function ssh() {
@@ -431,3 +409,41 @@ function ssh() {
       command ssh $@
   fi
 }
+
+# --------------------
+# keybind
+# - bindkey -eの設定より、後に設定しなければkeybindが無効となる
+# - 以下にまとめて設定すること
+# --------------------
+
+
+# tmux接続時にvim keybindになる場合があるため明示的にtmux keybindとする
+if [[ -n "$TMUX" ]]; then
+  bindkey -e
+fi
+
+
+# 前方一致
+# 入力補完
+#source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# zsh-autocompleteのキーバインドを変更する
+bindkey              '^I'         menu-complete
+bindkey "$terminfo[kcbt]" reverse-menu-complete
+# 入力するコマンドをエディタで編集する
+
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '\ee' edit-command-line
+
+# ghqとの連携。ghqの管理化にあるリポジトリを一覧表示する。ctrl - ]にバインド。
+function peco-src () {
+  local selected_dir=$(ghq list -p | peco --prompt="repositories >" --query "$LBUFFER")
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-src
+bindkey '^]' peco-src
+

@@ -44,6 +44,12 @@ local options = {
   autoread = true,
   -- 確認を有効化(外部更新とローカル編集が衝突した場合)
   confirm = true,
+  -- nvim 12からのオプション
+  -- pumborder = true,
+  -- vimのtemirnalにおいて、zshのbind機能を入力できるようにtimeoutを設定
+  -- 他のvimの機能には影響なし
+  ttimeout = true,
+  ttimeoutlen = 10,
 }
 -- active all options
 for k, v in pairs(options) do
