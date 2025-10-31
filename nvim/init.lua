@@ -28,8 +28,6 @@ require('pckr').add {
   'nvim-treesitter/nvim-treesitter',
   'nvim-lua/plenary.nvim',
   'nvim-telescope/telescope.nvim',
-  --'lukas-reineke/indent-blankline.nvim',
-  'lambdalisue/fern.vim',
   'lewis6991/gitsigns.nvim',
   'nvim-lualine/lualine.nvim',
   'kdheepak/lazygit.nvim',
@@ -40,11 +38,15 @@ require('pckr').add {
   'kylechui/nvim-surround',
   'ixru/nvim-markdown',
   'folke/lazydev.nvim',            -- luaのcompletionにnvimの設定を読み込ませる
-  'nvim-tree/nvim-web-devicons',   -- icons
-  'lambdalisue/nerdfont.vim',      -- fern icons
-  'lambdalisue/glyph-palette.vim', -- fern icons
   'numToStr/Comment.nvim',
   'lukas-reineke/indent-blankline.nvim',
+  -- filer
+  {
+    'nvim-tree/nvim-tree.lua',
+    requires ={
+      'nvim-tree/nvim-web-devicons',   -- icons
+    },
+  },
   -- markdown
   {
     'iamcco/markdown-preview.nvim',
@@ -82,8 +84,6 @@ require('pckr').add {
       require("nvim-autopairs").setup {}
     end
   },
-  -- font (fern-renderer-nerdfont already includes nerdfont)
-  'lambdalisue/fern-renderer-nerdfont.vim',
   -- colortheme
   "folke/tokyonight.nvim",
   "rebelot/kanagawa.nvim",
@@ -268,3 +268,37 @@ require("obsidian").setup({
   },
 })
 
+require("nvim-tree").setup({
+  -- git 統合を有効化
+  git = {
+    enable = true,  -- git関連の情報を有効にする
+    ignore = false, --.gitignore対象のファイルも表示する
+  },
+  filters = {
+    -- 非表示にしたい項目をvimの正規表現で指定
+    custom = {
+      "^\\.git$",
+      "^node_modules",
+      "^\\.idea",
+      "^\\.vscode",
+      "^\\.DS_Store",
+    }
+  },
+  -- レンダラー設定
+  renderer = {
+    icons = {
+      show = {
+        file = true,
+        folder = true,
+        folder_arrow = true,
+        git = true,
+      },
+    },
+  },
+  -- ファイル操作の設定
+  actions = {
+    open_file = {
+      quit_on_open = false,  -- ファイルを開いてもツリーを閉じない
+    },
+  },
+})
