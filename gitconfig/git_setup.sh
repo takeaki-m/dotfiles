@@ -22,6 +22,8 @@ git config --global commit.template $(readlink -f $GIT_SET_PATH/.commit_template
 echo "### set core editor nvim ###"
 git config --global core.editor "nvim"
 
+echo "### set delta ###"
+git config --global include.path $(readlink -f $GIT_SET_PATH/.delta_config)
 
 RET_CD=$?
 exit ${RET_CD}
