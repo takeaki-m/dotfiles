@@ -16,9 +16,9 @@ process.stdin.on('end', async () => {
     const data = JSON.parse(input);
 
     // Extract values
-    const model = data.model?.display_name || 'Unknown';
+    //const model = data.model?.display_name || 'Unknown';
     const currentDir = data.workspace?.current_dir || data.cwd || '.';
-    const dirName = path.basename(currentDir);
+    //const dirName = path.basename(currentDir);
     const sessionId = data.session_id;
 
     // Get Git branch
@@ -74,7 +74,8 @@ process.stdin.on('end', async () => {
     if (percentage >= 72) percentageColor = '\x1b[91m'; // Bright Red (144K/200K)
 
     // Build status line
-    const statusLine = `[${model}] 📁 ${dirName}${branch} | 🪙 ${tokenDisplay} | ${percentageColor}${percentage}%\x1b[0m \x1b[90m| ${sessionId}\x1b[0m`;
+    //const statusLine = `[${model}] 📁 ${dirName}${branch} | 🪙 ${tokenDisplay} | ${percentageColor}${percentage}%\x1b[0m \x1b[90m| ${sessionId}\x1b[0m`;
+    const statusLine = `🪙 ${tokenDisplay} | ${percentageColor}${percentage}%\x1b[0m `;
 
     console.log(statusLine);
   } catch (error) {
