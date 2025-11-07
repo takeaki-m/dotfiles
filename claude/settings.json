@@ -52,5 +52,10 @@
       "Write(.env*)",
       "Write(~/.ssh/*)"
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.js"
+  },
+  "alwaysThinkingEnabled": false
 }
