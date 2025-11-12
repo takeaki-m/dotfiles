@@ -40,6 +40,7 @@ require('pckr').add {
   'folke/lazydev.nvim',            -- luaのcompletionにnvimの設定を読み込ませる
   'numToStr/Comment.nvim',
   'lukas-reineke/indent-blankline.nvim',
+  "stevearc/aerial.nvim",
   -- filer
   {
     'nvim-tree/nvim-tree.lua',
@@ -303,3 +304,4 @@ require("nvim-tree").setup({
   },
 })
 require("nvim-treesitter").setup()
+require("aerial").setup()
