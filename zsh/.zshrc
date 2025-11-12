@@ -28,6 +28,9 @@ if [[ -f /opt/homebrew/opt/git ]] then
   export PATH="/opt/homebrew/opt/git:$PATH"
 fi
 
+# native path of claude code installed at .local/bin
+export PATH="$HOME/.local/bin:$PATH"
+
 # pnpm
 export PNPM_HOME="/Users/take/Library/pnpm"
 case ":$PATH:" in
