@@ -14,7 +14,7 @@ notify = ["osascript", "-e", "display notification \"Task Complete!!!\" with tit
 notifications = ["agent-turn-complete","approval-requested"]
 
 [tools]
-web_search = true
+web_search_request = true
 
 [mcp_servers.awslabs_aws-documentation]
 command = "/opt/homebrew/bin/uvx"
@@ -31,3 +31,7 @@ args = [ "run", "-i", "--rm", "hashicorp/terraform-mcp-server" ]
 [mcp_servers.context7]
 args = ["-y", "@upstash/context7-mcp"]
 command = "npx"
+
+[mcp_servers.chrome-devtools]
+command = "npx"
+args = ["chrome-devtools-mcp@latest"]
