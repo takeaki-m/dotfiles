@@ -437,11 +437,44 @@ fi
 # zsh-autocompleteのキーバインドを変更する
 bindkey              '^I'         menu-complete
 bindkey "$terminfo[kcbt]" reverse-menu-complete
-# 入力するコマンドをエディタで編集する
 
-autoload -Uz edit-command-line
-zle -N edit-command-line
-bindkey '\ee' edit-command-line
+#--------------------
+# 入力するコマンドをエディタで編集する
+#--------------------
+# シンプルにzshの既存コマンドを利用するパターン
+# この設定では、vimが起動する。
+# 起動にはnvimを利用したいが、Globalのeditorをnvimに設定するとClaude CodeのCtrl-gコマンドでの入力時に問題が発生する
+# グローバルのエディタ設定ではなく、今回のshell編集時のみnvimを利用するように次のカスタム設定を採用する
+#autoload -Uz edit-command-line
+#zle -N edit-command-line
+#bindkey '\ee' edit-command-line
+
+#
+edit-with-nvim() {
+    local tmp=${TMPPREFIX:-/tmp/zsh}editcmd-$RANDOM
+    # 現在のBUFFERを一時ファイルへ
+    print -r -- "$BUFFER" >! "$tmp"
+
+    # 画面をクリアして外部エディタに切り替え
+    zle -I
+    # 入力中のバッファは一旦空に（任意：残しても良い）
+    BUFFER=
+
+    # nvim で編集（終了を待つ）
+    nvim "$tmp"
+
+    # 編集内容をBUFFERに反映
+    if [[ -r "$tmp" ]]; then
+        BUFFER=$(<"$tmp")
+        CURSOR=${#BUFFER}
+    fi
+
+    # 後始末
+    rm -f -- "$tmp"
+}
+
+zle -N edit-with-nvim
+bindkey '\ee' edit-with-nvim
 
 # ghqとの連携。ghqの管理化にあるリポジトリを一覧表示する。ctrl - ]にバインド。
 function peco-src () {
