@@ -2,7 +2,6 @@
 
 ## Conversation Guidelines
 * 常に日本語で会話する
-* 全てのTODO完了またはユーザー のアクションが必要な際は最後に一度だけ `afplay /System/Library/Sounds/Sosumi.aiff` コマンドを実行して通知する
 
 ## 回答生成時に気をつけること
 
