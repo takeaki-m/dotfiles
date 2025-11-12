@@ -10,7 +10,7 @@
       "Bash(cat:*)",
       "Bash(gh pr view:*)",
       "Bash(gh pr diff:*)",
-      "Read(*)"
+      "Read(./**)"
     ],
     "deny": [
       "Bash(.*\\.ssh/.*:*)",
@@ -26,31 +26,37 @@
       "Bash(git merge:*)",
       "Bash(git push:*)",
       "Bash(git rebase:*)",
-      "Bash(git rebase:*)",
-      "Bash(git reset:*)",
       "Bash(git reset:*)",
       "Bash(git tag -d:*)",
+      "Bash(wget:*)",
+      "Bash(ssh:*)",
+      "Bash(scp:*)",
+      "Bash(sftp:*)",
+      "Bash(sudo:*)",
+      "Bash(rm -rf:*)",
+      "Bash(rm -r:*)",
+      "Bash(rm -f:*)",
+      "Bash(rm -[rf].:*)",
       "Bash(kill -9:*)",
-      "Bash(mkfs*:*)",
+      "Bash(mkfs:*:*)",
       "Bash(poweroff:*)",
       "Bash(printenv:*)",
       "Bash(reboot:*)",
-      "Bash(rm -[rf].*)",
-      "Bash(rm -rf:*)",
-      "Bash(scp:*)",
-      "Bash(sftp:*)",
       "Bash(shutdown:*)",
-      "Bash(ssh:*)",
       "Bash(su:*)",
-      "Bash(sudo:*)",
-      "Bash(wget:*)",
-      "Read(.env*)",
+      "Read(.env)",
       "Read(.env.*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
       "Read(id_ed25519)",
       "Read(id_rsa)",
       "Read(~/.ssh/*)",
+      "Read(~/.ssh/**)",
       "Write(.env*)",
-      "Write(~/.ssh/*)"
+      "Write(~/.ssh/*)",
+      "Write(~/.ssh/**)"
+    ]
+  },
   "hooks": {
     "Notification": [
       {
