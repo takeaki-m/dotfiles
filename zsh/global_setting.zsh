@@ -240,6 +240,8 @@ alias vimset='cd $HOME/settings/dotfiles/nvim/ && vim .'
 # set xterm to TERM for older terminals that does not support xterm-256color
 alias term='export TERM=xterm; echo $TERM'
 
+alias psql='psql-17'
+
 nvim(){
     if check_os_theme_is_dark; then
         command nvim -c "colorscheme kanagawa-dragon" "$@"
@@ -274,6 +276,7 @@ alias reader='/usr/bin/open -a Safari `pbpaste`'
 
 alias dotfiles='cd ~/settings/dotfiles && vim .'
 alias lg='lazygit'
+alias pn='pnpm'
 
 lazygit(){
   if check_os_theme_is_dark; then
