@@ -276,11 +276,11 @@ alias dotfiles='cd ~/settings/dotfiles && vim .'
 alias lg='lazygit'
 
 lazygit(){
-    if check_os_theme_is_dark; then
-       command lazygit --use-config-file="$HOME/Library/Application Support/lazygit/theme_dark.yml"
-    else
-       command lazygit --use-config-file="$HOME/Library/Application Support/lazygit/theme_light.yml"
-    fi
+  if check_os_theme_is_dark; then
+     command lazygit --use-config-file="$HOME/Library/Application Support/lazygit/config.yml,$HOME/Library/Application Support/lazygit/theme_dark.yml"
+  else
+     command lazygit --use-config-file="$HOME/Library/Application Support/lazygit/config.yml,$HOME/Library/Application Support/lazygit/theme_light.yml"
+  fi
 }
 
 # nvim
