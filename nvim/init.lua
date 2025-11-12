@@ -209,6 +209,7 @@ require("telescope").setup({
     },
   },
 })
+require("telescope").load_extension("aerial")
 
 require('Comment').setup()
 require('ibl').setup()
@@ -232,7 +233,23 @@ require("obsidian").setup({
   },
 })
 
+local function nvim_tree_attach(bufnr)
+  local api = require "nvim-tree.api"
+
+  local function opts(desc)
+    return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+  end
+
+  -- default mappings
+  api.config.mappings.default_on_attach(bufnr)
+
+  -- custom mappings
+  vim.keymap.set('n', 'l', api.node.open.edit,  opts('Open'))
+  vim.keymap.set('n', 'h', api.node.open.edit, opts('Close'))
+end
+
 require("nvim-tree").setup({
+  on_attach = nvim_tree_attach,
   -- git 統合を有効化
   git = {
     enable = true,  -- git関連の情報を有効にする
@@ -248,6 +265,7 @@ require("nvim-tree").setup({
       "^\\.DS_Store",
     }
   },
+  
   -- レンダラー設定
   renderer = {
     icons = {
@@ -258,6 +276,7 @@ require("nvim-tree").setup({
         git = true,
       },
     },
+    indent_width = 1,
   },
   -- ファイル操作の設定
   actions = {
