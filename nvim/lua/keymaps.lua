@@ -43,6 +43,9 @@ keymap('n', '<Leader>fg', ':Telescope live_grep<CR>', opts)
 keymap('n', '<Leader>fb', ':Telescope buffers<CR>', opts)
 
 -- telescope find buffers
+keymap('n', '<Leader>b', ':Telescope buffers<CR>', opts)
+
+-- telescope find buffers
 keymap('n', '<Leader>fb', ':Telescope buffers<CR>', opts)
 -- telescope select registers
 keymap('n', '<Leader>fr', ':Telescope registers<CR>', opts)
