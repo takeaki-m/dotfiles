@@ -74,12 +74,12 @@ today(){
 
     if [[ -f "$file" ]]; then
         # 既存ならそのファイルを普通に開く
-        vim $file \
+        nvim $file \
           -c "split $yesterday_note" \
           -c "split $monthly_note"
     else
         # 未作成なら nvim を開いて専用コマンドを実行
-        vim $monthly_note \
+        nvim $monthly_note \
           -c "ObsidianToday" \
           -c "split $yesterday_note"
     fi
@@ -136,21 +136,21 @@ ghdev() {
   echo "実行するコマンドは以下で良いですか？">&2
   local cmd=( gh issue develop $issue_no --name $branch )
   echo "$cmd" >&2
- select answer in yes no
-  do
-    case $answer in
-      yes)
-        # yesが選択されたらループを抜ける先に進む
-        break
-        ;;
-      no)
-        echo "コマンドの実行を終了します">&2
-        return 1
-        ;;
-      *)
-        echo "無効な選択です。yesかnoの番号を入力してください">&2
-        ;;
-    esac
+  select answer in yes no
+    do
+      case $answer in
+        yes)
+          # yesが選択されたらループを抜ける先に進む
+          break
+          ;;
+        no)
+          echo "コマンドの実行を終了します">&2
+          return 1
+          ;;
+        *)
+          echo "無効な選択です。yesかnoの番号を入力してください">&2
+          ;;
+      esac
   done
   echo "ブランチを作成します" >&2
   if ! "${cmd[@]}" 1>&2; then
