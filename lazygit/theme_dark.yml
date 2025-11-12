@@ -1,0 +1,49 @@
+gui:
+  theme:
+    activeBorderColor:
+      - '#a7c080'  # 緑系（フォレストの葉）
+      - bold
+    inactiveBorderColor:
+      - '#7a8478'  # グレイッシュグリーン
+    optionsTextColor:
+      - '#7fbbb3'  # アクアブルー
+    selectedLineBgColor:
+      - '#3d484d'  # 暗めの背景（選択時）
+    cherryPickedCommitBgColor:
+      - '#475258'  # やや明るいグレー
+    cherryPickedCommitFgColor:
+      - '#a7c080'  # 緑系
+    unstagedChangesColor:
+      - '#e67e80'  # 柔らかい赤（エラー/変更）
+    defaultFgColor:
+      - '#d3c6aa'  # クリーム系の文字色
+    searchingActiveBorderColor:
+      - '#dbbc7f'  # 黄色系（検索時の強調）
+
+  authorColors:
+    '*': '#7fbbb3'  # アクアブルー
+ 
+#gui:
+#  theme:
+#    activeBorderColor:
+#      - '#8caaee'
+#      - bold
+#    inactiveBorderColor:
+#      - '#a5adce'
+#    optionsTextColor:
+#      - '#8caaee'
+#    selectedLineBgColor:
+#      - '#414559'
+#    cherryPickedCommitBgColor:
+#      - '#51576d'
+#    cherryPickedCommitFgColor:
+#      - '#8caaee'
+#    unstagedChangesColor:
+#      - '#e78284'
+#    defaultFgColor:
+#      - '#c6d0f5'
+#    searchingActiveBorderColor:
+#      - '#e5c890'
+#
+#  authorColors:
+#    '*': '#babbf1'

@@ -1,0 +1,24 @@
+gui:
+  theme:
+    activeBorderColor:
+      - '#8da101'  # 深緑（アクティブな状態）
+      - bold
+    inactiveBorderColor:
+      - '#a6b0a0'  # 明るいグレイッシュグリーン
+    optionsTextColor:
+      - '#3a94c5'  # 落ち着いた青
+    selectedLineBgColor:
+      - '#efebd4'  # ベージュ系の明るい背景
+    cherryPickedCommitBgColor:
+      - '#e6e2cc'  # やや暗めのベージュ
+    cherryPickedCommitFgColor:
+      - '#8da101'  # 深緑
+    unstagedChangesColor:
+      - '#f85552'  # 明るい赤（変更箇所）
+    defaultFgColor:
+      - '#5c6a72'  # ダークグレー（文字）
+    searchingActiveBorderColor:
+      - '#dfa000'  # ゴールド系（検索時）
+
+  authorColors:
+    '*': '#3a94c5'  # 落ち着いた青
