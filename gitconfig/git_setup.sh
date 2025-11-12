@@ -12,7 +12,8 @@ GIT_SET_PATH=$HOME/settings/dotfiles/gitconfig
 
 echo "### start .gitconfig settings ###"
 git config --global --add include.path "$GIT_SET_PATH/.gitconfig_shared"
-git config --global --add include.path "$GIT_SET_PATH/.delta_config"
+# 差分表示が見にくいためコメントアウトする
+#git config --global --add include.path "$GIT_SET_PATH/.delta_config"
 
 echo "### start .gitignore settings ###"
 git config --global core.excludesfile $GIT_SET_PATH/.gitignore_global
