@@ -41,6 +41,7 @@ require('pckr').add {
   'numToStr/Comment.nvim',
   'lukas-reineke/indent-blankline.nvim',
   "stevearc/aerial.nvim",
+  'linrongbin16/gitlinker.nvim',
   -- filer
   {
     'nvim-tree/nvim-tree.lua',
@@ -305,3 +306,4 @@ require("nvim-tree").setup({
 })
 require("nvim-treesitter").setup()
 require("aerial").setup()
+require("gitlinker").setup()
