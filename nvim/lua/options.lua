@@ -50,6 +50,8 @@ local options = {
   -- 他のvimの機能には影響なし
   ttimeout = true,
   ttimeoutlen = 10,
+  -- set mac dictonary
+  dictionary = "/usr/share/dict/words" 
 }
 -- active all options
 for k, v in pairs(options) do
