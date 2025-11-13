@@ -42,6 +42,16 @@ require('pckr').add {
   'lukas-reineke/indent-blankline.nvim',
   "stevearc/aerial.nvim",
   'linrongbin16/gitlinker.nvim',
+  {
+    "pwntester/octo.nvim",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      -- OR "ibhagwan/fzf-lua",
+      -- OR "folke/snacks.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
   -- filer
   {
     'nvim-tree/nvim-tree.lua',
@@ -288,3 +298,7 @@ require("nvim-tree").setup({
 require("nvim-treesitter").setup()
 require("aerial").setup()
 require("gitlinker").setup()
+require("octo").setup({
+  picker = "telescope",
+})
+

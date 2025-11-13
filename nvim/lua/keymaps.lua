@@ -152,3 +152,13 @@ keymap('n', '<Leader>rp', ':lua PasteCommandOutput("readlink -f " .. vim.fn.expa
 --})
 -- nvim-markdownのCtrl-i,Tabで見出しを開閉する動作を無効化
 vim.cmd [[map <Plug> <Plug>Markdown_Fold]]
+
+-- Octo
+-- keymaps
+vim.keymap.set("n", "<leader>oi", "<CMD>Octo issue list<CR>", { desc = "List GitHub Issues" })
+vim.keymap.set("n", "<leader>op", "<CMD>Octo pr list<CR>", { desc = "List GitHub PullRequests" })
+vim.keymap.set("n", "<leader>od", "<CMD>Octo discussion list<CR>", { desc = "List GitHub Discussions" })
+vim.keymap.set("n", "<leader>on", "<CMD>Octo notification list<CR>", { desc = "List GitHub Notifications" })
+vim.keymap.set("n", "<leader>os", function()
+  require("octo.utils").create_base_search_command({ include_current_repo = true })
+end, { desc = "Search GitHub" })
