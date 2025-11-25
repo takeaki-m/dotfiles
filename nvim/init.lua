@@ -243,6 +243,18 @@ require("obsidian").setup({
   templates = {
     folder = "template",
   },
+  disable_frontmatter = function (path)
+    -- path: 現在書き込もうとするファイルのパス
+    -- zennに連携するディレクトでは、frontmatterを無効化する
+    local excluded_dir = vim.fs.normalize("~/Documents/obsidian/blogs/articles")
+    -- ファイルパスも標準化
+    path = vim.fs.normalize(path)
+
+    if path:sub(1, #excluded_dir) == excluded_dir then
+      return false -- frontmatterの自動設定を無効化
+    end
+      return true -- frontmatter無効化以外のファイルでは、frontmatterを有効化
+  end,
 })
 
 local function nvim_tree_attach(bufnr)
