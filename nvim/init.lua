@@ -100,6 +100,7 @@ require('pckr').add {
   "folke/tokyonight.nvim",
   "rebelot/kanagawa.nvim",
   "EdenEast/nightfox.nvim",
+  "neanias/everforest-nvim",
 }
 
 require("claudecode").setup()
