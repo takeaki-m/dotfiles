@@ -72,16 +72,26 @@ today(){
     # 失敗時には中断する
     cd $obsidian_home || return 1
 
+
+
+    if check_os_theme_is_dark; then
+        local colorscheme="tokyonight-night"
+    else
+        local colorscheme="tokyonight-day"
+    fi
+
     if [[ -f "$file" ]]; then
         # 既存ならそのファイルを普通に開く
-        nvim $file \
+        command nvim $file \
           -c "split $yesterday_note" \
-          -c "split $monthly_note"
+          -c "split $monthly_note" \
+          -c "colorscheme $colorscheme"
     else
         # 未作成なら nvim を開いて専用コマンドを実行
-        nvim $monthly_note \
+        command nvim $monthly_note \
           -c "ObsidianToday" \
-          -c "split $yesterday_note"
+          -c "split $yesterday_note" \
+          -c "colorscheme $colorscheme"
     fi
 }
 
@@ -244,7 +254,7 @@ alias psql='psql-17'
 
 nvim(){
     if check_os_theme_is_dark; then
-        command nvim -c "colorscheme kanagawa-dragon" "$@"
+        command nvim -c "colorscheme tokyonight-night" "$@"
     else
         command nvim -c "colorscheme dayfox" "$@"
     fi
@@ -479,15 +489,16 @@ edit-with-nvim() {
 zle -N edit-with-nvim
 bindkey '\ee' edit-with-nvim
 
+# 利用しないためコメントアウト
 # ghqとの連携。ghqの管理化にあるリポジトリを一覧表示する。ctrl - ]にバインド。
-function peco-src () {
-  local selected_dir=$(ghq list -p | peco --prompt="repositories >" --query "$LBUFFER")
-  if [ -n "$selected_dir" ]; then
-    BUFFER="cd ${selected_dir}"
-    zle accept-line
-  fi
-  zle clear-screen
-}
-zle -N peco-src
-bindkey '^]' peco-src
+#function peco-src () {
+#  local selected_dir=$(ghq list -p | peco --prompt="repositories >" --query "$LBUFFER")
+#  if [ -n "$selected_dir" ]; then
+#    BUFFER="cd ${selected_dir}"
+#    zle accept-line
+#  fi
+#  zle clear-screen
+#}
+#zle -N peco-src
+#bindkey '^]' peco-src
 
