@@ -161,6 +161,7 @@ vim.lsp.enable('ts_ls')
 vim.lsp.enable('biome')
 vim.lsp.enable('gh_actions_ls')
 vim.lsp.enable('tailwindcss')
+vim.lsp.enable('postgres_lsp')
 -- lua language severに対して、'vim'はglobal変数なので警告しないように設定
 -- lua language serverは通常のLua環境を前提としているため、vimという変数を未定義として警告するから
 vim.lsp.config.lua_ls = {
