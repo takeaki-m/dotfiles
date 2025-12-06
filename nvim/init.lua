@@ -254,9 +254,9 @@ require("obsidian").setup({
     path = vim.fs.normalize(path)
 
     if path:sub(1, #excluded_dir) == excluded_dir then
-      return false -- frontmatterの自動設定を無効化
+      return true -- Zenn記事ではfrontmatterを無効化
     end
-      return true -- frontmatter無効化以外のファイルでは、frontmatterを有効化
+      return false -- それ以外のファイルではfrontmatterを有効化
   end,
 })
 
