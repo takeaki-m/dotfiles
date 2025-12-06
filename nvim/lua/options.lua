@@ -51,7 +51,12 @@ local options = {
   ttimeout = true,
   ttimeoutlen = 10,
   -- set mac dictonary
-  dictionary = "/usr/share/dict/words" 
+  dictionary = "/usr/share/dict/words",
+  -- folder
+  foldexpr = "v:lua.vim.treesitter.foldexpr()",
+  foldlevel = 99,
+  foldmethod = "expr",
+  foldtext = "",
 }
 -- active all options
 for k, v in pairs(options) do
