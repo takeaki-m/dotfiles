@@ -145,6 +145,7 @@ require("mason-lspconfig").setup({
     'biome',
     'gh_actions_ls',
     'tailwindcss',
+    'yamlls',
   }
 })
 
