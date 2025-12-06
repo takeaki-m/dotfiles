@@ -278,6 +278,9 @@ end
 require("nvim-tree").setup({
   on_attach = nvim_tree_attach,
   -- git 統合を有効化
+  view = {
+    width = 50,
+  },
   git = {
     enable = true,  -- git関連の情報を有効にする
     ignore = false, --.gitignore対象のファイルも表示する
@@ -292,7 +295,6 @@ require("nvim-tree").setup({
       "^\\.DS_Store",
     }
   },
-  
   -- レンダラー設定
   renderer = {
     icons = {
@@ -305,6 +307,7 @@ require("nvim-tree").setup({
     },
     indent_width = 1,
   },
+
   -- ファイル操作の設定
   actions = {
     open_file = {
