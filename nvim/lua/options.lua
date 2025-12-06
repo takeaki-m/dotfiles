@@ -125,3 +125,15 @@ vim.api.nvim_create_autocmd("FileType", {
     pcall(vim.treesitter.start)
   end,
 })
+
+-- nvim-markdownプラグインがconceallevel=2を設定した後に上書きする
+-- `````` をmarkdownファイルを開いた際にも表示するため
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    -- コードブロックの```を表示するため、conceallevelを0に設定
+    -- 0に設定するとobisidianからwarningが出るため1に設定
+    vim.opt_local.conceallevel = 1
+  end,
+})
+
