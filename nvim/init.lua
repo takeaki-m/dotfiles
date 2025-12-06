@@ -227,11 +227,13 @@ require("telescope").load_extension("aerial")
 require('Comment').setup()
 require('ibl').setup()
 
+local obsidian_valut_path = "/Users/take/Library/Mobile Documents/iCloud~md~obsidian/Documents/obsidian"
+
 require("obsidian").setup({
   workspaces = {
     {
       name = "personal",
-      path = "~/Documents/obsidian",
+      path = obsidian_valut_path
     }
   },
   overrides = {
@@ -239,7 +241,7 @@ require("obsidian").setup({
   },
   daily_notes = {
     folder = "daily",
-    template = '~/Documents/obsidian/template/frontmatter.md'
+    template = obsidian_valut_path .. '/template/frontmatter.md'
   },
   templates = {
     folder = "template",
@@ -247,7 +249,7 @@ require("obsidian").setup({
   disable_frontmatter = function (path)
     -- path: 現在書き込もうとするファイルのパス
     -- zennに連携するディレクトでは、frontmatterを無効化する
-    local excluded_dir = vim.fs.normalize("~/Documents/obsidian/blogs/articles")
+    local excluded_dir = vim.fs.normalize(obsidian_valut_path .. "/blogs/articles")
     -- ファイルパスも標準化
     path = vim.fs.normalize(path)
 
