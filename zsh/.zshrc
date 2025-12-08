@@ -41,6 +41,9 @@ autoload -Uz compinit
 compinit
 # End of Docker CLI completions
 
+# Added by Antigravity
+export PATH="/Users/take/.antigravity/antigravity/bin:$PATH"
+
 # volta
 export VOLTA_HOME=$HOME/.volta
 export PATH="$VOLTA_HOME/bin:$PATH"
