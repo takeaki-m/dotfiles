@@ -297,9 +297,8 @@ lazygit(){
 }
 
 # nvim
-alias work='cd ~/work/aim/'
-alias aim='vim ~/work/aim/aim-management -c "cd ~/work/aim/aim-management"'
-alias daily='vim ~/Documents/obsidian'
+alias work="cd ~/work/aim/aim-suite"
+alias aim='vim ~/work/aim/aim-suite -c "cd ~/work/aim/aim-suite"'
 
 # github cli
 alias ghie='gh issue edit $(gh issue list | fzf | awk '\''{print $1}'\'')'
