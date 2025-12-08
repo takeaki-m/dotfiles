@@ -256,7 +256,7 @@ nvim(){
     if check_os_theme_is_dark; then
         command nvim -c "colorscheme tokyonight-night" "$@"
     else
-        command nvim -c "colorscheme dayfox" "$@"
+        command nvim -c "colorscheme tokyonight-day" "$@"
     fi
 }
 
