@@ -60,8 +60,8 @@ memo(){
 }
 
 today(){
-    local dir="$HOME/Documents/obsidian/daily"
-    local obsidian_home="$HOME/Documents/obsidian"
+    local obsidian_home="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/obsidian"
+    local dir="$obsidian_home/daily"
     mkdir -p "$dir" || return 1
 
     local yesterday_note="$dir/$(date -v-1d +%Y-%m-%d).md"
