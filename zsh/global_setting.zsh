@@ -134,6 +134,17 @@ zenn() {
   eval "$cmd"
 }
 
+# gh commandの出力がdark modeとlight modeで背景の色と同色になってしまうため被らないように設定
+# https://github.com/charmbracelet/glamour#styles
+# https://github.com/cli/cli/issues/8292?utm_source=chatgpt.com
+# NOTE: 以下の設定ではinteractiveコマンドが利用できないためコメントアウトをする(gh pr newで起動できない)
+gh() {
+  if check_os_theme_is_dark; then
+    GLAMOUR_STYLE=dark command gh "$@"
+  else
+    GLAMOUR_STYLE=light command gh "$@"
+  fi
+}
 ghdev() {
   echo "GitHub issueと関連付けてブランチを作成します">&2
   echo "Issue を選択してください">&2
