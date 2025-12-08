@@ -72,8 +72,6 @@ today(){
     # 失敗時には中断する
     cd $obsidian_home || return 1
 
-
-
     if check_os_theme_is_dark; then
         local colorscheme="tokyonight-night"
     else
@@ -176,8 +174,8 @@ gwc() {
     local worktree_path="../$branch_with_hyphen"
     git fetch origin $branch
     git worktree add "$worktree_path" "$branch"
+    cd "$worktree_path"
 }
-
 
 # 入力補完
 autoload -Uz compinit && compinit
