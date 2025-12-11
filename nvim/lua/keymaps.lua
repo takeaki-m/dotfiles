@@ -50,7 +50,7 @@ keymap('n', '<Leader>fb', ':Telescope buffers<CR>', opts)
 -- telescope select registers
 keymap('n', '<Leader>fr', ':Telescope registers<CR>', opts)
 
-keymap('n', '<C-n>', ':NvimTreeToggle<CR>', opts)
+keymap('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
 
 -- 補完表示時のEnterで改行をしない
 keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', { expr = true, noremap = true })
