@@ -21,6 +21,14 @@ local opts = {
 
 local keymap = vim.keymap.set
 
+-- ヘルパー関数: コマンド実行後にフォーカス
+local function with_focus(cmd)
+  return function ()
+    vim.cmd(cmd)
+    vim.cmd('ClaudeCodeFocus')
+  end
+end
+
 -- AI/Claude Code キーマップ
 keymap('n', '<leader>a', '', vim.tbl_extend('force', opts, { desc = 'AI/Claude Code' }))
 keymap('n', '<leader>ac', '<cmd>ClaudeCode<cr>', vim.tbl_extend('force', opts, { desc = 'Toggle Claude' }))
