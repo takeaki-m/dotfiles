@@ -31,6 +31,7 @@ end
 
 -- AI/Claude Code キーマップ
 keymap('n', '<leader>a', '', vim.tbl_extend('force', opts, { desc = 'AI/Claude Code' }))
+-- 基本的な操作
 keymap('n', '<leader>ac', '<cmd>ClaudeCode<cr>', vim.tbl_extend('force', opts, { desc = 'Toggle Claude' }))
 keymap('n', '<leader>af', '<cmd>ClaudeCodeFocus<cr>', vim.tbl_extend('force', opts, { desc = 'Focus Claude' }))
 keymap('n', '<leader>ar', '<cmd>ClaudeCode --resume<cr>', vim.tbl_extend('force', opts, { desc = 'Resume Claude' }))
@@ -71,7 +72,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Diff管理
-keymap('n', '<leader>aa', '<cmd>ClaudeCodeDiffAccept<cr>', vim.tbl_extend('force', opts, { desc = 'Accept diff' }))
-keymap('n', '<leader>ad', '<cmd>ClaudeCodeDiffDeny<cr>', vim.tbl_extend('force', opts, { desc = 'Deny diff' }))
+-- Diff管理 (dy=yes/accept, dn=no/deny)
+keymap('n', '<leader>dy', '<cmd>ClaudeCodeDiffAccept<cr>', vim.tbl_extend('force', opts, { desc = 'Accept diff (yes)' }))
+keymap('n', '<leader>dn', '<cmd>ClaudeCodeDiffDeny<cr>', vim.tbl_extend('force', opts, { desc = 'Deny diff (no)' }))
 
