@@ -270,8 +270,8 @@ local function nvim_tree_attach(bufnr)
   -- default mappings
   api.config.mappings.default_on_attach(bufnr)
 
-  -- custom mappings
-  vim.keymap.set('n', 'l', api.node.open.edit,  opts('Open'))
+  -- nvim-tree固有のcustom mappings
+  vim.keymap.set('n', 'l', api.node.open.edit, opts('Open'))
   vim.keymap.set('n', 'h', api.node.open.edit, opts('Close'))
 end
 
