@@ -1,10 +1,5 @@
 gui:
   nerdFontsVersion: "3"
-git:
-  pagers:
-    - colorArg: always
-      pager: delta --paging=never --syntax-theme=GitHub
-      #pager: delta --paging=never --true-color=auto --dark --side-by-side --line-numbers --syntax-theme=Dracula --width=variable --navigate
 customCommands:
   - key: "c"
     context: "global"
