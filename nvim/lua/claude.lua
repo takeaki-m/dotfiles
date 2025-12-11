@@ -36,15 +36,38 @@ keymap('n', '<leader>af', '<cmd>ClaudeCodeFocus<cr>', vim.tbl_extend('force', op
 keymap('n', '<leader>ar', '<cmd>ClaudeCode --resume<cr>', vim.tbl_extend('force', opts, { desc = 'Resume Claude' }))
 keymap('n', '<leader>aC', '<cmd>ClaudeCode --continue<cr>', vim.tbl_extend('force', opts, { desc = 'Continue Claude' }))
 keymap('n', '<leader>am', '<cmd>ClaudeCodeSelectModel<cr>', vim.tbl_extend('force', opts, { desc = 'Select Claude model' }))
-keymap('n', '<leader>ab', '<cmd>ClaudeCodeAdd %<cr>', vim.tbl_extend('force', opts, { desc = 'Add current buffer' }))
-keymap('v', '<leader>as', '<cmd>ClaudeCodeSend<cr>', vim.tbl_extend('force', opts, { desc = 'Send to Claude' }))
+-- コンテキスト送信(送信後にフォーカス)
+keymap('n', '<leader>ab', with_focus('ClaudeCodeAdd %'), vim.tbl_extend('force', opts, { desc = 'Add current buffer' }))
+-- ビジュアルモードでは選択範囲を保持するため、feedkeysを使用
+-- with_focus関数を利用したことで、visual modeのコンテキストを失っている可能性がある。
+--そのため以下のようなシンプルな設定では、visualモードの選択範囲を認識できていない可能性がある
+-- keymap('v', '<leader>as', with_focus('ClaudeCodeSend'), vim.tbl_extend('force', opts, { desc = 'Send to Claude' }))
+keymap('v', '<leader>as', function()
+  -- 以下はvisual modeから実行することで自動的に`:'<,>ClaudeCodeSend`として解釈される
+  vim.api.nvim_feedkeys(':ClaudeCodeSend\r', 'nx', true)
+  vim.schedule(function()
+    vim.cmd('ClaudeCodeFocus')
+  end)
+end, vim.tbl_extend('force', opts, { desc = 'Send to Claude' }))
+-- 現在行を選択してClaudeに送信
+-- feedkeysの第3引数をtrueにすると、キューを即座に処理する
+keymap('n', '<leader>al', function ()
+  -- feedkeysの第3引数true - キー入力を即座に処理
+  -- 'nx'フラグ - xが即時実行を指示
+  vim.api.nvim_feedkeys('V:ClaudeCodeSend\r', 'nx', true)
+  -- vim.schedule - 固定時間の遅延ではなく、次のイベントループで実行
+  vim.schedule(function()
+    vim.cmd('ClaudeCodeFocus')
+  end)
+end, vim.tbl_extend('force', opts, { desc = 'Send line and focus' }))
+
 
 -- ファイルツリー用の特別なキーマップ設定
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "NvimTree", "neo-tree", "oil", "minifiles" },
   callback = function()
-    vim.api.nvim_buf_set_keymap(0, 'n', '<leader>as', '<cmd>ClaudeCodeTreeAdd<cr>',
-    vim.tbl_extend('force', opts, { desc = 'Add file' }))
+    keymap('n', '<leader>as', with_focus('ClaudeCodeTreeAdd'),
+      vim.tbl_extend('force', opts, { desc = 'Add file' }))
   end,
 })
 
