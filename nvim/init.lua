@@ -329,4 +329,29 @@ require("gitlinker").setup()
 require("octo").setup({
   picker = "telescope",
 })
+require('gitsigns').setup {
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
 
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+
+    -- Navigation（移動用の設定）
+    map('n', ']c', function()
+      if vim.wo.diff then return ']c' end
+      vim.schedule(function() gs.next_hunk() end)
+      return '<Ignore>'
+    end, {expr=true, desc = "Next git hunk"})
+
+    map('n', '[c', function()
+      if vim.wo.diff then return '[c' end
+      vim.schedule(function() gs.prev_hunk() end)
+      return '<Ignore>'
+    end, {expr=true, desc = "Previous git hunk"})
+    -- 対象行の変更内容をフロートウィンドウで見る
+    map('n', '<leader>hp', gs.preview_hunk, { desc = "Preview git hunk" })
+  end
+}
