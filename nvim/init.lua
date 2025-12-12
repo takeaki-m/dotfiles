@@ -10,6 +10,7 @@ vim.loader.enable()
 -- activate pkcr vim
 local function bootstrap_pckr()
   local pckr_path = vim.fn.stdpath("data") .. "/pckr/pckr.nvim"
+  ---@diagnostic disable-next-line: undefined-field
   if not (vim.uv or vim.loop).fs_stat(pckr_path) then
     vim.fn.system({
       'git',
@@ -208,6 +209,13 @@ require("telescope").setup({
     -- 検索対象から除外するファイル
     file_ignore_patterns = {
       "%.git/",
+    },
+    mappings = {
+      i = {
+        -- Insert Mode で <C-c> を押すと、ラグなしで即座に閉じる
+        -- defaultのEscだと、タイプしてから閉じるまで時間がかかるため
+        ["<C-c>"] = "close",
+      }
     },
   },
   -- 隠しファイル表示する
