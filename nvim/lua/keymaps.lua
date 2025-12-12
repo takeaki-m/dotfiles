@@ -155,7 +155,8 @@ vim.cmd [[map <Plug> <Plug>Markdown_Fold]]
 
 -- Octo
 -- keymaps
-vim.keymap.set("n", "<leader>oi", "<CMD>Octo issue list<CR>", { desc = "List GitHub Issues" })
+vim.keymap.set("n", "<leader>oil", "<CMD>Octo issue list<CR>", { desc = "List GitHub Issues" })
+vim.keymap.set("n", "<leader>oic", "<CMD>Octo issue create<CR>", { desc = "List GitHub Issues" })
 vim.keymap.set("n", "<leader>op", "<CMD>Octo pr list<CR>", { desc = "List GitHub PullRequests" })
 vim.keymap.set("n", "<leader>od", "<CMD>Octo discussion list<CR>", { desc = "List GitHub Discussions" })
 vim.keymap.set("n", "<leader>on", "<CMD>Octo notification list<CR>", { desc = "List GitHub Notifications" })
