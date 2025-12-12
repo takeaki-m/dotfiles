@@ -148,7 +148,7 @@ gh() {
 ghdev() {
   echo "GitHub issueと関連付けてブランチを作成します">&2
   echo "Issue を選択してください">&2
-  issue_no=$(gh issue list | fzf | awk '{print $1}')
+  issue_no=$(gh issue list --limit 100 | fzf | awk '{print $1}')
   echo "選択されたIssue: $issue_no" >&2
   echo "Branch name:">&2
   read -r branch
