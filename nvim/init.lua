@@ -25,7 +25,19 @@ end
 
 bootstrap_pckr()
 
-require('pckr').add {
+-- # 背景
+-- pckr の plugin 登録を初回のみ実施するために、ローカル関数として定義する
+-- require('pckr').add {} をそのまま定義しておくと、`source %`の実行時にpluginが再登録され、pluginによっては次の警告が出るため
+-- [pckr.nvim[WARN  09:52:04] plugin.lua:195: Plugin "nvim-autopairs" is specified more than once!
+-- ※呼び出す関数は、この定義の後に存在
+--
+-- # 変更後の反映手順
+-- 一時的に初回作成のフラグをnilとして、再読み込み実施する
+-- 次のコマンドをターミナルで実行すること
+--  :lua vim.g.__pckr_initialized = nil
+--  :source %
+--  :PckrSync
+local function setup_plugins()
   require('pckr').add {
     {
       'folke/lazydev.nvim',-- luaのcompletionにnvimの設定を読み込ませる
@@ -357,6 +369,13 @@ require('pckr').add {
     "EdenEast/nightfox.nvim",
     "neanias/everforest-nvim",
   }
+end
+
+-- 初回実行時のみ plugin のinstallを呼び出す関数
+if not vim.g.__pckr_initialized then
+  setup_plugins();
+  vim.g.__pckr_initialized = true;
+end
 
 -- colorschemaの設定は初期化後に次に定義する必要あり。
 require("colorscheme")
