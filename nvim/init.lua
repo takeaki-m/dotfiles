@@ -273,6 +273,8 @@ local function setup_plugins()
               "^\\.idea",
               "^\\.vscode",
               "^\\.DS_Store",
+              "^\\.git.nosync",
+              "^\\.obsidian",
             }
           },
           -- レンダラー設定
