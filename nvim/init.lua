@@ -313,7 +313,16 @@ local function setup_plugins()
       "coder/claudecode.nvim",
       requires = { "folke/snacks.nvim" },
       config = function()
-        require("claudecode").setup()
+        require("claudecode").setup({
+          -- Claude Codeの自動追跡により、viausl modeの範囲選択=>Shift + sの削除、で接続切断が起きるため、falseに設定
+          -- 問題の流れ
+	        -- 1. 選択範囲が変更/削除される
+          -- 2. プラグインが選択情報をWebSocket経由で送信しようとする
+          -- 3. この通信処理がブロッキングになり、nvimが一時停止
+          -- 4. 古い接続がリセットされ ⁠ECONNRESET 発生
+          track_selection = false,
+          log_level = "warn",
+        })
       end,
     },
     -- obsidian
