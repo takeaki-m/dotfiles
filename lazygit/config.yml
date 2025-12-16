@@ -6,3 +6,7 @@ customCommands:
     command: "git commit -v"
     description: "Commit changes using git editor"
     output: terminal
+keybinding:
+  # カーソル移動のc-pと競合するため、以下の通りに設定
+  universal:
+   createPatchOptionsMenu: <f12>
