@@ -155,11 +155,12 @@ vim.cmd [[map <Plug> <Plug>Markdown_Fold]]
 
 -- Octo
 -- keymaps
-vim.keymap.set("n", "<leader>oil", "<CMD>Octo issue list<CR>", { desc = "List GitHub Issues" })
-vim.keymap.set("n", "<leader>oic", "<CMD>Octo issue create<CR>", { desc = "List GitHub Issues" })
-vim.keymap.set("n", "<leader>op", "<CMD>Octo pr list<CR>", { desc = "List GitHub PullRequests" })
-vim.keymap.set("n", "<leader>od", "<CMD>Octo discussion list<CR>", { desc = "List GitHub Discussions" })
-vim.keymap.set("n", "<leader>on", "<CMD>Octo notification list<CR>", { desc = "List GitHub Notifications" })
-vim.keymap.set("n", "<leader>os", function()
+-- GitHub操作を機能別に短縮（i=issue, p=PR, d=discussion, n=notification, g=GitHub）
+vim.keymap.set("n", "<leader>il", "<CMD>Octo issue list<CR>", { desc = "List GitHub Issues" })
+vim.keymap.set("n", "<leader>ic", "<CMD>Octo issue create<CR>", { desc = "Create GitHub Issue" })
+vim.keymap.set("n", "<leader>pl", "<CMD>Octo pr list<CR>", { desc = "List GitHub PullRequests" })
+vim.keymap.set("n", "<leader>dl", "<CMD>Octo discussion list<CR>", { desc = "List GitHub Discussions" })
+vim.keymap.set("n", "<leader>nl", "<CMD>Octo notification list<CR>", { desc = "List GitHub Notifications" })
+vim.keymap.set("n", "<leader>gs", function()
   require("octo.utils").create_base_search_command({ include_current_repo = true })
 end, { desc = "Search GitHub" })
