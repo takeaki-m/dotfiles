@@ -304,13 +304,11 @@ local function setup_plugins()
       requires = { "folke/snacks.nvim" },
       config = function()
         require("claudecode").setup({
-          -- Claude Codeの自動追跡により、viausl modeの範囲選択=>Shift + sの削除、で接続切断が起きるため、falseに設定
-          -- 問題の流れ
-	        -- 1. 選択範囲が変更/削除される
-          -- 2. プラグインが選択情報をWebSocket経由で送信しようとする
-          -- 3. この通信処理がブロッキングになり、nvimが一時停止
-          -- 4. 古い接続がリセットされ ⁠ECONNRESET 発生
+          -- 全体: リアルタイム選択トラッキングを無効化してカーソル遅延を回避する
+          -- 詳細: 選択送信は手動コマンド側で範囲を直接送るため、追跡は不要
           track_selection = false,
+          -- もしvisual modeの入力時の問題が続くようであれば以下のコメントアウトを解除して設定を有効化しチューニングする
+          visual_demotion_delay_ms = 100,
           log_level = "warn",
         })
       end,
@@ -433,4 +431,3 @@ cmp.setup({
     { name = "buffer" },
   })
 })
-

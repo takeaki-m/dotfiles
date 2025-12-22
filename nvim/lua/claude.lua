@@ -39,13 +39,45 @@ keymap('n', '<leader>aC', '<cmd>ClaudeCode --continue<cr>', vim.tbl_extend('forc
 keymap('n', '<leader>am', '<cmd>ClaudeCodeSelectModel<cr>', vim.tbl_extend('force', opts, { desc = 'Select Claude model' }))
 -- コンテキスト送信(送信後にフォーカス)
 keymap('n', '<leader>ab', with_focus('ClaudeCodeAdd %'), vim.tbl_extend('force', opts, { desc = 'Add current buffer' }))
--- ビジュアルモードでは選択範囲を保持するため、feedkeysを使用
--- with_focus関数を利用したことで、visual modeのコンテキストを失っている可能性がある。
---そのため以下のようなシンプルな設定では、visualモードの選択範囲を認識できていない可能性がある
--- keymap('v', '<leader>as', with_focus('ClaudeCodeSend'), vim.tbl_extend('force', opts, { desc = 'Send to Claude' }))
+-- 全体: 選択追跡を使わず範囲だけ送ってカーソル遅延を避ける
+-- 詳細: visual の marks と現在行から 0-index 行番号へ変換して送信する
+local function send_range_to_claude(start_line, end_line)
+  if not start_line or not end_line or start_line <= 0 or end_line <= 0 then
+    return
+  end
+  local file_path = vim.api.nvim_buf_get_name(0)
+  if file_path == "" then
+    return
+  end
+  local claudecode = require("claudecode")
+  claudecode.send_at_mention(file_path, start_line - 1, end_line - 1, "ClaudeCodeSend")
+end
+
+-- 全体: visual モード中でも確実に範囲を取得できるようにする
+-- 詳細: 未確定の '<' '>' ではなく固定アンカー(v)と現在カーソルから算出する
+local function get_visual_line_range()
+  local anchor = vim.fn.getpos("v")
+  if not anchor or anchor[2] == 0 then
+    return nil, nil
+  end
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local line1 = anchor[2]
+  local line2 = cursor[1]
+  if line1 <= line2 then
+    return line1, line2
+  end
+  return line2, line1
+end
+
 keymap('v', '<leader>as', function()
-  -- 以下はvisual modeから実行することで自動的に`:'<,>ClaudeCodeSend`として解釈される
-  vim.api.nvim_feedkeys(':ClaudeCodeSend\r', 'nx', true)
+  local start_line, end_line = get_visual_line_range()
+  if not start_line or not end_line then
+    local line1 = vim.fn.line("'<")
+    local line2 = vim.fn.line("'>")
+    start_line = math.min(line1, line2)
+    end_line = math.max(line1, line2)
+  end
+  send_range_to_claude(start_line, end_line)
   vim.schedule(function()
     vim.cmd('ClaudeCodeFocus')
   end)
@@ -53,10 +85,8 @@ end, vim.tbl_extend('force', opts, { desc = 'Send to Claude' }))
 -- 現在行を選択してClaudeに送信
 -- feedkeysの第3引数をtrueにすると、キューを即座に処理する
 keymap('n', '<leader>al', function ()
-  -- feedkeysの第3引数true - キー入力を即座に処理
-  -- 'nx'フラグ - xが即時実行を指示
-  vim.api.nvim_feedkeys('V:ClaudeCodeSend\r', 'nx', true)
-  -- vim.schedule - 固定時間の遅延ではなく、次のイベントループで実行
+  local line = vim.api.nvim_win_get_cursor(0)[1]
+  send_range_to_claude(line, line)
   vim.schedule(function()
     vim.cmd('ClaudeCodeFocus')
   end)
@@ -75,4 +105,3 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Diff管理 (dy=yes/accept, dn=no/deny)
 keymap('n', '<leader>dy', '<cmd>ClaudeCodeDiffAccept<cr>', vim.tbl_extend('force', opts, { desc = 'Accept diff (yes)' }))
 keymap('n', '<leader>dn', '<cmd>ClaudeCodeDiffDeny<cr>', vim.tbl_extend('force', opts, { desc = 'Deny diff (no)' }))
-
