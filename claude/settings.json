@@ -66,7 +66,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'jq -r \".title, .message\" | { read -r title; read -r message; osascript -e \"display notification \\\"$message\\\" with title \\\"$title\\\" sound name \\\"Glass\\\"\"; }'"
+            "command": "bash -c 'jq -r \".cwd, .title, .message\" | { read -r cwd; read -r title; read -r message; name=$(basename \"$cwd\"); osascript -e \"display notification \\\"$message\\\" with title \\\"$title [$name]\\\" sound name \\\"Glass\\\"\"; }'"
           }
         ]
       }
@@ -77,7 +77,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"作業が完了しました。\" with title \"Claude Code\" sound name \"Glass\"'"
+            "command": "bash -c 'jq -r \".cwd\" | xargs basename | { read -r name; osascript -e \"display notification \\\"作業が完了しました [$name]\\\" with title \\\"Claude Code\\\" sound name \\\"Glass\\\"\"; }'"
           }
         ]
       }
