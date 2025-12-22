@@ -13,6 +13,8 @@
       "Read(./**)"
     ],
     "deny": [
+      "NotebookEdit",
+      "NotebookRead",
       "Bash(.*\\.ssh/.*:*)",
       "Bash(chgrp:*)",
       "Bash(chown:*)",
