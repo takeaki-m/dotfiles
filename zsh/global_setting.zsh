@@ -186,6 +186,7 @@ gwc() {
     git fetch origin $branch
     git worktree add "$worktree_path" "$branch"
     cd "$worktree_path"
+    vim .
 }
 
 # 入力補完
