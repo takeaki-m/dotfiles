@@ -6,6 +6,11 @@ ln -s $CLAUDE_SETTINGS_FOLDER_PATH/settings.json $HOME/.claude/settings.json
 ln -s $CLAUDE_SETTINGS_FOLDER_PATH/CLAUDE.md $HOME/.claude/CLAUDE.md
 ln -s $CLAUDE_SETTINGS_FOLDER_PATH/statusline.js $HOME/.claude/statusline.js
 
+# Slash Commands
+# ディレクトリごとリンクすることで、新しいコマンドファイル追加時に
+# このスクリプトの修正が不要になる
+ln -s $CLAUDE_SETTINGS_FOLDER_PATH/commands $HOME/.claude/commands
+
 # MCP Servers
 # 以下は参考のコマンド
 # user levelで定義すると全てのプロジェクトで有効になる。
