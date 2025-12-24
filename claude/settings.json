@@ -10,7 +10,13 @@
       "Bash(cat:*)",
       "Bash(gh pr view:*)",
       "Bash(gh pr diff:*)",
-      "Read(./**)"
+      "Bash(gh issue view:*)",
+      "Read(./**)",
+      "mcp__awslabs_aws-documentation",
+      "Bash(terraform fmt -check:*)",
+      "Bash(sam validate:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm typecheck:*)"
     ],
     "deny": [
       "NotebookEdit",
