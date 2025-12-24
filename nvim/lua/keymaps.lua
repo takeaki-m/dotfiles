@@ -65,6 +65,9 @@ keymap('n', '<C-h>', '<<', opts)
 keymap('v', '<C-l>', '>gv', opts)
 keymap('v', '<C-h>', '<gv', opts)
 
+-- Snacksを利用してzoomin / zoomout
+keymap('n', '<Leader>z', ":lua Snacks.zen.zoom()<CR>", opts)
+
 -- =============================================================================
 -- ビジュアルモードで選択したテキストを検索するキーマッピング
 --
