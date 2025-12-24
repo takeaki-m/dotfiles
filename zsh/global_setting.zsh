@@ -186,7 +186,8 @@ gwc() {
     git fetch origin $branch
     git worktree add "$worktree_path" "$branch"
     cd "$worktree_path"
-    vim .
+    # nvimと指定しないとaliasの設定が効かずvimが起動される
+    nvim .
 }
 
 # 入力補完
