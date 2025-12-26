@@ -16,7 +16,13 @@
       "Bash(terraform fmt -check:*)",
       "Bash(sam validate:*)",
       "Bash(pnpm lint:*)",
-      "Bash(pnpm typecheck:*)"
+      "Bash(pnpm build:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm run lint:*)",
+      "Bash(pnpm run build:*)",
+      "Bash(pnpm run test:*)",
+      "Bash(pnpm run typecheck:*)"
     ],
     "deny": [
       "NotebookEdit",
