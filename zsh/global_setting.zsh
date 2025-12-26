@@ -190,6 +190,25 @@ gwc() {
     nvim .
 }
 
+
+# 全体: Claude Code Review を手動実行するラッパー
+# 詳細: 引数が無い場合は現在ブランチのPR番号を自動取得する
+gcr() {
+  local pr_number
+  if [[ -n "$1" ]]; then
+    pr_number="$1"
+  else
+    pr_number="$(gh pr view --json number -q .number)"
+  fi
+
+  if [[ -z "$pr_number" ]]; then
+    echo "PR番号を取得できません。引数でPR番号を指定してください。"
+    return 1
+  fi
+
+  gh workflow run "Claude Code Review" -f pr_number="$pr_number"
+}
+
 # 入力補完
 autoload -Uz compinit && compinit
 # 大文字小文字を区別しない
