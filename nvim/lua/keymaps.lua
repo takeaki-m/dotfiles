@@ -66,6 +66,22 @@ keymap('n', '<C-h>', '<<', opts)
 keymap('v', '<C-l>', '>gv', opts)
 keymap('v', '<C-h>', '<gv', opts)
 
+-- Claude Code の設定ファイルをフローティングウィンドウで開く
+-- Snacks.win を利用して、どのプロジェクトからでも同じ設定ファイルに即座にアクセス可能
+keymap('n', '<Leader>cs', function()
+  Snacks.win({
+    file = vim.fn.expand("~/.claude/settings.json"),
+    width = 0.8,
+    height = 0.8,
+    border = "rounded",
+    -- ウィンドウを閉じるためのキーマップ
+    keys = {
+      q = "close",
+      ["<Esc>"] = "close",
+    },
+  })
+end, { noremap = true, silent = true, desc = "Edit Claude settings" })
+
 -- Snacksを利用してzoomin / zoomout
 keymap('n', '<Leader>z', ":lua Snacks.zen.zoom()<CR>", opts)
 
