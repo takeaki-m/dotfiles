@@ -56,6 +56,7 @@ local function setup_plugins()
     {
       'nvim-telescope/telescope.nvim',
       config = function ()
+        local actions = require("telescope.actions")
         require("telescope").setup({
           defaults = {
             -- 検索対象から除外するファイル
@@ -66,7 +67,12 @@ local function setup_plugins()
               i = {
                 -- Insert Mode で <C-c> を押すと、ラグなしで即座に閉じる
                 -- defaultのEscだと、タイプしてから閉じるまで時間がかかるため
-                ["<C-c>"] = "close",
+                ["<C-c>"] = actions.close,
+              },
+              n = {
+                -- Insert Mode で <C-c> を押すと、ラグなしで即座に閉じる
+                -- defaultのEscだと、タイプしてから閉じるまで時間がかかるため
+                ["<C-c>"] = actions.close,
               }
             },
           },
