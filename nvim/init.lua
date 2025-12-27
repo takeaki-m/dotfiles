@@ -316,6 +316,25 @@ local function setup_plugins()
           -- もしvisual modeの入力時の問題が続くようであれば以下のコメントアウトを解除して設定を有効化しチューニングする
           visual_demotion_delay_ms = 100,
           log_level = "warn",
+          -- 全体: claude codeターミナル固有のキーマップ設定
+          -- 詳細: snacks.nvimのターミナルウィンドウオプションを通じて設定
+          -- 注意: 他の必須フィールドはプラグイン内部でデフォルト値とマージされる
+          ---@diagnostic disable-next-line: missing-fields
+          terminal = {
+            snacks_win_opts = {
+              keys = {
+                -- 全体: Control-Dを無効化して誤終了を防ぐ
+                -- 詳細: ターミナルモードでControl-Dを押すとEOFシグナルが送信されclaude codeが終了するため、
+                --       テキスト入力中の削除操作と誤って押してしまう問題を回避する
+                disable_ctrl_d = {
+                  "<C-d>",
+                  function() end,  -- 何もしない
+                  mode = "t",
+                  desc = "Disable Ctrl-D (prevent accidental close)",
+                },
+              },
+            },
+          },
         })
       end,
     },
