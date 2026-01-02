@@ -16,61 +16,55 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Save file with space + w
-keymap('n', '<Leader>w', ':w<CR>', opts)
+keymap('n', '<Leader>w', ':w<CR>', with_desc("Save file"))
 
---Esc
-keymap('i', 'jj', '<ESC>', { silent = true })
+-- Esc
+-- with_desc未使用: silent のみ必要で noremap は不要なため、opts と構造が異なる
+keymap('i', 'jj', '<ESC>', { silent = true, desc = "Escape" })
 --keymap('i', '<C-j>', '<ESC>', { silent = true })
-keymap('i', 'っj', '<ESC>', { silent = true })
+keymap('i', 'っj', '<ESC>', { silent = true, desc = "Escape (Japanese)" })
 
 -- copy buffer all pages
-keymap('n', '<Leader>y', ':%y<CR>', opts)
+keymap('n', '<Leader>y', ':%y<CR>', with_desc("Yank entire buffer"))
 -- increment and decrement
-keymap('n', '+', '<C-a>', opts)
-keymap('n', '-', '<C-x>', opts)
+keymap('n', '+', '<C-a>', with_desc("Increment number"))
+keymap('n', '-', '<C-x>', with_desc("Decrement number"))
 
 -- hilight off in two ESC times
-keymap('n', '<Esc><Esc>', ':nohlsearch<CR>', opts)
-keymap('n', '<C-j>', ':bnext<CR>', opts)
-keymap('n', '<C-k>', ':bprev<CR>', opts)
+keymap('n', '<Esc><Esc>', ':nohlsearch<CR>', with_desc("Clear search highlight"))
+keymap('n', '<C-j>', ':bnext<CR>', with_desc("Next buffer"))
+keymap('n', '<C-k>', ':bprev<CR>', with_desc("Previous buffer"))
 
-keymap('n', 'g:', 'g;', opts)
+keymap('n', 'g:', 'g;', with_desc("Go to older change"))
 
 -- terminal
-keymap('n', '<Leader>ter', ':vert botright term<CR>', opts)
-keymap('n', '<Leader>ster', ':bo term<CR>',opts)	-- 分割: :vert botright term
+keymap('n', '<Leader>ter', ':vert botright term<CR>', with_desc("Open terminal (vertical)"))
+keymap('n', '<Leader>ster', ':bo term<CR>', with_desc("Open terminal (horizontal)"))
 
 -- telescope
--- telescope find files
-keymap('n', '<Leader>ff', ':Telescope find_files<CR>', opts)
--- telescope find character
-keymap('n', '<Leader>fg', ':Telescope live_grep<CR>', opts)
--- telescope find buffers
-keymap('n', '<Leader>fb', ':Telescope buffers<CR>', opts)
+keymap('n', '<Leader>ff', ':Telescope find_files<CR>', with_desc("Find files"))
+keymap('n', '<Leader>fg', ':Telescope live_grep<CR>', with_desc("Live grep"))
+keymap('n', '<Leader>fb', ':Telescope buffers<CR>', with_desc("Find buffers"))
+keymap('n', '<Leader>b', ':Telescope buffers<CR>', with_desc("Find buffers"))
+keymap('n', '<Leader>fr', ':Telescope registers<CR>', with_desc("Select registers"))
 
--- telescope find buffers
-keymap('n', '<Leader>b', ':Telescope buffers<CR>', opts)
-
--- telescope find buffers
-keymap('n', '<Leader>fb', ':Telescope buffers<CR>', opts)
--- telescope select registers
-keymap('n', '<Leader>fr', ':Telescope registers<CR>', opts)
-
-keymap('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
-keymap('n', '<Leader>fn', ':NvimTreeFindFile<CR>', opts)
+keymap('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', with_desc("Toggle NvimTree"))
+keymap('n', '<Leader>fn', ':NvimTreeFindFile<CR>', with_desc("Find file in NvimTree"))
 
 -- 補完表示時のEnterで改行をしない
-keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', { expr = true, noremap = true })
+-- with_desc未使用: expr オプションが必要で opts と構造が異なる
+keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', { expr = true, noremap = true, desc = "Confirm completion or Enter" })
 
 -- 補完表示時の<C-n>と<C-p>の挙動を設定
-keymap('i', '<C-n>', 'pumvisible() ? "<Down>" : "<C-n>"', { expr = true, noremap = true })
-keymap('i', '<C-p>', 'pumvisible() ? "<Up>" : "<C-p>"', { expr = true, noremap = true })
+-- with_desc未使用: expr オプションが必要で opts と構造が異なる
+keymap('i', '<C-n>', 'pumvisible() ? "<Down>" : "<C-n>"', { expr = true, noremap = true, desc = "Next completion item" })
+keymap('i', '<C-p>', 'pumvisible() ? "<Up>" : "<C-p>"', { expr = true, noremap = true, desc = "Previous completion item" })
 
 ---- indent
-keymap('n', '<C-l>', '>>', opts)
-keymap('n', '<C-h>', '<<', opts)
-keymap('v', '<C-l>', '>gv', opts)
-keymap('v', '<C-h>', '<gv', opts)
+keymap('n', '<C-l>', '>>', with_desc("Indent line"))
+keymap('n', '<C-h>', '<<', with_desc("Unindent line"))
+keymap('v', '<C-l>', '>gv', with_desc("Indent selection"))
+keymap('v', '<C-h>', '<gv', with_desc("Unindent selection"))
 
 -- Claude Code の設定ファイルをフローティングウィンドウで開く
 -- Snacks.win を利用して、どのプロジェクトからでも同じ設定ファイルに即座にアクセス可能
@@ -89,7 +83,7 @@ keymap('n', '<Leader>cs', function()
 end, { noremap = true, silent = true, desc = "Edit Claude settings" })
 
 -- Snacksを利用してzoomin / zoomout
-keymap('n', '<Leader>z', ":lua Snacks.zen.zoom()<CR>", opts)
+keymap('n', '<Leader>z', ":lua Snacks.zen.zoom()<CR>", with_desc("Toggle zoom"))
 
 -- =============================================================================
 -- ビジュアルモードで選択したテキストを検索するキーマッピング
@@ -135,9 +129,9 @@ vim.cmd([[
 -- コマンドラインモードでc-n,c-pでも補完を有効にするために方向キーに割り当てる
 --keymap('c', '<C-p>', '<Up>', opts)
 --keymap('c', '<C-n>', '<Down>', opts)
-keymap("t", "<C-]>", "<C-\\><C-n>", opts)
+keymap("t", "<C-]>", "<C-\\><C-n>", with_desc("Exit terminal mode"))
 
-keymap('n', '<Leader>lg', ':LazyGit<CR>', opts)
+keymap('n', '<Leader>lg', ':LazyGit<CR>', with_desc("Open LazyGit"))
 -- move to specified line with <CR> insted of G
 -- keymap('n', '<CR>', 'G', opts)
 -- move top of file with <BS> instead of gg
@@ -151,7 +145,8 @@ keymap('n', '<Leader>lg', ':LazyGit<CR>', opts)
 --]])
 
 -- vp doesn't replace paste buffer
-keymap('x', 'p', '"_dP', { noremap = true })
+-- with_desc未使用: silent が不要なため、opts と構造が異なる
+keymap('x', 'p', '"_dP', { noremap = true, desc = "Paste without replacing register" })
 
 function PasteCommandOutput(command)
   local output = vim.fn.system(command)
@@ -161,7 +156,7 @@ function PasteCommandOutput(command)
 end
 
 keymap('n', '<Leader>rp', ':lua PasteCommandOutput("readlink -f " .. vim.fn.expand("%"))<CR>',
-  { noremap = true, silent = true })
+  with_desc("Paste absolute file path"))
 
 -- コマンドラインwindowでの動作を設定する
 --normal modeでも動作してしまい、telescopeの動作と被るためコメントアウト
