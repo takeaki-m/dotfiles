@@ -68,7 +68,8 @@ local options = {
   foldlevel = 99,
   foldlevelstart = 99,
   -- 折りたたみ状態を表す列を表示する
-  foldcolumn = "1",
+  -- 一旦表示を無しにする
+  --foldcolumn = "1",
   foldtext = "",
 }
 
