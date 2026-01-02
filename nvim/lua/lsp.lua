@@ -54,6 +54,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- バッファごとのオプション: このキーマップが現在のバッファでのみ有効であることを保証します。
     local bufopts = { noremap = true, silent = true, buffer = ctx.buf }
 
+    -- which-key.nvim で説明を表示するためのヘルパー関数
+    -- 共通オプション(bufopts)に desc を追加したテーブルを返す
+    local function with_desc(desc)
+      return vim.tbl_extend("force", bufopts, { desc = desc })
+    end
+
     -- LSP基本機能
     vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
     vim.keymap.set("n", "gf", function ()

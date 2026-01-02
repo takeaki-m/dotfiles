@@ -3,6 +3,12 @@ local opts = {
   silent = true,
 }
 
+-- which-key.nvim で説明を表示するためのヘルパー関数
+-- 共通オプション(opts)に desc を追加したテーブルを返す
+local function with_desc(desc)
+  return vim.tbl_extend("force", opts, { desc = desc })
+end
+
 local keymap = vim.keymap.set
 
 -- use space as Leader
