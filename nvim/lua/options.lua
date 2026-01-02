@@ -92,7 +92,7 @@ vim.cmd([[
 -- netrwを表示しない
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
--- show line number at terminal buffer
+-- line number at terminal buffer
 vim.api.nvim_create_autocmd("TermOpen", {
   pattern = "*",
   callback = function()
@@ -103,7 +103,8 @@ vim.api.nvim_create_autocmd("TermOpen", {
 
 -- osがdark modeかどうかを判定する
 local function is_os_dark_mode()
-  local handle = io.popen('osascript -e \'tell application "System Events" to tell appearance preferences to return dark mode\'')
+  local handle = io.popen(
+    'osascript -e \'tell application "System Events" to tell appearance preferences to return dark mode\'')
   if handle then
     local result = handle:read("*a")
     handle:close()
@@ -114,8 +115,8 @@ local function is_os_dark_mode()
 end
 
 local lazygit_theme_file = is_os_dark_mode()
-  and vim.fn.expand("$HOME/Library/Application Support/lazygit/theme_dark.yml")
-  or  vim.fn.expand("$HOME/Library/Application Support/lazygit/theme_light.yml")
+    and vim.fn.expand("$HOME/Library/Application Support/lazygit/theme_dark.yml")
+    or vim.fn.expand("$HOME/Library/Application Support/lazygit/theme_light.yml")
 local lazygit_config_file = vim.fn.expand("$HOME/Library/Application Support/lazygit/config.yml")
 vim.g.lazygit_use_custom_config_file_path = 1 -- config file path is evaluated if this value is 1
 vim.g.lazygit_config_file_path = { lazygit_theme_file, lazygit_config_file }
@@ -136,7 +137,7 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
 --開いたbufferをトリガーにして、treesitterを有効化する
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("vim-treesitter-start", {}),
-  callback = function (ctx)
+  callback = function(ctx)
     -- 必要に応じて`ctx.match`に入っているファイルタイプの値に応じて挙動を制御
     -- `pcall`でエラーを無視することでパーサーやクエリがあるかどうかを気にしなくて済む
     pcall(vim.treesitter.start)
