@@ -52,6 +52,9 @@ local options = {
   ttimeoutlen = 10,
   -- set mac dictonary
   dictionary = "/usr/share/dict/words",
+  -- 補完候補のソースを指定
+  -- デフォルト(.,w,b,u,t,i)に加えて、kで辞書ファイルを参照
+  complete = ".,w,b,u,t,i,k",
   -- --------------------
   -- folding
   -- --------------------
