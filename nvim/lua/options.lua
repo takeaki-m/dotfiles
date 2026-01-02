@@ -52,12 +52,23 @@ local options = {
   ttimeoutlen = 10,
   -- set mac dictonary
   dictionary = "/usr/share/dict/words",
-  -- folder
-  foldexpr = "v:lua.vim.treesitter.foldexpr()",
-  foldlevel = 99,
+  -- --------------------
+  -- folding
+  -- --------------------
+  -- 折りたたみの制御を、式評価モード'expr'に設定
+  -- manualやindentではなく、計算された結果を利用する
   foldmethod = "expr",
+  -- 折りたたみの計算ロジックに、treesitterを利用
+  -- 関数のブロックなど、コードの構造に基づいた正確な折りたたみを可能とする。
+  foldexpr = "v:lua.vim.treesitter.foldexpr()",
+  -- ファイルを開いた際には、全て展開した状態とする
+  foldlevel = 99,
+  foldlevelstart = 99,
+  -- 折りたたみ状態を表す列を表示する
+  foldcolumn = "1",
   foldtext = "",
 }
+
 -- active all options
 for k, v in pairs(options) do
   vim.opt[k] = v
@@ -76,6 +87,7 @@ vim.cmd([[
     autocmd FileType nerdtree,startify call glyph_palette#apply()
   augroup END
 ]])
+
 
 -- netrwを表示しない
 vim.g.loaded_netrw = 1
@@ -131,14 +143,16 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- nvim-markdownプラグインがconceallevel=2を設定した後に上書きする
--- `````` をmarkdownファイルを開いた際にも表示するため
+-- 全体: markdown固有の表示設定
+-- 詳細: nvim-markdownプラグインの設定を上書きし、markdown編集時の表示を調整
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function()
-    -- コードブロックの```を表示するため、conceallevelを0に設定
-    -- 0に設定するとobisidianからwarningが出るため1に設定
+    -- コードブロックの```を表示するため、conceallevelを1に設定
+    -- 0に設定するとobsidianからwarningが出るため1に設定
     vim.opt_local.conceallevel = 1
+    -- 全体: markdownファイルは見出し単位で折りたたんだ状態で開く
+    -- 詳細: 長いドキュメントの全体構造を把握しやすくする。展開はzRで可能
+    vim.opt_local.foldlevel = 0
   end,
 })
-
