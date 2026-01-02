@@ -40,22 +40,22 @@ bootstrap_pckr()
 local function setup_plugins()
   require('pckr').add {
     {
-      'folke/lazydev.nvim',-- luaのcompletionにnvimの設定を読み込ませる
+      'folke/lazydev.nvim', -- luaのcompletionにnvimの設定を読み込ませる
       -- luaのlsp server(lua_ls)が、vim関連の関数を認識できるように、他のライブラリよりも優先的に読み込む
-      config = function ()
+      config = function()
         require("lazydev").setup()
       end
     },
     {
       'nvim-treesitter/nvim-treesitter',
-      config = function ()
+      config = function()
         require("nvim-treesitter").setup()
       end
     },
     'nvim-lua/plenary.nvim',
     {
       'nvim-telescope/telescope.nvim',
-      config = function ()
+      config = function()
         local actions = require("telescope.actions")
         require("telescope").setup({
           defaults = {
@@ -92,7 +92,7 @@ local function setup_plugins()
     },
     {
       'lewis6991/gitsigns.nvim',
-      config = function ()
+      config = function()
         require('gitsigns').setup {
           on_attach = function(bufnr)
             local gs = package.loaded.gitsigns
@@ -106,12 +106,12 @@ local function setup_plugins()
               if vim.wo.diff then return ']c' end
               vim.schedule(function() gs.next_hunk() end)
               return '<Ignore>'
-            end, {expr=true, desc = "Next git hunk"})
+            end, { expr = true, desc = "Next git hunk" })
             map('n', '[c', function()
               if vim.wo.diff then return '[c' end
               vim.schedule(function() gs.prev_hunk() end)
               return '<Ignore>'
-            end, {expr=true, desc = "Previous git hunk"})
+            end, { expr = true, desc = "Previous git hunk" })
             -- 対象行の変更内容をフロートウィンドウで見る
             map('n', '<leader>hp', gs.preview_hunk, { desc = "Preview git hunk" })
           end
@@ -120,7 +120,7 @@ local function setup_plugins()
     },
     {
       'nvim-lualine/lualine.nvim',
-      config =function ()
+      config = function()
         require('lualine').setup {
           options = {
             icons_enabled = false, --アイコンを無効にする
@@ -133,16 +133,16 @@ local function setup_plugins()
             lualine_b = { '' },
             lualine_c = { 'filename' },
             lualine_x = { 'filetype' }, -- encoding formatを削除
-            lualine_y = { }, -- progressを削除
+            lualine_y = {},             -- progressを削除
             lualine_z = { 'location' }
           }
         }
-       end
+      end
     },
     'kdheepak/lazygit.nvim',
     'neovim/nvim-lspconfig',
     { 'williamboman/mason.nvim',
-      config = function ()
+      config = function()
         -- lsp
         require("mason").setup()
       end
@@ -150,9 +150,9 @@ local function setup_plugins()
     {
       -- mason-lspconfigは必ずmasonの後に初期化する
       'williamboman/mason-lspconfig.nvim',
-      config = function ()
-      -- masonでinstallしたlsp serverとnvim-lspconfigを繋ぐ役割
-      -- optionを記載しないでも、defaultでinstallしてlspが有効化される
+      config = function()
+        -- masonでinstallしたlsp serverとnvim-lspconfigを繋ぐ役割
+        -- optionを記載しないでも、defaultでinstallしてlspが有効化される
         require("mason-lspconfig").setup({
           ensure_installed = {
             'lua_ls',
@@ -170,26 +170,26 @@ local function setup_plugins()
     'L3MON4D3/LuaSnip',
     {
       'kylechui/nvim-surround',
-      config = function ()
+      config = function()
         require("nvim-surround").setup()
       end
     },
     'ixru/nvim-markdown',
     {
       'numToStr/Comment.nvim',
-      config = function ()
+      config = function()
         require('Comment').setup()
       end
     },
     {
       'lukas-reineke/indent-blankline.nvim',
-      config = function ()
+      config = function()
         require('ibl').setup()
       end
     },
     {
       "stevearc/aerial.nvim",
-      config = function ()
+      config = function()
         require("aerial").setup()
         -- telescope拡張はaerial初期化後に読み込む
         require("telescope").load_extension("aerial")
@@ -216,8 +216,8 @@ local function setup_plugins()
               style = "float",
               position = "float",
               border = "rounded",
-              width = 0.8,   -- 画面幅の80%
-              height = 0.8,  -- 画面高さの80%
+              width = 0.8,  -- 画面幅の80%
+              height = 0.8, -- 画面高さの80%
             }
           }
         })
@@ -237,7 +237,7 @@ local function setup_plugins()
         -- OR "folke/snacks.nvim",
         "nvim-tree/nvim-web-devicons",
       },
-      config = function ()
+      config = function()
         require("octo").setup({
           picker = "telescope",
         })
@@ -246,10 +246,10 @@ local function setup_plugins()
     -- filer
     {
       'nvim-tree/nvim-tree.lua',
-      requires ={
-        'nvim-tree/nvim-web-devicons',   -- icons
+      requires = {
+        'nvim-tree/nvim-web-devicons', -- icons
       },
-      config = function ()
+      config = function()
         local function nvim_tree_attach(bufnr)
           local api = require "nvim-tree.api"
           local function opts(desc)
@@ -298,7 +298,7 @@ local function setup_plugins()
           -- ファイル操作の設定
           actions = {
             open_file = {
-              quit_on_open = false,  -- ファイルを開いてもツリーを閉じない
+              quit_on_open = false, -- ファイルを開いてもツリーを閉じない
             },
           },
         })
@@ -328,7 +328,7 @@ local function setup_plugins()
                 --       テキスト入力中の削除操作と誤って押してしまう問題を回避する
                 disable_ctrl_d = {
                   "<C-d>",
-                  function() end,  -- 何もしない
+                  function() end, -- 何もしない
                   mode = "t",
                   desc = "Disable Ctrl-D (prevent accidental close)",
                 },
@@ -342,7 +342,7 @@ local function setup_plugins()
     {
       "epwalsh/obsidian.nvim",
       requires = "nvim-lua/plenary.nvim",
-      config = function ()
+      config = function()
         local obsidian_valut_path = "/Users/take/Library/Mobile Documents/iCloud~md~obsidian/Documents/obsidian"
         require("obsidian").setup({
           workspaces = {
@@ -361,7 +361,7 @@ local function setup_plugins()
           templates = {
             folder = "template",
           },
-          disable_frontmatter = function (path)
+          disable_frontmatter = function(path)
             -- path: 現在書き込もうとするファイルのパス
             -- zennに連携するディレクトでは、frontmatterを無効化する
             local excluded_dir = vim.fs.normalize(obsidian_valut_path .. "/blogs/articles")
@@ -370,7 +370,7 @@ local function setup_plugins()
             if path:sub(1, #excluded_dir) == excluded_dir then
               return true -- Zenn記事ではfrontmatterを無効化
             end
-            return false -- それ以外のファイルではfrontmatterを有効化
+            return false  -- それ以外のファイルではfrontmatterを有効化
           end,
         })
       end
