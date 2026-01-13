@@ -25,6 +25,8 @@ ln -sfn $CLAUDE_SETTINGS_FOLDER_PATH/commands $HOME/.claude/commands
 #claude mcp add terraform --scope project -- docker run -i --rm hashicorp/terraform-mcp-server
 #claude mcp add context7 --scope project -- npx -y @upstash/context7-mcp@latest
 #claude mcp add chrome-devtools --scope project -- npx -y chrome-devtools-mcp@latest
+#claude mcp add playwright --scope project -- npx -y @playwright/mcp@latest
+#claude mcp add -s user -t http aws-knowledge https://knowledge-mcp.global.api.aws
 
 # --------------------
 # User Scope
@@ -34,3 +36,5 @@ ln -sfn $CLAUDE_SETTINGS_FOLDER_PATH/commands $HOME/.claude/commands
 #claude mcp add terraform --scope user -- docker run -i --rm hashicorp/terraform-mcp-server
 #claude mcp add context7 --scope user -- npx -y @upstash/context7-mcp@latest
 #claude mcp add chrome-devtools --scope user -- npx -y chrome-devtools-mcp@latest
+#claude mcp add playwright --scope user -- npx -y @playwright/mcp@latest
+#claude mcp add --scope user -t http aws-knowledge https://knowledge-mcp.global.api.aws
