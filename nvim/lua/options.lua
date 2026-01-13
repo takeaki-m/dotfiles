@@ -77,6 +77,11 @@ local options = {
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
+
+-- 全体: 全モードでカーソル点滅を無効化
+-- 詳細: neovim内蔵ターミナル（snacks.terminal含む）でGhosttyと同様にカーソル点滅を無効化
+-- 背景: guicursorのデフォルト値にはターミナルモードで点滅が有効な設定が含まれているため上書き
+vim.opt.guicursor:append("a:blinkon0")
 -- vim上で起動したterminalにおいてもzshを読み込ませるために設定
 vim.o.shell = "zsh -l"
 -- fern settings
