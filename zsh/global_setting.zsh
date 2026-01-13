@@ -372,6 +372,24 @@ check_os_theme_is_dark() {
   | grep -qi true
 }
 
+# 開発時にopen ai apiの設定を迅速にする関数
+function set_openai() {
+    # 既に値がセットされているかチェック (-n は文字列の長さが0より大ならTrue)
+    if [ -n "$OPENAI_API_KEY" ]; then
+        echo "OPENAI_API_KEY is already set. Skipping."
+        return 0
+    fi
+
+    # -r: バックスラッシュをエスケープとして扱わない
+    # -s: 入力文字を非表示にする
+    read -rs "OPENAI_API_KEY?Enter OPENAI_API_KEY: "
+    
+    # 外部に公開
+    export OPENAI_API_KEY
+    
+    # -s を使うと改行が表示されないため、手動で改行を入れる
+    echo "\nOPENAI_API_KEY has been exported."
+}
 # nvim
 alias nvimconfig='nvim ~/.config/nvim/init.lua'
 # alias v='nvim'
