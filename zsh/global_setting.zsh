@@ -340,7 +340,8 @@ alias aim='vim ~/work/aim/aim-suite -c "cd ~/work/aim/aim-suite"'
 alias ghie='gh issue edit $(gh issue list | fzf | awk '\''{print $1}'\'')'
 alias ghpre='gh pr edit $(gh pr list | fzf | awk '\''{print $1}'\'')'
 alias approot='GIT_ROOT=$(git rev-parse --show-toplevel) && cd $GIT_ROOT'
-alias check_gh_workflow="gh run watch && osascript -e 'display notification \"Workflow finished\" with title \"GitHub Actions\" sound name \"Glass\"'" 
+alias check_gh_workflow="gh run watch && osascript -e 'display notification \"Workflow finished\" with title \"GitHub Actions\" sound name \"Glass\"'"
+
 alias webstorm='open -na "WebStorm.app" --args .'
 alias idea='open -na "IntelliJ IDEA.app" --args .'
 alias pycharm='open -na "Pycharm.app" --args .'
