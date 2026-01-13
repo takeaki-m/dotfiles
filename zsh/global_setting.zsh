@@ -342,6 +342,27 @@ alias ghpre='gh pr edit $(gh pr list | fzf | awk '\''{print $1}'\'')'
 alias approot='GIT_ROOT=$(git rev-parse --show-toplevel) && cd $GIT_ROOT'
 alias check_gh_workflow="gh run watch && osascript -e 'display notification \"Workflow finished\" with title \"GitHub Actions\" sound name \"Glass\"'"
 
+# 指定した時間後に通知を表示する関数
+# 使用例: notify 5m ビルド完了しました（引用符不要）
+notify() {
+  local wait_time="$1"
+  shift
+  local message="${*:-通知}"  # 残りの引数をすべて結合
+
+  if [[ -z "$wait_time" ]]; then
+    echo "使用方法: notify <待機時間> [メッセージ]" >&2
+    echo "  待機時間: 秒数(例: 900) または 分指定(例: 5m, 10m)" >&2
+    return 1
+  fi
+
+  # 分指定(例: 5m)を秒に変換
+  if [[ "$wait_time" =~ ^([0-9]+)m$ ]]; then
+    wait_time=$((${BASH_REMATCH[1]} * 60))
+  fi
+
+  echo "${wait_time}秒後に通知します: ${message}"
+  sleep "$wait_time" && osascript -e "display notification \"${message}\" with title \"通知\" sound name \"Glass\""
+} 
 alias webstorm='open -na "WebStorm.app" --args .'
 alias idea='open -na "IntelliJ IDEA.app" --args .'
 alias pycharm='open -na "Pycharm.app" --args .'
