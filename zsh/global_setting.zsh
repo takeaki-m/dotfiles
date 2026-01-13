@@ -193,7 +193,7 @@ gwc() {
     git worktree add "$worktree_path" "$branch"
     cd "$worktree_path"
     # nvimと指定しないとaliasの設定が効かずvimが起動される
-    nvim .
+    nvim . -c "term make init_apps; zsh"
 }
 
 
