@@ -521,6 +521,9 @@ fi
 
 # 前方一致
 # 入力補完
+# zsh-autocomplete: リアルタイム補完機能
+# 無効化理由: 入力中の自動表示が煩わしいため。
+# 現在は zsh-completions + fzf の組み合わせで補完・検索機能を実現している。
 #source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 # zsh-autocompleteのキーバインドを変更する
 bindkey              '^I'         menu-complete
