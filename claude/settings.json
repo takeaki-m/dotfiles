@@ -69,7 +69,8 @@
       "Write(.env*)",
       "Write(~/.ssh/*)",
       "Write(~/.ssh/**)"
-    ]
+    ],
+    "defaultMode": "plan"
   },
   "hooks": {
     "Notification": [
