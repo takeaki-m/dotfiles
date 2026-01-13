@@ -141,7 +141,8 @@ local function setup_plugins()
       config = function()
         require('lualine').setup {
           options = {
-            icons_enabled = false, --アイコンを無効にする
+            globalstatus = false,
+            icons_enabled = false,   --アイコンを無効にする
             theme = 'auto',
             component_separators = { left = '', right = '' },
             section_separators = { left = '', right = '' },
@@ -150,8 +151,8 @@ local function setup_plugins()
             lualine_a = { 'mode' },
             lualine_b = { '' },
             lualine_c = { 'filename' },
-            lualine_x = { 'filetype' }, -- encoding formatを削除
-            lualine_y = {},             -- progressを削除
+            lualine_x = { 'filetype' },     -- encoding formatを削除
+            lualine_y = {},                 -- progressを削除
             lualine_z = { 'location' }
           }
         }
