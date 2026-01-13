@@ -24,6 +24,7 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
+                "^com\\.mitchellh\\.ghostty$",
                 "^com\\.googlecode\\.iterm2$",
                 "^io\\.alacritty$",
                 "^com\\.apple\\.Terminal$"
@@ -56,6 +57,7 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
+                "^com\\.mitchellh\\.ghostty$",
                 "^com\\.googlecode\\.iterm2$",
                 "^io\\.alacritty$",
                 "^com\\.apple\\.Terminal$"
@@ -88,6 +90,7 @@
               "type": "frontmost_application_unless",
               "bundle_identifiers": [
                 "^com\\.apple\\.Terminal$",
+                "^com\\.mitchellh\\.ghostty$",
                 "^com\\.googlecode\\.iterm2$"
               ]
             }
@@ -112,6 +115,7 @@
                 "type": "frontmost_application_unless",
                 "bundle_identifiers": [
                   "^com\\.apple\\.Terminal$",
+                "^com\\.mitchellh\\.ghostty$",
                   "^com\\.googlecode\\.iterm2$"
                 ]
               }

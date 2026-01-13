@@ -50,6 +50,7 @@
                 "^com\\.citrix\\.receiver\\.icaviewer",
                 "^com\\.apple\\.Terminal$",
                 "^com\\.googlecode\\.iterm2$",
+                "^com\\.mitchellh\\.ghostty$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
                 "^io\\.alacritty$",
@@ -122,6 +123,7 @@
                 "^com\\.realvnc\\.vncviewer$",
                 "^com\\.citrix\\.receiver\\.icaviewer",
                 "^com\\.googlecode\\.iterm2$",
+                "^com\\.mitchellh\\.ghostty$",
                 "^com\\.apple\\.Terminal$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
@@ -207,8 +209,9 @@
               "type": "frontmost_application_unless",
               "bundle_identifiers": [
                 "^com\\.apple\\.Terminal$",
+                "^com\\.mitchellh\\.ghostty$",
                 "^com\\.googlecode\\.iterm2$"
-              ]
+             ]
             }
           ]
         },
@@ -238,6 +241,7 @@
               "type": "frontmost_application_unless",
               "bundle_identifiers": [
                 "^com\\.apple\\.Terminal$",
+                "^com\\.mitchellh\\.ghostty$",
                 "^com\\.googlecode\\.iterm2$"
               ]
             }
@@ -286,6 +290,7 @@
                 "^com\\.realvnc\\.vncviewer$",
                 "^com\\.citrix\\.receiver\\.icaviewer",
                 "^com\\.apple\\.Terminal$",
+                "^com\\.mitchellh\\.ghostty$",
                 "^com\\.googlecode\\.iterm2$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
@@ -359,6 +364,7 @@
                 "^com\\.realvnc\\.vncviewer$",
                 "^com\\.citrix\\.receiver\\.icaviewer",
                 "^com\\.apple\\.Terminal$",
+                "^com\\.mitchellh\\.ghostty$",
                 "^com\\.googlecode\\.iterm2$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
@@ -432,6 +438,7 @@
                 "^com\\.realvnc\\.vncviewer$",
                 "^com\\.citrix\\.receiver\\.icaviewer",
                 "^com\\.apple\\.Terminal$",
+                "^com\\.mitchellh\\.ghostty$",
                 "^com\\.googlecode\\.iterm2$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
@@ -505,6 +512,7 @@
                 "^com\\.realvnc\\.vncviewer$",
                 "^com\\.citrix\\.receiver\\.icaviewer",
                 "^com\\.apple\\.Terminal$",
+                "^com\\.mitchellh\\.ghostty$",
                 "^com\\.googlecode\\.iterm2$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
