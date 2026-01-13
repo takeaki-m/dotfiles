@@ -158,6 +158,7 @@ end
 keymap('n', '<Leader>rp', ':lua PasteCommandOutput("readlink -f " .. vim.fn.expand("%"))<CR>',
   with_desc("Paste absolute file path"))
 
+keymap('n', '<Leader>tt', ':RunApps<CR>', with_desc("run frontend and backend apps"))
 -- コマンドラインwindowでの動作を設定する
 --normal modeでも動作してしまい、telescopeの動作と被るためコメントアウト
 --vim.api.nvim_create_autocmd("CmdwinEnter", {
