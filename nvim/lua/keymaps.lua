@@ -49,7 +49,8 @@ keymap('n', '<Leader>b', ':Telescope buffers<CR>', with_desc("Find buffers"))
 keymap('n', '<Leader>fr', ':Telescope registers<CR>', with_desc("Select registers"))
 
 keymap('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', with_desc("Toggle NvimTree"))
-keymap('n', '<Leader>fn', ':NvimTreeFindFile<CR>', with_desc("Find file in NvimTree"))
+keymap('n', '<Leader>nf', ':NvimTreeFindFile<CR>', with_desc("Find file in NvimTree"))
+keymap('n', '<Leader>nt', ':NvimTreeFocus<CR>', with_desc("Focus to NvimTree"))
 
 -- 補完表示時のEnterで改行をしない
 -- with_desc未使用: expr オプションが必要で opts と構造が異なる
