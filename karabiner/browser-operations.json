@@ -254,41 +254,6 @@
         {
           "type": "basic",
           "from": {
-            "key_code": "f",
-            "modifiers": {
-              "mandatory": ["left_control", "left_command"],
-              "optional": ["any"]
-            }
-          },
-          "to": [
-            { "key_code": "japanese_eisuu" },
-            {
-              "key_code": "l",
-              "modifiers": ["command"]
-            },
-            {
-              "key_code": "2",
-              "modifiers": ["shift"]
-            },
-            { "key_code": "t"},
-            { "key_code": "a"},
-            { "key_code": "b"},
-            { "key_code": "s"},
-            { "key_code": "tab"}
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.google\\.Chrome$",
-                "^org\\.mozilla\\.firefox$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
             "key_code": "s",
             "modifiers": {
               "mandatory": ["left_control"],
