@@ -4,6 +4,8 @@ local options = {
   title = true,
   backup = false,
   showcmd = true,
+  -- cmdheight = 0 は隙間を無くせるが、nvim-tree等で不具合が発生するため採用しない。
+  -- 1行 分のコマンドライン領域はNeovimの機能として必要なスペースである。
   cmdheight = 1,
   laststatus = 2,
   helplang = 'ja',
