@@ -52,6 +52,10 @@ keymap('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', with_desc("Toggle NvimTree")
 keymap('n', '<Leader>nf', ':NvimTreeFindFile<CR>', with_desc("Find file in NvimTree"))
 keymap('n', '<Leader>nt', ':NvimTreeFocus<CR>', with_desc("Focus to NvimTree"))
 
+-- terminal
+keymap('n', '<Leader>tv', ':vertical term<CR>', with_desc("Open Terminal Buffer verticacal"))
+keymap('n', '<Leader>ts', ':horizontal term<CR>', with_desc("Open Terminal Buffer horizontal"))
+
 -- 補完表示時のEnterで改行をしない
 -- with_desc未使用: expr オプションが必要で opts と構造が異なる
 keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', { expr = true, noremap = true, desc = "Confirm completion or Enter" })
