@@ -277,44 +277,6 @@
               ]
             }
           ]
-        },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "i",
-            "modifiers": {
-              "mandatory": ["left_control", "left_command"],
-              "optional": ["any"]
-            }
-          },
-          "to": [
-            { "key_code": "japanese_eisuu" },
-            {
-              "key_code": "l",
-              "modifiers": ["command"]
-            },
-            {
-              "key_code": "2",
-              "modifiers": ["shift"]
-            },
-            { "key_code": "h"},
-            { "key_code": "i"},
-            { "key_code": "s"},
-            { "key_code": "t"},
-            { "key_code": "o"},
-            { "key_code": "r"},
-            { "key_code": "y"},
-            { "key_code": "tab"}
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.google\\.Chrome$",
-                "^org\\.mozilla\\.firefox$"
-              ]
-            }
-          ]
         }
       ]
     },
