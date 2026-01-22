@@ -83,3 +83,17 @@ vim.api.nvim_create_user_command('RunApps', function (opts)
   local cmd2 = args[2] or "pnpm run frontend:dev"
   open_dual_terminals(cmd1, cmd2)
 end, { nargs = '*' }) -- 引数の指定を許可
+
+vim.api.nvim_create_user_command("CopySelectedRangeLines", function ()
+  -- 現在のファイルの絶対ぱすをカレントディレクトリからの相対パスに変換
+  local path = vim.fn.expand("%:p:.")
+  -- カーソル位置の行番号と、ヴィジュアルモード開始位置の行番号
+  local s, e = vim.fn.line("."), vim.fn.line("v")
+
+  -- 選択方向によって、s>eになりうるので、常に小さい方をsにswap
+  if s > e then s, e = e, s end
+  local lines = s .. "-" .. e
+  local copied = path .. "#L" .. lines
+  vim.fn.setreg("+", copied)
+  vim.notify('Range Copied "' .. copied .. '" to the clipboard!')
+end, { range = true})
