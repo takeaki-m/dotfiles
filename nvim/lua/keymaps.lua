@@ -179,7 +179,8 @@ keymap('v', '<Leader>cc', ':CopySelectedRangeLines<CR>', with_desc(" copy select
 --    end,
 --})
 -- nvim-markdownのCtrl-i,Tabで見出しを開閉する動作を無効化
-vim.cmd [[map <Plug> <Plug>Markdown_Fold]]
+-- 利用したいシーンが出てきたので再度有効化した。
+--vim.cmd [[map <Plug> <Plug>Markdown_Fold]]
 
 -- Octo
 -- keymaps
