@@ -288,13 +288,14 @@ alias term='export TERM=xterm; echo $TERM'
 
 alias psql='psql-17'
 
-nvim(){
-    if check_os_theme_is_dark; then
-        command nvim -c "colorscheme tokyonight-night" "$@"
-    else
-        command nvim -c "colorscheme tokyonight-day" "$@"
-    fi
-}
+# nvimがos themeに合わせて色が変更可能になったため以下の設定はコメントアウトする
+#nvim(){
+    # if check_os_theme_is_dark; then
+    #     command nvim -c "colorscheme tokyonight-night" "$@"
+    # else
+    #     command nvim -c "colorscheme tokyonight-day" "$@"
+    # fi
+#}
 
 alias v='vim'
 alias vim='nvim'
