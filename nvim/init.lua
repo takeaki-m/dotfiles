@@ -426,6 +426,18 @@ require("colorscheme")
 vim.lsp.config('*', {
   capabilities = require("cmp_nvim_lsp").default_capabilities(),
 })
+-- lsp enableに設定する前に、以下の設定を有効化する
+-- lua language severに対して、'vim'はglobal変数なので警告しないように設定
+-- lua language serverは通常のLua環境を前提としているため、vimという変数を未定義として警告するから
+vim.lsp.config.lua_ls = {
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { 'vim' }
+      }
+    }
+  }
+}
 -- lspconfig で LSP サーバーを設定
 -- mason-lspconfig は lspconfig と連携して、インストールされた LSP サーバーを自動的に設定
 -- 個別のLSPサーバーの設定は lspconfig にて設定
@@ -439,17 +451,6 @@ vim.lsp.enable('biome')
 vim.lsp.enable('gh_actions_ls')
 vim.lsp.enable('tailwindcss')
 vim.lsp.enable('postgres_lsp')
--- lua language severに対して、'vim'はglobal変数なので警告しないように設定
--- lua language serverは通常のLua環境を前提としているため、vimという変数を未定義として警告するから
-vim.lsp.config.lua_ls = {
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { 'vim' }
-      }
-    }
-  }
-}
 -- 他のライブラリとの依存関係があるため初期化外で設定する。
 -- nvim起動後にsourceでreloadしても問題ないため
 local cmp = require("cmp")
@@ -469,6 +470,10 @@ cmp.setup({
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
   }),
   sources = cmp.config.sources({
+    -- lazydev.nvim: Neovim Lua API（vim.api, vim.fn, vim.opt等）の補完を提供
+    -- group_index = 0 で他のソースより優先される
+    -- lua_ls単体ではNeovim固有のAPIの型情報を持たないため、このソースが必要
+    { name = "lazydev", group_index = 0 },
     { name = "nvim_lsp" },
     { name = "luasnip" },
   }, {
