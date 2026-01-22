@@ -435,7 +435,20 @@ vim.lsp.config.lua_ls = {
     Lua = {
       diagnostics = {
         globals = { 'vim' }
-      }
+      },
+      -- lua_ls の初期化を高速化するための設定
+      workspace = {
+        -- サードパーティライブラリのチェックを無効化（確認ダイアログをスキップ）
+        checkThirdParty = false,
+        -- Neovim runtime と設定ファイルのみを対象にする
+        -- lazydev.nvim が vim.* の型情報を提供するため、他のライブラリは不要
+        library = {
+          vim.env.VIMRUNTIME,
+        },
+        -- ワークスペースのプリロード数を制限して初期化を高速化
+        maxPreload = 1000,
+        preloadFileSize = 100,
+      },
     }
   }
 }
