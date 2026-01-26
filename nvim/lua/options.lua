@@ -131,6 +131,7 @@ local lazygit_theme_file = is_os_dark_mode()
 local lazygit_config_file = vim.fn.expand("$HOME/Library/Application Support/lazygit/config.yml")
 vim.g.lazygit_use_custom_config_file_path = 1 -- config file path is evaluated if this value is 1
 vim.g.lazygit_config_file_path = { lazygit_theme_file, lazygit_config_file }
+vim.g.lazygit_floating_window_scaling_factor = 1 -- scaling factor for floating window
 
 -- claudecodeなどで編集された場合に備えて、編集をチェックする
 -- フォーカスを戻した時やバッファ切り替え時に更新チェック
