@@ -29,11 +29,31 @@ local function with_focus(cmd)
   end
 end
 
+-- Claude Codeのterminalバッファかどうかを判定する
+-- バッファ名が term://...claude のパターンに一致するかで判定し、
+-- lazygit等の他のterminalバッファと区別する
+local function is_claude_code_buffer()
+  local buf_name = vim.api.nvim_buf_get_name(0)
+  return buf_name:match('^term://.*claude$') ~= nil
+end
+
 -- AI/Claude Code キーマップ
 keymap('n', '<leader>a', '', vim.tbl_extend('force', opts, { desc = 'AI/Claude Code' }))
 -- 基本的な操作
 keymap('n', '<leader>ac', '<cmd>ClaudeCode<cr>', vim.tbl_extend('force', opts, { desc = 'Toggle Claude' }))
 keymap('n', '<leader>af', '<cmd>ClaudeCodeFocus<cr>', vim.tbl_extend('force', opts, { desc = 'Focus Claude' }))
+
+-- M-c: Claude Codeバッファとコードバッファ間のフォーカスをトグルする
+-- normalモード: Claude Codeバッファなら前のウィンドウに戻り、それ以外ならClaude Codeにフォーカス
+keymap('n', '<M-c>', function()
+  if is_claude_code_buffer() then
+    vim.cmd('wincmd p')
+  else
+    vim.cmd('ClaudeCodeFocus')
+  end
+end, vim.tbl_extend('force', opts, { desc = 'Toggle Claude focus' }))
+-- terminalモード: Claude Code内でinsert状態の時にコードバッファへ戻る
+keymap('t', '<M-c>', '<C-\\><C-n><cmd>wincmd p<cr>', opts)
 keymap('n', '<leader>ar', '<cmd>ClaudeCode --resume<cr>', vim.tbl_extend('force', opts, { desc = 'Resume Claude' }))
 keymap('n', '<leader>aC', '<cmd>ClaudeCode --continue<cr>', vim.tbl_extend('force', opts, { desc = 'Continue Claude' }))
 keymap('n', '<leader>am', '<cmd>ClaudeCodeSelectModel<cr>', vim.tbl_extend('force', opts, { desc = 'Select Claude model' }))
