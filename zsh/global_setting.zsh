@@ -452,6 +452,8 @@ stty stop undef
 
 # 補完機能を有効にする
 autoload -Uz compinit compinit
+# 補完メニュー操作用モジュール: menuselectキーマップを利用可能にする
+zmodload zsh/complist
 zstyle ':completion:*:default' menu select=1
 # zsh-autocompleteのinstallによってコメントアウト
 # autoload -Uz compinit && compinit
@@ -534,6 +536,27 @@ fi
 bindkey              '^I'         menu-complete
 bindkey "$terminfo[kcbt]" reverse-menu-complete
 
+# vi modeのinsertモードでemacs風キーバインドを併用する
+# 原理: bindkey -M viins で insert mode のみにバインドを追加できる
+# これにより vi mode のカーソル表示(block/beam)を維持しつつ、emacs風の操作が可能
+bindkey -M viins '^N' menu-complete               # 補完候補: 次へ
+bindkey -M viins '^P' reverse-menu-complete       # 補完候補: 前へ
+bindkey -M viins '^A' beginning-of-line           # 行頭へ移動
+bindkey -M viins '^E' end-of-line                 # 行末へ移動
+bindkey -M viins '^F' forward-char                # 一文字進む
+bindkey -M viins '^B' backward-char               # 一文字戻る
+bindkey -M viins '^D' delete-char-or-list         # 文字削除 or 補完リスト表示
+bindkey -M viins '^K' kill-line                   # カーソルから行末まで削除
+bindkey -M viins '^W' backward-kill-word          # 単語単位で後方削除
+bindkey -M viins '^R' history-incremental-search-backward  # 履歴の後方検索
+
+# 補完メニュー選択中のキーバインド
+# menu selectが有効な場合、候補一覧の中をC-n/C-pで移動できるようにする
+bindkey -M menuselect '^N' down-line-or-history   # 補完メニュー: 下へ
+bindkey -M menuselect '^P' up-line-or-history     # 補完メニュー: 上へ
+bindkey -M menuselect '^F' forward-char           # 補完メニュー: 右へ
+bindkey -M menuselect '^B' backward-char          # 補完メニュー: 左へ
+
 #--------------------
 # 入力するコマンドをエディタで編集する
 #--------------------
@@ -571,6 +594,23 @@ edit-with-nvim() {
 
 zle -N edit-with-nvim
 bindkey '\ee' edit-with-nvim
+
+
+# terminalをvi modeにしたvi modeでのinsertかnormalかを視覚的に表示する
+# ~/.zshrc に追記
+
+KEYTIMEOUT=1
+
+function zle-line-init zle-keymap-select {
+    case $KEYMAP in
+        vicmd)      echo -ne "\e[2 q";; # Block cursor
+        main|viins) echo -ne "\e[6 q";; # Beam cursor
+    esac
+    zle reset-prompt
+}
+
+zle -N zle-line-init
+zle -N zle-keymap-select
 
 # 利用しないためコメントアウト
 # ghqとの連携。ghqの管理化にあるリポジトリを一覧表示する。ctrl - ]にバインド。
