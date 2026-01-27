@@ -513,10 +513,14 @@ function ssh() {
 # - 以下にまとめて設定すること
 # --------------------
 
+# vi keybindをdefaultとする
+# emacsに戻すためには以下を有効化すること
+#keybind -e
 
-# tmux接続時にvim keybindになる場合があるため明示的にtmux keybindとする
+# tmux接続時にvim keybindになる場合があるため明示的にemux keybindとする
 if [[ -n "$TMUX" ]]; then
-  bindkey -e
+  #bindkey -e
+  bindkey -v
 fi
 
 
