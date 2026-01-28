@@ -11,6 +11,7 @@ ln -sfn $CLAUDE_SETTINGS_FOLDER_PATH/statusline.js $HOME/.claude/statusline.js
 # このスクリプトの修正が不要になる
 ln -sfn $CLAUDE_SETTINGS_FOLDER_PATH/commands $HOME/.claude/commands
 
+ln -sfn $CLAUDE_SETTINGS_FOLDER_PATH/keybindings.json $HOME/.claude/keybindings.json
 # MCP Servers
 # 以下は参考のコマンド
 # user levelで定義すると全てのプロジェクトで有効になる。

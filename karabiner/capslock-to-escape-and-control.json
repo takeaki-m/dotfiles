@@ -1,0 +1,30 @@
+{
+  "title": "Caps Lock to Escape+Eisuu / Control",
+  "rules": [
+    {
+      "description": "Caps Lockタップで Escape+英数切替、長押しで Control",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "caps_lock",
+            "modifiers": { "optional": ["any"] }
+          },
+          "parameters": {
+            "basic.to_if_alone_timeout_milliseconds": 300
+          },
+          "to": [
+            {
+              "key_code": "left_control",
+              "lazy": true
+            }
+          ],
+          "to_if_alone": [
+            { "key_code": "escape" },
+            { "key_code": "japanese_eisuu" }
+          ]
+        }
+      ]
+    }
+  ]
+}
