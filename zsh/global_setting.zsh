@@ -548,7 +548,8 @@ bindkey -M viins '^B' backward-char               # 一文字戻る
 bindkey -M viins '^D' delete-char-or-list         # 文字削除 or 補完リスト表示
 bindkey -M viins '^K' kill-line                   # カーソルから行末まで削除
 bindkey -M viins '^W' backward-kill-word          # 単語単位で後方削除
-bindkey -M viins '^R' history-incremental-search-backward  # 履歴の後方検索
+# source <(fzf --zsh) が実行され、C-r に fzf-history-widget がバインドされるため、defaultの履歴広報検索は無効化
+#bindkey -M viins '^R' history-incremental-search-backward  # 履歴の後方検索
 
 # 補完メニュー選択中のキーバインド
 # menu selectが有効な場合、候補一覧の中をC-n/C-pで移動できるようにする
