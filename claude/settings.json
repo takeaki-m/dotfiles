@@ -14,6 +14,7 @@
       "Bash(gh issue create:*)",
       "Read(./**)",
       "mcp__awslabs_aws-documentation",
+      "mcp__aws-knowledge",
       "Bash(terraform fmt -check:*)",
       "Bash(pnpm biome check:*)",
       "Bash(pnpm -F * biome check:*)",
