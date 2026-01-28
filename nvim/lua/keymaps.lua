@@ -165,6 +165,7 @@ keymap('n', '<Leader>rp', ':lua PasteCommandOutput("readlink -f " .. vim.fn.expa
 
 keymap('n', '<Leader>tt', ':RunApps<CR>', with_desc("run frontend and backend apps"))
 keymap('v', '<Leader>cc', ':CopySelectedRangeLines<CR>', with_desc(" copy selected line numbers in Visual mode"))
+keymap('v', '<Leader>cb', ':CodeBlock<CR>', with_desc("Insert Codeblock mark at selected lines"))
 -- コマンドラインwindowでの動作を設定する
 --normal modeでも動作してしまい、telescopeの動作と被るためコメントアウト
 --vim.api.nvim_create_autocmd("CmdwinEnter", {

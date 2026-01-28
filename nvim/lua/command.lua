@@ -97,3 +97,20 @@ vim.api.nvim_create_user_command("CopySelectedRangeLines", function ()
   vim.fn.setreg("+", copied)
   vim.notify('Range Copied "' .. copied .. '" to the clipboard!')
 end, { range = true})
+
+-- コマンドの出力をクリップボードにコピーするユーザーコマンド :CopyCmd
+vim.api.nvim_create_user_command("CopyCmd", function(opts)
+  local output = vim.api.nvim_exec2(opts.args, { output = true }).output
+  vim.fn.setreg('+', output)
+  print("Copied to clipboard!")
+end, { nargs = 1, complete = 'command'}
+)
+
+vim.api.nvim_create_user_command("CodeBlock", function (opts)
+  -- カーソル位置の行番号と、ヴィジュアルモード開始位置の行番号
+  local s, e = opts.line1, opts.line2
+  -- range = trueにより、常に s<=e が保証されるため, swapの操作不要
+  -- 先に上の行を挿入すると下の行がずれるため、先に下の行を挿入する
+  vim.fn.append(e, "```")
+  vim.fn.append(s - 1, "```")
+end, { range = true})
