@@ -539,8 +539,8 @@ bindkey "$terminfo[kcbt]" reverse-menu-complete
 # vi modeのinsertモードでemacs風キーバインドを併用する
 # 原理: bindkey -M viins で insert mode のみにバインドを追加できる
 # これにより vi mode のカーソル表示(block/beam)を維持しつつ、emacs風の操作が可能
-bindkey -M viins '^N' menu-complete               # 補完候補: 次へ
-bindkey -M viins '^P' reverse-menu-complete       # 補完候補: 前へ
+bindkey -M viins '^N' down-line-or-history         # 履歴: 次へ (複数行なら次の行)
+bindkey -M viins '^P' up-line-or-history           # 履歴: 前へ (複数行なら前の行)
 bindkey -M viins '^A' beginning-of-line           # 行頭へ移動
 bindkey -M viins '^E' end-of-line                 # 行末へ移動
 bindkey -M viins '^F' forward-char                # 一文字進む
