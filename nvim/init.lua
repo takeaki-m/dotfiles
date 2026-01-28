@@ -238,6 +238,11 @@ local function setup_plugins()
               border = "rounded",
               width = 0.8,  -- 画面幅の80%
               height = 0.8, -- 画面高さの80%
+              -- Snacks floatingウィンドウはデフォルトで行番号を非表示にするため、明示的に有効化
+              wo = {
+                number = true,
+                relativenumber = true,
+              }
             }
           }
         })
