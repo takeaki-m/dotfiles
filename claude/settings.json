@@ -20,11 +20,13 @@
       "Bash(pnpm -F * biome check:*)",
       "Bash(pnpm build:*)",
       "Bash(pnpm test:*)",
-      "Bash(pnpm -F * test:*)",
+      "Bash(pnpm -F frontend  test:*)",
+      "Bash(pnpm -F backend  test:*)",
       "Bash(pnpm typecheck:*)",
-      "Bash(pnpm -F * typecheck:*)",
+      "Bash(pnpm -F frontend typecheck:*)",
+      "Bash(pnpm -F backend typecheck:*)",
       "Bash(pnpm lint:*)",
-      "Bash(pnpm -F * lint:*)",
+      "Bash(pnpm lint:fix)",
       "Bash(pnpm run lint:*)",
       "Bash(pnpm run build:*)",
       "Bash(pnpm run test:*)",
@@ -33,7 +35,10 @@
       "Bash(pnpm validate:*)" ,
       "Bash(pnpm ls:*)",
       "Bash(pnpm why:*)",
-      "Bash(pnpm list:*)"
+      "Bash(pnpm list:*)",
+      "Bash(terraform validate:*)",
+      "Bash(terraform fmt:*)",
+      "Reading Plan"
     ],
     "deny": [
       "NotebookEdit",
