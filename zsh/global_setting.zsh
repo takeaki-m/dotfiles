@@ -593,7 +593,8 @@ edit-with-nvim() {
 }
 
 zle -N edit-with-nvim
-bindkey '\ee' edit-with-nvim
+# vi modeではESC(\ee)がinsert→normal切替と競合するため、C-oに変更
+bindkey -M viins '^O' edit-with-nvim
 
 
 # terminalをvi modeにしたvi modeでのinsertかnormalかを視覚的に表示する
