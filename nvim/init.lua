@@ -351,12 +351,12 @@ local function setup_plugins()
                 -- 全体: Control-Dを無効化して誤終了を防ぐ
                 -- 詳細: ターミナルモードでControl-Dを押すとEOFシグナルが送信されclaude codeが終了するため、
                 --       テキスト入力中の削除操作と誤って押してしまう問題を回避する
-                disable_ctrl_d = {
-                  "<C-d>",
-                  function() end, -- 何もしない
-                  mode = "t",
-                  desc = "Disable Ctrl-D (prevent accidental close)",
-                },
+                -- disable_ctrl_d = {
+                --   "<C-d>",
+                --   function() end, -- 何もしない
+                --   mode = "t",
+                --   desc = "Disable Ctrl-D (prevent accidental close)",
+                -- },
               },
             },
           },
