@@ -20,8 +20,8 @@
       "Bash(pnpm -F * biome check:*)",
       "Bash(pnpm build:*)",
       "Bash(pnpm test:*)",
-      "Bash(pnpm -F frontend  test:*)",
-      "Bash(pnpm -F backend  test:*)",
+      "Bash(pnpm -F frontend test:*)",
+      "Bash(pnpm -F backend test:*)",
       "Bash(pnpm typecheck:*)",
       "Bash(pnpm -F frontend typecheck:*)",
       "Bash(pnpm -F backend typecheck:*)",
@@ -32,7 +32,7 @@
       "Bash(pnpm run test:*)",
       "Bash(pnpm run typecheck:*)",
       "Bash(pnpm run validate:*)",
-      "Bash(pnpm validate:*)" ,
+      "Bash(pnpm validate:*)",
       "Bash(pnpm ls:*)",
       "Bash(pnpm why:*)",
       "Bash(pnpm list:*)",
@@ -66,7 +66,6 @@
       "Bash(rm -rf:*)",
       "Bash(rm -r:*)",
       "Bash(rm -f:*)",
-      "Bash(rm -[rf].:*)",
       "Bash(kill -9:*)",
       "Bash(mkfs:*:*)",
       "Bash(poweroff:*)",
@@ -76,8 +75,6 @@
       "Bash(su:*)",
       "Read(.env)",
       "Read(.env.*)",
-      "Read(./.env)",
-      "Read(./.env.*)",
       "Read(id_ed25519)",
       "Read(id_rsa)",
       "Read(~/.ssh/*)",
@@ -88,6 +85,7 @@
     ],
     "defaultMode": "plan"
   },
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -116,5 +114,13 @@
     "type": "command",
     "command": "~/.claude/statusline.js"
   },
-  "alwaysThinkingEnabled": false
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true
+  },
+  "alwaysThinkingEnabled": true,
+  "spinnerVerbs": {
+    "mode": "replace",
+    "verbs": ["~>''<~", "Thinking", "Processing", "Working"]
+  }
 }
