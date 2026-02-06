@@ -5,8 +5,9 @@
     {
       "context": "Chat",
       "bindings": {
-        "ctrl+e": "chat:externalEditor",
-        "ctrl+g": null
+        "ctrl+x": "chat:externalEditor",
+        "ctrl+g": null,
+        "ctrl+q": "chat:stash"
       }
     }
   ]
