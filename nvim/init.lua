@@ -306,6 +306,8 @@ local function setup_plugins()
               "^\\.DS_Store",
               "^\\.git.nosync",
               "^\\.obsidian",
+              "^\\.turbo",
+              "^\\.dist",
             }
           },
           -- レンダラー設定
