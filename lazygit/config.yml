@@ -54,4 +54,7 @@ customCommands:
 keybinding:
   # カーソル移動のc-pと競合するため、以下の通りに設定
   universal:
-   createPatchOptionsMenu: <f12>
+    createPatchOptionsMenu: <f12>
+  # デフォルトのcommitChanges(c)をCに移動し、cをconventional commitカスタムコマンドに割り当て
+  files:
+    commitChanges: "C"
