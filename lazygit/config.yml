@@ -1,10 +1,55 @@
 gui:
   nerdFontsVersion: "3"
 customCommands:
+  # Conventional Commitをメニュー選択式で組み立てるカスタムコマンド
+  # type選択 → scope入力(任意) の後、エディタが開きコミットメッセージを自由に記述可能
+  # エディタでは空行を挟んでdetail（補足説明）も記述できる
   - key: "c"
-    context: "global"
-    command: "git commit -v"
-    description: "Commit changes using git editor"
+    context: "files"
+    command: 'git commit -v -e -m "{{.Form.Type}}{{if .Form.Scope}}({{.Form.Scope}}){{end}}: "'
+    description: "Conventional commit"
+    prompts:
+      - type: "menu"
+        key: "Type"
+        title: "Commit type"
+        options:
+          - name: "feat"
+            description: "新機能"
+            value: "feat"
+          - name: "fix"
+            description: "バグ修正"
+            value: "fix"
+          - name: "docs"
+            description: "ドキュメント"
+            value: "docs"
+          - name: "style"
+            description: "コードスタイル"
+            value: "style"
+          - name: "refactor"
+            description: "リファクタリング"
+            value: "refactor"
+          - name: "perf"
+            description: "パフォーマンス改善"
+            value: "perf"
+          - name: "test"
+            description: "テスト"
+            value: "test"
+          - name: "build"
+            description: "ビルド関連"
+            value: "build"
+          - name: "ci"
+            description: "CI設定"
+            value: "ci"
+          - name: "chore"
+            description: "雑務"
+            value: "chore"
+          - name: "revert"
+            description: "変更の取り消し"
+            value: "revert"
+      - type: "input"
+        key: "Scope"
+        title: "Scope (任意、空欄可)"
+    # commit messageの入力を外部エディタで行うための設定
     output: terminal
 keybinding:
   # カーソル移動のc-pと競合するため、以下の通りに設定
