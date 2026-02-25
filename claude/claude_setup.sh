@@ -28,7 +28,7 @@ ln -sfn $CLAUDE_SETTINGS_FOLDER_PATH/keybindings.json $HOME/.claude/keybindings.
 #claude mcp add chrome-devtools --scope project -- npx -y chrome-devtools-mcp@latest
 #claude mcp add playwright --scope project -- npx -y @playwright/mcp@latest
 #claude mcp add --scope project  -t http aws-knowledge https://knowledge-mcp.global.api.aws
-
+#claude mcp add --scope project --transport stdio codex -- codex mcp-server
 # --------------------
 # User Scope
 # --------------------
@@ -39,3 +39,5 @@ ln -sfn $CLAUDE_SETTINGS_FOLDER_PATH/keybindings.json $HOME/.claude/keybindings.
 #claude mcp add chrome-devtools --scope user -- npx -y chrome-devtools-mcp@latest
 #claude mcp add playwright --scope user -- npx -y @playwright/mcp@latest
 #claude mcp add --scope user -t http aws-knowledge https://knowledge-mcp.global.api.aws
+#claude mcp add codex --scope user --type stdio -- codex mcp-server
+#claude mcp add --scope user --transport stdio codex -- codex mcp-server
