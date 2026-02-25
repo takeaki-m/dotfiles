@@ -6,7 +6,7 @@ customCommands:
   # エディタでは空行を挟んでdetail（補足説明）も記述できる
   - key: "c"
     context: "files"
-    command: 'git commit -v -e -m "{{.Form.Type}}{{if .Form.Scope}}({{.Form.Scope}}){{end}}: "'
+    command: 'printf "{{.Form.Type}}{{if .Form.Scope}}({{.Form.Scope}}){{end}}: " | git commit -v -e --cleanup=verbatim -F -'
     description: "Conventional commit"
     prompts:
       - type: "menu"
