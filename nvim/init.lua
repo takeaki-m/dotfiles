@@ -484,11 +484,6 @@ local function setup_plugins()
         require("nvim-autopairs").setup {}
       end
     },
-    -- colortheme
-    "folke/tokyonight.nvim",
-    "rebelot/kanagawa.nvim",
-    "EdenEast/nightfox.nvim",
-    "neanias/everforest-nvim",
   }
 end
 
@@ -498,8 +493,6 @@ if not vim.g.__pckr_initialized then
   vim.g.__pckr_initialized = true;
 end
 
--- colorschemaの設定は初期化後に次に定義する必要あり。
-require("colorscheme")
 -- common conf for all language server
 vim.lsp.config('*', {
   capabilities = require("cmp_nvim_lsp").default_capabilities(),
