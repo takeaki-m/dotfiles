@@ -118,14 +118,21 @@ local function is_os_dark_mode()
   return true
 end
 
-vim.defer_fn(function ()
+-- LazyGitのテーマ設定をOSのダーク/ライトモードに応じて更新する
+-- LazyGit起動前に毎回呼び出すことで、Nvim起動後のテーマ変更にも対応する
+function _G.refresh_lazygit_theme()
   local lazygit_theme_file = is_os_dark_mode()
     and vim.fn.expand("$HOME/Library/Application Support/lazygit/theme_dark.yml")
     or vim.fn.expand("$HOME/Library/Application Support/lazygit/theme_light.yml")
   local lazygit_config_file = vim.fn.expand("$HOME/Library/Application Support/lazygit/config.yml")
-  vim.g.lazygit_use_custom_config_file_path = 1 -- config file path is evaluated if this value is 1
   vim.g.lazygit_config_file_path = { lazygit_theme_file, lazygit_config_file }
+end
+
+-- 起動直後のLazyGit用に初期値を設定する
+vim.defer_fn(function ()
+  vim.g.lazygit_use_custom_config_file_path = 1 -- config file path is evaluated if this value is 1
   vim.g.lazygit_floating_window_scaling_factor = 1 -- scaling factor for floating window
+  _G.refresh_lazygit_theme()
 end, 0)
 
 -- claudecodeなどで編集された場合に備えて、編集をチェックする

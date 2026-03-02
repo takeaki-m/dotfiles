@@ -140,8 +140,12 @@ vim.cmd([[
 --keymap('c', '<C-n>', '<Down>', opts)
 keymap("t", "<C-]>", "<C-\\><C-n>", with_desc("Exit terminal mode"))
 
-keymap('n', '<Leader>g', ':LazyGitBuf<CR>', with_desc("Open LazyGit"))
-keymap('n', '<Leader>lg', ':LazyGit<CR>', with_desc("Open LazyGit"))
+-- LazyGit起動前にOSテーマを再検出し、テーマ設定を更新してから起動する
+-- options.luaで定義したグローバル関数を参照
+---@diagnostic disable-next-line: undefined-field
+local refresh_lazygit_theme = _G.refresh_lazygit_theme
+keymap('n', '<Leader>g', function() refresh_lazygit_theme(); vim.cmd('LazyGitBuf') end, with_desc("Open LazyGit"))
+keymap('n', '<Leader>lg', function() refresh_lazygit_theme(); vim.cmd('LazyGit') end, with_desc("Open LazyGit"))
 -- move to specified line with <CR> insted of G
 -- keymap('n', '<CR>', 'G', opts)
 -- move top of file with <BS> instead of gg
