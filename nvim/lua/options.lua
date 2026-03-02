@@ -73,6 +73,8 @@ local options = {
   -- 一旦表示を無しにする
   --foldcolumn = "1",
   foldtext = "",
+  splitbelow = true, -- 新しいウィンドウを下に開き、フォーカスを移動する
+  splitright = true, -- 新しいウィンドウを右に開き、フォーカスを移動する
   -- 微小だが有効signsの有無でカラムの表示/非表示が切り替わるとレイアウトシフトが発生し再描画が走る。
   -- "yes"で固定すればそのコストがなくなる。gitsignsやLSP
   -- diagnosticsを使っている現在の構成では合理的。
