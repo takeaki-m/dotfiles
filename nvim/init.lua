@@ -1,11 +1,12 @@
+-- activate vim loader to use plugin manager
+-- set file top to enable module cachs
+vim.loader.enable()
 require("command")
 require("keymaps")
 require("options")
 require("lsp")
 require("claude")
 
--- activate vim loader to use plugin manager
-vim.loader.enable()
 
 -- activate pkcr vim
 local function bootstrap_pckr()
