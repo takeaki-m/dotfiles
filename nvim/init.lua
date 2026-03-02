@@ -326,6 +326,7 @@ local function setup_plugins()
     -- filer
     {
       'nvim-tree/nvim-tree.lua',
+      cmd = { 'NvimTreeToggle', 'NvimTreeFindFileToggle', 'NvimTreeFindFile', 'NvimTreeFocus' },
       requires = {
         'nvim-tree/nvim-web-devicons', -- icons
       },
