@@ -472,6 +472,12 @@ local function setup_plugins()
         })
       end
     },
+    -- harpoon: よく使うファイルをピンして1キーで切り替える
+    {
+      "ThePrimeagen/harpoon",
+      branch = "harpoon2",
+      requires = { "nvim-lua/plenary.nvim" },
+    },
     -- completion
     'hrsh7th/nvim-cmp',
     'hrsh7th/cmp-nvim-lsp',
@@ -569,3 +575,15 @@ cmp.setup({
 -- プラグイン初期化後に読み込む必要があるため、cmp.setup の後に配置
 require("snippets")
 
+-- harpoon: よく使うファイルをピンして1キーで切り替える
+-- <Leader>ha でピン登録、<Leader>hh でリスト表示、<Leader>1-4 で即ジャンプ
+-- keymaps.lua はプラグイン読み込み前にrequireされるため、ここで設定する
+local harpoon = require("harpoon")
+harpoon:setup()
+
+vim.keymap.set('n', '<Leader>ha', function() harpoon:list():add() end, { noremap = true, silent = true, desc = "Harpoon add file" })
+vim.keymap.set('n', '<Leader>hh', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { noremap = true, silent = true, desc = "Harpoon menu" })
+vim.keymap.set('n', '<Leader>1', function() harpoon:list():select(1) end, { noremap = true, silent = true, desc = "Harpoon file 1" })
+vim.keymap.set('n', '<Leader>2', function() harpoon:list():select(2) end, { noremap = true, silent = true, desc = "Harpoon file 2" })
+vim.keymap.set('n', '<Leader>3', function() harpoon:list():select(3) end, { noremap = true, silent = true, desc = "Harpoon file 3" })
+vim.keymap.set('n', '<Leader>4', function() harpoon:list():select(4) end, { noremap = true, silent = true, desc = "Harpoon file 4" })
