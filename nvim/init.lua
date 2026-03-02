@@ -67,6 +67,40 @@ local function setup_plugins()
         vim.keymap.set('o', 's', function() flash.jump() end, { noremap = true, silent = true, desc = "Flash jump" })
       end
     },
+    -- nvim-treesitter-textobjects: treesitterの構文木を利用してコード構造単位で選択・移動する
+    {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      config = function()
+        require("nvim-treesitter.configs").setup({
+          textobjects = {
+            -- コード構造単位で選択する（visual/operatorモード）
+            -- af: 関数全体, if: 関数内部, aa: 引数全体, ia: 引数内部
+            select = {
+              enable = true,
+              lookahead = true,  -- カーソル前方のオブジェクトも対象にする
+              keymaps = {
+                ["af"] = "@function.outer",
+                ["if"] = "@function.inner",
+                ["aa"] = "@parameter.outer",
+                ["ia"] = "@parameter.inner",
+              },
+            },
+            -- コード構造単位でカーソル移動する
+            -- ]f: 次の関数先頭, [f: 前の関数先頭
+            move = {
+              enable = true,
+              set_jumps = true,  -- ジャンプリストに記録する
+              goto_next_start = {
+                ["]f"] = "@function.outer",
+              },
+              goto_previous_start = {
+                ["[f"] = "@function.outer",
+              },
+            },
+          },
+        })
+      end
+    },
     'nvim-lua/plenary.nvim',
     -- insert modeでのCtrl-Oが動作しなくなるためコメントアウトする
     -- {
