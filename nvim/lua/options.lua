@@ -38,7 +38,7 @@ local options = {
   whichwrap = "b,s,h,l,<,>,[,],~",
   -- visualize space and tabs
   list = true,
-  listchars = "eol:$,tab:>.,space:_,trail:-",
+  listchars = "eol:$,tab:>.,trail:-",
   -- menuone:対象が1件しかなくても常に補完ウィンドウを表示
   -- noinsert:補完ウィンドウを表示時に挿入しない
   completeopt = 'menu,menuone,noinsert,noselect',
@@ -73,6 +73,10 @@ local options = {
   -- 一旦表示を無しにする
   --foldcolumn = "1",
   foldtext = "",
+  -- 微小だが有効signsの有無でカラムの表示/非表示が切り替わるとレイアウトシフトが発生し再描画が走る。
+  -- "yes"で固定すればそのコストがなくなる。gitsignsやLSP
+  -- diagnosticsを使っている現在の構成では合理的。
+  signcolumn = "yes",
 }
 
 -- active all options
@@ -86,19 +90,6 @@ end
 vim.opt.guicursor:append("a:blinkon0")
 -- vim上で起動したterminalにおいてもzshを読み込ませるために設定
 vim.o.shell = "zsh -l"
--- fern settings
-vim.cmd [[let g:fern#default_hidden=1]]
--- Nerdfont を使う
-vim.cmd('let g:fern#renderer="nerdfont"')
--- アイコンに色をつける
-vim.cmd([[
-  augroup my-glyph-palette
-    autocmd! *
-    autocmd FileType fern call glyph_palette#apply()
-    autocmd FileType nerdtree,startify call glyph_palette#apply()
-  augroup END
-]])
-
 
 -- netrwを表示しない
 vim.g.loaded_netrw = 1
