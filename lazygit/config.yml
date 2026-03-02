@@ -4,9 +4,20 @@ customCommands:
   # Conventional Commitをメニュー選択式で組み立てるカスタムコマンド
   # type選択 → scope入力(任意) の後、エディタが開きコミットメッセージを自由に記述可能
   # エディタでは空行を挟んでdetail（補足説明）も記述できる
-  - key: "c"
+  #
+  # commandの処理フロー:
+  #   1. /tmp/.lzg_ed にGIT_EDITOR用のラッパースクリプトを生成
+  #   2. ラッパーをGIT_EDITORに設定し git commit -v を実行
+  #   3. gitがラッパーを呼び出し、sedでCOMMIT_EDITMSGの1行目にプレフィックス（例: "feat: "）を挿入
+  #   4. $EDITORでファイルを開く（末尾スペースが保持される）
+  #   5. 保存後、gitのデフォルト cleanup=strip が #コメント行（-v のdiff等）を自動除去
+  #
+  # なぜGIT_EDITORラッパーが必要か:
+  #   git commit -m でプレフィックスを渡すと、gitのstripspaceが末尾スペースを除去してしまう。
+  #   ラッパー経由でCOMMIT_EDITMSGを直接編集することで、gitのメッセージ処理をバイパスする。
+  - key: "V"
     context: "files"
-    command: 'printf "{{.Form.Type}}{{if .Form.Scope}}({{.Form.Scope}}){{end}}: " | git commit -v -e --cleanup=verbatim -F -'
+    command: 'printf ''#!/bin/sh\nsed -i "" "1s/^/{{.Form.Type}}{{if .Form.Scope}}({{.Form.Scope}}){{end}}: /" "$1"\n${EDITOR:-nvim} "$1"\n'' > /tmp/.lzg_ed && chmod +x /tmp/.lzg_ed && GIT_EDITOR=/tmp/.lzg_ed git commit -v'
     description: "Conventional commit"
     prompts:
       - type: "menu"
@@ -55,6 +66,5 @@ keybinding:
   # カーソル移動のc-pと競合するため、以下の通りに設定
   universal:
     createPatchOptionsMenu: <f12>
-  # デフォルトのcommitChanges(c)をCに移動し、cをconventional commitカスタムコマンドに割り当て
-  files:
-    commitChanges: "C"
+  # commitChangesはデフォルトの"c"、commitChangesWithEditorはデフォルトの"C"のまま
+  # Conventional Commitカスタムコマンドは"V"に割り当て
