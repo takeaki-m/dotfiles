@@ -122,8 +122,13 @@
   },
   "spinnerVerbs": {
     "mode": "replace",
-    "verbs": ["~>''<~", "Thinking", "Processing", "Working"]
-  }
+    "verbs": [
+      "~>''<~",
+      "Thinking",
+      "Processing",
+      "Working"
+    ]
+  },
   "alwaysThinkingEnabled": true,
   "effortLevel": "medium"
 }
