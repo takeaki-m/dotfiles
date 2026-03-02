@@ -364,6 +364,7 @@ local function setup_plugins()
               "^\\.obsidian",
               "^\\.turbo",
               "^\\.dist",
+              "^\\.husky",
             }
           },
           -- レンダラー設定
