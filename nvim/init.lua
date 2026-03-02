@@ -564,3 +564,8 @@ cmp.setup({
     { name = "buffer" },
   })
 })
+
+-- カスタムスニペットの読み込み
+-- プラグイン初期化後に読み込む必要があるため、cmp.setup の後に配置
+require("snippets")
+
