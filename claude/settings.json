@@ -85,7 +85,6 @@
     ],
     "defaultMode": "plan"
   },
-  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -118,9 +117,10 @@
     "typescript-lsp@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true
   },
-  "alwaysThinkingEnabled": true,
   "spinnerVerbs": {
     "mode": "replace",
     "verbs": ["~>''<~", "Thinking", "Processing", "Working"]
   }
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "medium"
 }
