@@ -324,6 +324,7 @@ alias reader='/usr/bin/open -a Safari `pbpaste`'
 alias dotfiles='cd ~/settings/dotfiles && vim .'
 alias lg='lazygit'
 alias pn='pnpm'
+alias aws_dev='aws sso login --profile dev-admin'
 
 lazygit(){
   if check_os_theme_is_dark; then
