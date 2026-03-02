@@ -90,7 +90,10 @@ end, { noremap = true, silent = true, desc = "Edit Claude settings" })
 -- Snacksを利用してzoomin / zoomout
 keymap('n', '<Leader>z', ":lua Snacks.zen.zoom()<CR>", with_desc("Toggle zoom"))
 
-keymap('n', '<Leader>co', ':vertical term codex', with_desc('Execute codex'))
+-- Obsidian
+keymap('v', '<Leader>oo', ":'<,'>Obsidian link<CR>", with_desc('Create Obsidian link to exist note'))
+keymap('v', '<Leader>on', ":'<,'>Obsidian link_new<CR>", with_desc('Create Obsidian link with create new note'))
+keymap('n', '<Leader>ot', ":Obsidian today<CR>", with_desc('Open Obsidian today'))
 -- =============================================================================
 -- ビジュアルモードで選択したテキストを検索するキーマッピング
 --
