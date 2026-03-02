@@ -21,6 +21,7 @@ brew "gemini-cli"
 brew 'git-delta'
 brew 'postgresql@17'
 brew 'volta'
+brew 'ffmpeg'
 cask "font-hack-nerd-font"
 cask "iterm2"
 cask "karabiner-elements"
@@ -34,3 +35,4 @@ cask "finicky"
 cask "zoom"
 cask "codex"
 cask "ghostty"
+cask "gcloud-cli"
