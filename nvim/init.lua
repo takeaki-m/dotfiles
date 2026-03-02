@@ -53,6 +53,20 @@ local function setup_plugins()
         require("nvim-treesitter").setup()
       end
     },
+    -- flash.nvim: 画面内の任意の位置に2-3キーストロークでジャンプする
+    -- s を押すと検索文字の入力後、画面上にラベルが表示され、ラベル文字を入力するとその位置に飛ぶ
+    {
+      "folke/flash.nvim",
+      config = function()
+        require("flash").setup()
+        -- Vimデフォルトの s（1文字置換）は cl、ビジュアルモードの s は c で代替可能なため上書きする
+        -- ビジュアルモードではジャンプ先まで選択範囲を拡張する用途で使う
+        local flash = require("flash")
+        vim.keymap.set('n', 's', function() flash.jump() end, { noremap = true, silent = true, desc = "Flash jump" })
+        vim.keymap.set('x', 's', function() flash.jump() end, { noremap = true, silent = true, desc = "Flash jump" })
+        vim.keymap.set('o', 's', function() flash.jump() end, { noremap = true, silent = true, desc = "Flash jump" })
+      end
+    },
     'nvim-lua/plenary.nvim',
     -- insert modeでのCtrl-Oが動作しなくなるためコメントアウトする
     -- {
