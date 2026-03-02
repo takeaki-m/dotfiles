@@ -141,7 +141,7 @@ vim.cmd([[
 keymap("t", "<C-]>", "<C-\\><C-n>", with_desc("Exit terminal mode"))
 
 keymap('n', '<Leader>g', ':LazyGitBuf<CR>', with_desc("Open LazyGit"))
-keymap('n', '<Leader>lg', ':LazyGitBuf<CR>', with_desc("Open LazyGit"))
+keymap('n', '<Leader>lg', ':LazyGit<CR>', with_desc("Open LazyGit"))
 -- move to specified line with <CR> insted of G
 -- keymap('n', '<CR>', 'G', opts)
 -- move top of file with <BS> instead of gg
