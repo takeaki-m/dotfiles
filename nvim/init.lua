@@ -336,8 +336,8 @@ local function setup_plugins()
           local function opts(desc)
             return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
           end
-          -- default mappings
-          api.config.mappings.default_on_attach(bufnr)
+          -- default mappings（旧API: api.config.mappings.default_on_attach は非推奨）
+          api.map.on_attach.default(bufnr)
           -- nvim-tree固有のcustom mappings
           vim.keymap.set('n', 'l', api.node.open.edit, opts('Open'))
           vim.keymap.set('n', 'h', api.node.open.edit, opts('Close'))
@@ -430,32 +430,43 @@ local function setup_plugins()
       config = function()
         local obsidian_valut_path = "/Users/take/Library/Mobile Documents/iCloud~md~obsidian/Documents/obsidian"
         require("obsidian").setup({
+          -- 旧コマンド形式(ObsidianXxx)を無効化し、新形式(Obsidian xxx)のみ使用する
+          legacy_commands = false,
           workspaces = {
             {
               name = "personal",
-              path = obsidian_valut_path
+              path = obsidian_valut_path,
+              ---@diagnostic disable-next-line: missing-fields
+              overrides = {
+                notes_subdir = "inbox",
+              },
             }
-          },
-          overrides = {
-            notes_subdir = "inbox",
           },
           daily_notes = {
             folder = "daily",
             template = obsidian_valut_path .. '/template/frontmatter.md'
           },
+          ---@diagnostic disable-next-line: missing-fields
           templates = {
+            enabled = true,
             folder = "template",
           },
-          disable_frontmatter = function(path)
-            -- path: 現在書き込もうとするファイルのパス
-            -- zennに連携するディレクトでは、frontmatterを無効化する
-            local excluded_dir = vim.fs.normalize(obsidian_valut_path .. "/blogs/articles")
-            -- ファイルパスも標準化
-            path = vim.fs.normalize(path)
-            if path:sub(1, #excluded_dir) == excluded_dir then
-              return true -- Zenn記事ではfrontmatterを無効化
+          frontmatter = {
+            enabled = function (path)
+             local excluded_dir = vim.fs.normalize(obsidian_valut_path .. "/blogs/articles")
+             -- ファイルパスも標準化
+             path = vim.fs.normalize(path)
+             if path:sub(1, #excluded_dir) == excluded_dir then
+               return true -- Zenn記事ではfrontmatterを無効化
+             end
+             return false  -- それ以外のファイルではfrontmatterを有効化
             end
-            return false  -- それ以外のファイルではfrontmatterを有効化
+          },
+          note_id_func = function(title)
+            if title ~= nil then
+              return title
+            end
+            return tostring(os.time())
           end,
         })
       end
