@@ -55,7 +55,7 @@ memo(){
 
     else
         # 未作成なら nvim を開いて専用コマンドを実行
-        nvim -c "ObsidianToday"
+        nvim -c "Obsidian today"
     fi
 }
 
@@ -89,13 +89,13 @@ today(){
         local escaped_yesterday="${yesterday_note// /\\ }"
         command nvim "$monthly_note" \
           -c "split $escaped_yesterday" \
-          -c "ObsidianToday" \
-          -c "colorscheme $colorscheme"
+          -c "Obsidian today" \
+          # -c "colorscheme $colorscheme"
     else
         # 昨日分のファイルが存在しなければ、今日のファイルのみ開く
         command nvim "$monthly_note" \
-          -c "ObsidianToday" \
-          -c "colorscheme $colorscheme"
+          -c "Obsidian today" \
+          # -c "colorscheme $colorscheme"
     fi
 }
 
