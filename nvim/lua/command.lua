@@ -104,6 +104,23 @@ vim.api.nvim_create_user_command("CopyCmd", function(opts)
 end, { nargs = 1, complete = 'command'}
 )
 
+-- 全体: lazygitを通常バッファ（:term）として起動するコマンド
+-- 背景: :LazyGit はfloating windowで開くため、他のバッファと並べて表示できない
+--       :term lazygit は非インタラクティブシェル経由のため .zshrc のテーマ設定関数が読み込まれない
+-- 解決: options.lua で設定済みの vim.g.lazygit_config_file_path を利用して
+--       --use-config-file 付きで :term 起動することで、テーマ適用 + 通常バッファの両立を実現
+vim.api.nvim_create_user_command("LazyGitBuf", function()
+  local config_paths = vim.g.lazygit_config_file_path
+  if not config_paths or #config_paths == 0 then
+    -- フォールバック: 設定未読込の場合は素のlazygitを起動
+    vim.cmd("term lazygit")
+    return
+  end
+  -- テーブルをカンマ区切りの文字列に結合
+  local config_arg = table.concat(config_paths, ",")
+  vim.cmd('term lazygit --use-config-file="' .. config_arg .. '"')
+end, { desc = "lazygitを通常バッファとして起動（テーマ設定付き）" })
+
 vim.api.nvim_create_user_command("CodeBlock", function (opts)
   -- カーソル位置の行番号と、ヴィジュアルモード開始位置の行番号
   local s, e = opts.line1, opts.line2
