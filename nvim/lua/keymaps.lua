@@ -184,9 +184,20 @@ keymap('v', '<Leader>cb', ':CodeBlock<CR>', with_desc("Insert Codeblock mark at 
 --        keymap("n", "<C-e>", "<End>", opts_cursol)   -- 行末に移動
 --    end,
 --})
--- nvim-markdownのCtrl-i,Tabで見出しを開閉する動作を無効化
--- 利用したいシーンが出てきたので再度有効化した。
---vim.cmd [[map <Plug> <Plug>Markdown_Fold]]
+-- 全体: nvim-markdownのTab fold機能を無効化し、代替キーで fold を実行する
+-- 背景: Tab と Ctrl-i はターミナルレベルで同一バイト(0x09)のため区別できない
+--       Tab に fold をマッピングすると Ctrl-i（ジャンプリスト前方移動）も奪われる
+--       そのため、fold を別キーに移し、Tab/Ctrl-i をデフォルト動作（ジャンプリスト）に戻す
+-- 仕組み: hasmapto('<Plug>Markdown_Fold') を真にして、プラグインの自動 <Tab> マッピングを抑止する
+vim.cmd [[map <Plug> <Plug>Markdown_Fold]]
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.keymap.set("n", "<Leader>mm", function()
+      require("markdown").fold()
+    end, { buffer = true, silent = true, desc = "Fold markdown heading" })
+  end,
+})
 
 -- Octo
 -- keymaps
