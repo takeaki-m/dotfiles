@@ -58,6 +58,11 @@
                 "^app\\.zen-browser\\.zen",
                 "^org\\.mozilla\\.firefox$"
               ]
+            },
+            {
+              "type": "frontmost_application_if",
+              "description": "disabled: この条件は意図的に無効化するためのもの",
+              "bundle_identifiers": ["^DISABLED$"]
             }
           ]
         },
@@ -177,7 +182,8 @@
       ]
     },
     {
-      "description": "Browser Operation(tabs,history)",
+      "enabled": false,
+      "description": "Browser Operation(tabs)",
       "manipulators": [
         {
           "type": "basic",
@@ -213,7 +219,12 @@
               ]
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "description": "Browser Operation(history)",
+      "manipulators": [
         {
           "type": "basic",
           "from": {
