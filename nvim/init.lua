@@ -123,6 +123,7 @@ local function setup_plugins()
     -- },
     {
       'nvim-telescope/telescope.nvim',
+      cmd = { 'Telescope' },
       config = function()
         local actions = require("telescope.actions")
         require("telescope").setup({
@@ -156,6 +157,9 @@ local function setup_plugins()
             },
           },
         })
+        -- aerialがruntimepathに存在する場合のみ拡張を登録
+        -- pckrの読み込み順序によってはaerialが未登録の場合があるためpcallで保護
+        pcall(require("telescope").load_extension, "aerial")
       end
     },
     {
@@ -257,15 +261,16 @@ local function setup_plugins()
       end
     },
     {
+      -- aerial自身のコストは~1.5msのため遅延化せず起動時に読み込む
+      -- telescope拡張の登録はtelescope側で行う（telescopeは遅延読み込み）
       "stevearc/aerial.nvim",
       config = function()
         require("aerial").setup()
-        -- telescope拡張はaerial初期化後に読み込む
-        require("telescope").load_extension("aerial")
       end
     },
     {
       'linrongbin16/gitlinker.nvim',
+      cmd = { 'GitLink' },
       config = function()
         require("gitlinker").setup()
       end,
@@ -304,6 +309,7 @@ local function setup_plugins()
     },
     {
       "pwntester/octo.nvim",
+      cmd = { 'Octo' },
       requires = {
         "nvim-lua/plenary.nvim",
         "nvim-telescope/telescope.nvim",
@@ -416,8 +422,10 @@ local function setup_plugins()
     },
     -- obsidian
     {
-      "epwalsh/obsidian.nvim",
-      requires = "nvim-lua/plenary.nvim",
+      "obsidian-nvim/obsidian.nvim",
+      -- markdownファイルを開いた時に読み込む
+      -- cmd だと wiki link補完やUI装飾が手動コマンド実行まで無効になるため ft を使用
+      ft = { 'markdown' },
       config = function()
         local obsidian_valut_path = "/Users/take/Library/Mobile Documents/iCloud~md~obsidian/Documents/obsidian"
         require("obsidian").setup({
