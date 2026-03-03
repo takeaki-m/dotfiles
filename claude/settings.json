@@ -39,6 +39,9 @@
       "Bash(pnpm ls:*)",
       "Bash(pnpm why:*)",
       "Bash(pnpm list:*)",
+      "Bash(pnpm -F frontend exec vitest:* )",
+      "Bash(pnpm -F backend exec vitest:* )",
+      "Bash(pnpm -F api-schema exec vitest:* )",
       "Bash(terraform validate:*)",
       "Bash(terraform fmt:*)",
       "Reading Plan"
