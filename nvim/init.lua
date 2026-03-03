@@ -2,8 +2,8 @@
 -- set file top to enable module cachs
 vim.loader.enable()
 require("command")
-require("keymaps")
 require("options")
+require("keymaps")
 require("lsp")
 require("claude")
 
