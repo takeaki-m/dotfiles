@@ -88,7 +88,7 @@ today(){
         # NOTE; yesterday_noteを指定しているが、splitで開くことができない。もし実現方法がわかれば修正する
         local escaped_yesterday="${yesterday_note// /\\ }"
         command nvim "$monthly_note" \
-          -c "split $escaped_yesterday" \
+          -c "vsplit $escaped_yesterday" \
           -c "Obsidian today" \
           # -c "colorscheme $colorscheme"
     else
