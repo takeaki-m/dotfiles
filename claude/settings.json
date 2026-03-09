@@ -37,13 +37,15 @@
       "Bash(pnpm run validate:*)",
       "Bash(pnpm validate:*)",
       "Bash(pnpm ls:*)",
+      "Bash(pnpm view:*)",
       "Bash(pnpm why:*)",
       "Bash(pnpm list:*)",
-      "Bash(pnpm -F frontend exec vitest:* )",
-      "Bash(pnpm -F backend exec vitest:* )",
-      "Bash(pnpm -F api-schema exec vitest:* )",
       "Bash(terraform validate:*)",
       "Bash(terraform fmt:*)",
+      "Bash(git log:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git ls-files:*)",
       "Reading Plan"
     ],
     "deny": [
@@ -81,6 +83,9 @@
       "Bash(su:*)",
       "Read(.env)",
       "Read(.env.*)",
+      "Read(terraform apply:*)",
+      "Read(terraform destroy:*)",
+      "Bash(drizzle push:*)",
       "Read(id_ed25519)",
       "Read(id_rsa)",
       "Read(~/.ssh/*)",
@@ -132,6 +137,5 @@
       "Working"
     ]
   },
-  "alwaysThinkingEnabled": true,
-  "effortLevel": "medium"
+  "alwaysThinkingEnabled": true
 }
