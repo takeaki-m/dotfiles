@@ -1,7 +1,20 @@
 network_access = true
 
-model = "gpt-5-codex"
-model_reasoning_effort = "high"
+# モデル設定方針（全体方針）:
+# - デフォルトでは固定せず、CLIの既定選択（最新追従）を利用する
+# - reasoning effort も固定せず、タスクに応じた自動調整を優先する
+
+# 権限設計（全体方針）:
+# - 通常起動は最小権限を適用し、read-only を既定値にする
+# - 変更作業が必要な場合のみ、明示的に profile(write) で昇格する
+sandbox_mode = "read-only"
+approval_policy = "untrusted"
+
+# 権限設計（詳細）:
+# - `codex -p write` のときだけ workspace-write を有効化する
+[profiles.write]
+sandbox_mode = "workspace-write"
+approval_policy = "untrusted"
 
 
 notify = ["osascript", "-e", "display notification \"Task Complete!!!\" with title \"Codex\" subtitle \"Processing is complete.\" sound name \"Pop\""]
