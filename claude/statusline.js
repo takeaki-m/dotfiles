@@ -7,6 +7,9 @@ const { execSync } = require('child_process');
 
 // Constants
 const COMPACTION_THRESHOLD = 200000
+// Nerd Fontアイコン（Unicodeエスケープで定義し、可読性とメンテナンス性を確保）
+const ICON_FOLDER = '\uea83';
+const ICON_GIT = '\ueafe';
 
 // Read JSON from stdin
 let input = '';
@@ -21,7 +24,7 @@ process.stdin.on('end', async () => {
     const dirName = path.basename(currentDir);
     const sessionId = data.session_id;
 
-    // Get Git branch
+    // Gitブランチ名を取得
     let branch = '';
     if (currentDir && fs.existsSync(path.join(currentDir, '.git'))) {
       try {
@@ -30,7 +33,7 @@ process.stdin.on('end', async () => {
           encoding: 'utf-8'
         }).trim();
         if (branchName) {
-          branch = ` 🌿 ${branchName}`;
+          branch = ` ${ICON_GIT} \x1b[35m${branchName}\x1b[0m`;
         }
       } catch (e) {
         // Gitコマンドエラーは無視
@@ -68,16 +71,21 @@ process.stdin.on('end', async () => {
     // Format token display
     const tokenDisplay = formatTokenCount(totalTokens);
 
-    // Color coding for percentage (same ratio as original article with 160K base)
-    let percentageColor = '\x1b[32m'; // Green
-    if (percentage >= 56) percentageColor = '\x1b[33m'; // Yellow (112K/200K)
-    if (percentage >= 72) percentageColor = '\x1b[91m'; // Bright Red (144K/200K)
+    // 使用率に応じた色分け（元記事の160Kベース比率を維持）
+    let percentageColor = '\x1b[32m'; // 緑
+    if (percentage >= 56) percentageColor = '\x1b[33m'; // 黄 (112K/200K)
+    if (percentage >= 72) percentageColor = '\x1b[91m'; // 赤 (144K/200K)
 
-    // Build status line
-    //const statusLine = `[${model}] 📁 ${dirName}${branch} | 🪙 ${tokenDisplay} | ${percentageColor}${percentage}%\x1b[0m \x1b[90m| ${sessionId}\x1b[0m`;
-    const statusLine = `[${model}] 📁 ${dirName}${branch} | 🪙 ${tokenDisplay} | ${percentageColor}${percentage}%\x1b[0m `;
+    // プログレスバー生成（視覚的にトークン使用率を表示）
+    const progressBar = createProgressBar(percentage, 15);
 
-    console.log(statusLine);
+    // ステータスラインを複数行に分割（nvimバッファでの折り返し対応）
+    //const line1 = `\x1b[1m[${model}]\x1b[0m ${ICON_FOLDER} \x1b[36m${dirName}\x1b[0m${branch}`;
+    //const line2 = `\x1b[1m[${model}]\x1b[0m ${percentageColor}${progressBar}\x1b[0m ${tokenDisplay} ${percentageColor}${percentage}%\x1b[0m`;
+    const line2 = `${percentageColor}${progressBar}\x1b[0m ${tokenDisplay} ${percentageColor}${percentage}%\x1b[0m`;
+
+    //console.log(line1);
+    console.log(line2);
   } catch (error) {
     // Fallback status line on error
     console.log('[Claude Code]');
@@ -124,6 +132,13 @@ async function calculateTokensFromTranscript(filePath) {
       reject(err);
     });
   });
+}
+
+// プログレスバーを生成（ブロック文字で使用率を視覚化）
+function createProgressBar(percentage, width) {
+  const filled = Math.round(width * percentage / 100);
+  const empty = width - filled;
+  return '\u2588'.repeat(filled) + '\u2591'.repeat(empty);
 }
 
 function formatTokenCount(tokens) {
