@@ -22,6 +22,8 @@ brew 'git-delta'
 brew 'postgresql@17'
 brew 'volta'
 brew 'ffmpeg'
+brew 'tpm'
+brew 'awscli-local'
 cask "font-hack-nerd-font"
 cask "iterm2"
 cask "karabiner-elements"
@@ -36,3 +38,4 @@ cask "zoom"
 cask "codex"
 cask "ghostty"
 cask "gcloud-cli"
+cask "firefox"
