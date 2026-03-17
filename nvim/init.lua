@@ -72,6 +72,12 @@ local function setup_plugins()
       "nvim-treesitter/nvim-treesitter-textobjects",
       config = function()
         require("nvim-treesitter.configs").setup({
+          -- treesitter本体の設定（型定義の必須フィールド）
+          modules = {},
+          sync_install = false,
+          ensure_installed = {},
+          ignore_install = {},
+          auto_install = false,
           textobjects = {
             -- コード構造単位で選択する（visual/operatorモード）
             -- af: 関数全体, if: 関数内部, aa: 引数全体, ia: 引数内部
