@@ -196,6 +196,18 @@ gwc() {
     nvim . -c "term make init_apps; zsh"
 }
 
+release() {
+  echo "Release準備を開始します"
+  echo "Releaseブランチを作成します"
+  echo "Release branch suffix: リリース内容を英語で入力してください">&2
+  read -r branch_suffix
+  git checkout -b "release/$(date '+%Y-%m')/$branch_suffix"
+  echo "続けてPRを作成します"
+  echo "PR title suffix: リリース内容を日本語で入力してください">&2
+  read -r pr_title_suffix
+  gh pr new --base main --title "Release/$(date '+%Y-%m')/${pr_title_suffix}"
+}
+
 # Git作業前提: tracked変更(staged/unstaged)がないことを確認
 git_require_clean_tracked() {
   git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
