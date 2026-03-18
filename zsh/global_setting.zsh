@@ -196,6 +196,37 @@ gwc() {
     nvim . -c "term make init_apps; zsh"
 }
 
+# Git作業前提: tracked変更(staged/unstaged)がないことを確認
+git_require_clean_tracked() {
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
+    echo "Not a git repository."
+      return 1
+    }
+  git update-index -q --refresh
+  if ! git diff --quiet --ignore-submodules --; then
+    echo "Blocked: unstaged changes exist. Commit/stash/restore first."
+    git status --short
+    return 1
+  fi
+  if ! git diff --cached --quiet --ignore-submodules --; then
+    echo "Blocked: staged changes exist. Commit/stash/restore first."
+    git status --short
+    return 1
+  fi
+}
+
+# 安全 checkout/switch
+gco() {
+  git_require_clean_tracked || return 1
+  git checkout "$@"
+}
+
+# 安全 pull
+gpl() {
+  git_require_clean_tracked || return 1
+  git pull "$@"
+}
+
 
 # 全体: Claude Code Review を手動実行するラッパー
 # 詳細: 引数が無い場合は現在ブランチのPR番号を自動取得する
