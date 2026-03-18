@@ -196,6 +196,30 @@ gwc() {
     nvim . -c "term make init_apps; zsh"
 }
 
+gcw() {
+  local target
+  target=$(git worktree list | fzf | awk '{print $1}')
+  if [ -n "$target" ]; then
+    cd "$target"
+  fi
+}
+
+gwr() {
+  local target
+  target=$(git worktree list | grep -v develop | grep -v main | fzf --header "削除するworktreeとbranchを選択してください")
+  [ -z "$target" ] && return
+  local target_worktree target_branch
+  target_worktree=$(echo "$target" | awk '{print $1}')
+  target_branch=$(echo "$target" | awk '{print $3}' | tr -d '[]')
+  if [ -n "$target_worktree" ]; then
+    git worktree remove "$target_worktree" && \
+    echo "remove git worktree: $target_worktree" && \
+    git branch -d "$target_branch" && \
+    echo "remove git branch: $target_branch"
+  fi
+}
+
+
 release() {
   echo "Release準備を開始します"
   echo "Releaseブランチを作成します"
