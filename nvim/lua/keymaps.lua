@@ -94,6 +94,7 @@ keymap('n', '<Leader>z', ":lua Snacks.zen.zoom()<CR>", with_desc("Toggle zoom"))
 keymap('v', '<Leader>oo', ":'<,'>Obsidian link<CR>", with_desc('Create Obsidian link to exist note'))
 keymap('v', '<Leader>on', ":'<,'>Obsidian link_new<CR>", with_desc('Create Obsidian link with create new note'))
 keymap('n', '<Leader>ot', ":Obsidian today<CR>", with_desc('Open Obsidian today'))
+keymap('n', '<Leader>oy', ":Obsidian yesterday<CR>", with_desc('Open Obsidian yesterday'))
 -- =============================================================================
 -- ビジュアルモードで選択したテキストを検索するキーマッピング
 --
