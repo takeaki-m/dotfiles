@@ -219,6 +219,27 @@ local function setup_plugins()
       end
     },
     'kdheepak/lazygit.nvim',
+    {
+      -- fugitive: 軽量なgit操作UI。lazygitほど多機能ではないが、
+      -- in-process(telescope並に高速)で起動するため、
+      -- 複数ファイル横断でのhunk単位のstage/commit運用に向く
+      'tpope/vim-fugitive',
+      config = function()
+        -- :Git status バッファ内のキーを安全寄りにカスタマイズ
+        -- 背景: fugitiveのデフォルトでは `X` が checkout(作業ツリー破棄) に割り当てられ、
+        --   新規追加ファイルなど undo 不能な操作の誤爆リスクがある
+        -- 解決: fugitive filetype の buffer 内でのみ `X` を無効化する
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "fugitive",
+          callback = function()
+            vim.keymap.set("n", "X", "<Nop>", {
+              buffer = true,
+              desc = "Disabled: use CLI for checkout to avoid accidental reset",
+            })
+          end,
+        })
+      end,
+    },
     'neovim/nvim-lspconfig',
     { 'williamboman/mason.nvim',
       config = function()
