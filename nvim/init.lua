@@ -212,7 +212,7 @@ local function setup_plugins()
             lualine_b = { '' },
             lualine_c = { 'filename' },
             lualine_x = { 'filetype' },     -- encoding formatを削除
-            lualine_y = {},                 -- progressを削除
+            lualine_y = { 'progress' },     -- ファイル全体に対するカーソル位置の割合(Top/xx%/Bot)
             lualine_z = { 'location' }
           }
         }
