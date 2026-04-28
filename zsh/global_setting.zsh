@@ -187,14 +187,35 @@ ghdev() {
 }
 
 gwc() {
-    local branch=$(ghdev)
+    # 全体: issue連動worktreeを作成し、nvim + ClaudeCodeを起動する
+    # 詳細: ghdevが返すブランチ名(例 feature/123-fix-xxx)からissue番号を抜き出し、
+    #       Claude Codeの初期プロンプトとして /check-issue を送る。
+    #       抽出できない場合は従来通り素のClaudeCodeを起動する(フォールバック)。
+    # ghdevはコマンド置換で呼ぶとZLEが無効化されvaredが失敗するため、
+    # 対話シェルの文脈でそのまま実行し、結果はREPLY経由で受け取る。
+    ghdev || return 1
+    local branch=$REPLY
+    [[ -z "$branch" ]] && return 1
     branch_with_hyphen=$(echo $branch | tr / -)
     local worktree_path="../$branch_with_hyphen"
     git fetch origin $branch
     git worktree add "$worktree_path" "$branch"
     cd "$worktree_path"
+
+    # ブランチ名 feature/123-content から "123" を取り出す
+    # zshパラメータ展開: ${${branch#*/}%%-*} は「最初の / より後ろ」かつ「最初の - より前」
+    local issue_no="${${branch#*/}%%-*}"
+
     # nvimと指定しないとaliasの設定が効かずvimが起動される
-    nvim . -c "term make init_apps; zsh"
+    # 引用符の通り道: zsh \" → nvim opts.args内に " → claudecode.nvimがclaude CLIへ渡す際に
+    # shellを経由して引用符が剥がれ、claudeが /check-issue <番号> を1位置引数として受け取る
+    if [[ "$issue_no" =~ ^[0-9]+$ ]]; then
+        nvim . -c "term make init_apps; zsh" \
+            -c "ClaudeCode \"/check-issue $issue_no\""
+    else
+        nvim . -c "term make init_apps; zsh" \
+            -c "ClaudeCode"
+    fi
 }
 
 gcw() {
@@ -389,7 +410,7 @@ alias brew_install='brew bundle --global'
 alias upbrew='brew update && brew upgrade && brew cleanup'
 alias reader='/usr/bin/open -a Safari `pbpaste`'
 
-alias dotfiles='cd ~/settings/dotfiles && vim .'
+alias dotfiles='cd ~/settings/dotfiles && vim . -c "ClaudeCode"'
 alias lg='lazygit'
 alias pn='pnpm'
 alias aws_dev='aws sso login --profile dev-admin'
