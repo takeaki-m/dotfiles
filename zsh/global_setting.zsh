@@ -155,34 +155,35 @@ ghdev() {
   echo "GitHub issueと関連付けてブランチを作成します">&2
   echo "Issue を選択してください">&2
   issue_no=$(gh issue list --limit 100 | fzf | awk '{print $1}')
-  echo "選択されたIssue: $issue_no" >&2
-  echo "Branch name:">&2
-  read -r branch
+  echo "選択されたIssue: $issue_no">&2
+  choice=$( echo "feature\nfix\nother" | fzf --prompt="prefixを選択:")
+  echo "prefixを選択してください">&2
+  if [[ "$choice" == "other" ]]; then
+    # readはZLEを使わないためCtrl-Hなどのemacsキーバインドが効かない。
+    # varedはZLE経由で値を編集するため、bindkey -eで設定したキーが利用できる。
+    vared -c -p "prefixを自由入力してください: " choice
+  fi
+  echo "変更内容を英語で入力してください">&2
+  # 同上: readではなくvaredを使ってemacsキーバインド(Ctrl-H等)を有効化する
+  vared -c -p "変更内容: " content
+  branch="${choice}/${issue_no}-${content}"
   echo "実行するコマンドは以下で良いですか？">&2
-  local cmd=( gh issue develop $issue_no --name $branch )
+  local cmd=( gh issue develop "$issue_no" --name "$branch" )
   echo "$cmd" >&2
-  select answer in yes no
-    do
-      case $answer in
-        yes)
-          # yesが選択されたらループを抜ける先に進む
-          break
-          ;;
-        no)
-          echo "コマンドの実行を終了します">&2
-          return 1
-          ;;
-        *)
-          echo "無効な選択です。yesかnoの番号を入力してください">&2
-          ;;
-      esac
-  done
+  answer=$( echo "yes\nno" | fzf --prompt="実行しますか？:")
+  if [[ "$answer" != "yes" ]]; then
+    echo "コマンドの実行を終了します">&2
+    return 1
+  fi
   echo "ブランチを作成します" >&2
   if ! "${cmd[@]}" 1>&2; then
     echo "gh コマンドの実行に失敗しました" >&2
   fi
-  # 他で利用するために標準出力にブランチ名を渡す
-  echo $branch
+  # 呼び出し側にはREPLY(zsh慣用のグローバル変数)でブランチ名を渡す。
+  # 背景: $(ghdev)のコマンド置換で呼ぶとサブシェル化されZLEが無効になり、
+  #       vared(ZLE依存)が "ZLE not enabled" で失敗する。
+  #       対話シェル本体で実行しつつ結果を返すため、stdoutではなく変数経由にする。
+  REPLY=$branch
 }
 
 gwc() {
