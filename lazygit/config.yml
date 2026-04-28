@@ -66,5 +66,9 @@ keybinding:
   # カーソル移動のc-pと競合するため、以下の通りに設定
   universal:
     createPatchOptionsMenu: <f12>
+    # universal.removeはfilesパネルのdiscard、branchesパネルの削除など全パネル共通の削除操作キー
+    # ctrl-dスクロール時にctrlが外れてdが単独入力され、
+    # 変更がdiscardされる誤操作を防止するためにd→D(Shift+D)に変更
+    remove: "D"
   # commitChangesはデフォルトの"c"、commitChangesWithEditorはデフォルトの"C"のまま
   # Conventional Commitカスタムコマンドは"V"に割り当て
