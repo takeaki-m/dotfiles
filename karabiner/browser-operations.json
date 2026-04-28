@@ -152,6 +152,33 @@
               ]
             }
           ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "slash",
+            "modifiers": { "mandatory": ["left_control"] }
+          },
+          "to": [
+            { "key_code": "japanese_eisuu" },
+            {
+              "key_code": "a",
+              "modifiers": ["command", "shift"]
+            },
+            {
+              "key_code": "vk_none",
+              "hold_down_milliseconds": 150
+            },
+            { "key_code": "return_or_enter" }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.google\\.Chrome$"
+              ]
+            }
+          ]
         }
       ]
     },
