@@ -17,3 +17,4 @@ font-thicken = true
 # macOSのOptionキーをAlt(Meta)キーとして動作させる
 # Nvim/Vimの<M-x>キーバインドを有効にするために必要
 macos-option-as-alt = true
+desktop-notifications = true
