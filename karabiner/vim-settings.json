@@ -2,6 +2,39 @@
   "title": "vimの操作を簡単にするためのkarabinerの設定",
   "rules": [
     {
+      "description": "Ctrl-s: tmux prefixキー送信前に英数(ASCII)に切り替える",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "s",
+            "modifiers": {
+              "mandatory": [ "control" ],
+              "optional": [ "any" ]
+            }
+          },
+          "to": [
+            { "key_code": "japanese_eisuu" },
+            {
+              "key_code": "s",
+              "modifiers": [ "left_control" ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.mitchellh\\.ghostty$",
+                "^com\\.googlecode\\.iterm2$",
+                "^io\\.alacritty$",
+                "^com\\.apple\\.Terminal$"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "description": "Ctrl-g: switch to Eisu (ASCII) and send Ctrl-g",
       "manipulators": [
         {
