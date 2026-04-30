@@ -453,7 +453,7 @@ local function setup_plugins()
           -- ファイル操作の設定
           actions = {
             open_file = {
-              quit_on_open = false, -- ファイルを開いてもツリーを閉じない
+              quit_on_open = true, -- ファイルを開いてもツリーを閉じない
             },
           },
         })
