@@ -24,6 +24,7 @@ brew 'volta'
 brew 'ffmpeg'
 brew 'tpm'
 brew 'awscli-local'
+brew 'aspell'
 cask "font-hack-nerd-font"
 cask "iterm2"
 cask "karabiner-elements"
@@ -41,3 +42,4 @@ cask "gcloud-cli"
 cask "firefox"
 cask "libreoffice"
 cask "codex-app"
+

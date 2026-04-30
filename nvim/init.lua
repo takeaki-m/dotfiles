@@ -554,6 +554,10 @@ local function setup_plugins()
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-buffer',
     'saadparwaiz1/cmp_luasnip',
+    -- 辞書補完: 一般的な英単語をnvim-cmpの候補として自動表示する
+    -- 全体構成: 起動時に辞書ファイルを読み込み → trieにインデックス → prefix検索で候補返却
+    -- 詳細: 辞書ファイルは aspell から生成する(nvim/dict_setup.sh 参照)
+    'uga-rosa/cmp-dictionary',
     {
       "windwp/nvim-autopairs",
       event = "InsertEnter",
@@ -638,6 +642,14 @@ cmp.setup({
     { name = "lazydev", group_index = 0 },
     { name = "nvim_lsp" },
     { name = "luasnip" },
+    -- 辞書ソース: 第一層に置く理由
+    -- cmp.config.sources()は「先頭のグループから候補を集め、空ならば次のグループに進む」仕様。
+    -- 第二層(fallback)に置くと、LSPが候補を1件でも返したファイルタイプ(.lua/.ts等)で
+    -- dictionaryが完全にsuppressされる。第一層に置くことでLSP候補と並列表示される。
+    -- keyword_length = 3: 候補数の爆発を防ぐ。1〜2文字だと候補が数千〜数万件になり
+    --   nvim-cmp内部のスコア計算が重くなる + UX上もノイズが多すぎて選択コスト>入力コストになる
+    -- max_item_count = 20: ポップアップ表示数の上限。LSP/buffer候補と並べた時の見やすさ優先
+    { name = "dictionary", keyword_length = 3, max_item_count = 20 },
   }, {
     { name = "buffer" },
   })
@@ -646,6 +658,36 @@ cmp.setup({
 -- カスタムスニペットの読み込み
 -- プラグイン初期化後に読み込む必要があるため、cmp.setup の後に配置
 require("snippets")
+
+-- 辞書補完(cmp-dictionary)の設定
+-- 全体構成: aspellで生成した英単語リストを読み込み、起動時に内部trieを構築する
+-- 詳細:
+--   - paths: 読み込む辞書ファイル。nvim/dict_setup.sh が ~/.config/nvim/dict/english.txt に生成する
+--   - exact_length: trieの完全一致prefixに使う先頭文字数。
+--     重要: cmp側の keyword_length と必ず一致させる(または上回る)必要がある。
+--     cmp_dictionary内部で req を exact_length で切り詰めた後 keyword_length と比較するため、
+--     exact_length < keyword_length だと常に空配列を返してしまうバグがある
+--     (cmp_dictionary/source.lua の complete() 参照)。
+--   - first_case_insensitive = true: 1文字目の大小を無視する(App入力でappleもヒット)
+-- 辞書ファイルが未生成のマシンでもエラーにならないよう filereadable で防御する
+local dict_path = vim.fn.stdpath('config') .. '/dict/english.txt'
+if vim.fn.filereadable(dict_path) == 1 then
+  require("cmp_dictionary").setup({
+    paths = { dict_path },
+    exact_length = 3,
+    first_case_insensitive = true,
+  })
+else
+  -- 通知のみ。エラー扱いにしないのは、辞書ファイル生成はホスト依存(brew + aspell)のため
+  -- 新規セットアップ直後など、未生成状態でも他の補完機能は通常通り動かしたい
+  vim.schedule(function()
+    vim.notify(
+      "cmp-dictionary: 辞書ファイルが見つかりません (" .. dict_path .. "). " ..
+      "bash nvim/dict_setup.sh で生成してください",
+      vim.log.levels.WARN
+    )
+  end)
+end
 
 -- harpoon: よく使うファイルをピンして1キーで切り替える
 -- <Leader>ha でピン登録、<Leader>hh でリスト表示、<Leader>1-4 で即ジャンプ
