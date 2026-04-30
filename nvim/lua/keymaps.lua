@@ -21,8 +21,8 @@ keymap('n', '<Leader>w', ':w<CR>', with_desc("Save file"))
 -- Esc
 -- with_desc未使用: silent のみ必要で noremap は不要なため、opts と構造が異なる
 keymap('i', 'jj', '<ESC>', { silent = true, desc = "Escape" })
---keymap('i', '<C-j>', '<ESC>', { silent = true })
-keymap('i', 'っj', '<ESC>', { silent = true, desc = "Escape (Japanese)" })
+-- Ctrl系キーはIMEをバイパスするため、日本語入力中でも確実にESCできる
+keymap('i', '<C-j>', '<Cmd>stopinsert<CR>', { silent = true, desc = "Escape" })
 
 -- copy buffer all pages
 keymap('n', '<Leader>y', ':%y<CR>', with_desc("Yank entire buffer"))
