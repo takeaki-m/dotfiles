@@ -47,6 +47,7 @@ keymap('n', '<Leader>fg', ':Telescope live_grep<CR>', with_desc("Live grep"))
 keymap('n', '<Leader>fb', ':Telescope buffers<CR>', with_desc("Find buffers"))
 keymap('n', '<Leader>b', ':Telescope buffers<CR>', with_desc("Find buffers"))
 keymap('n', '<Leader>fr', ':Telescope registers<CR>', with_desc("Select registers"))
+keymap('n', '<Leader>fs', ':Telescope lsp_document_symbols<CR>', with_desc("Find document symbols"))
 
 keymap('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', with_desc("Toggle NvimTree"))
 keymap('n', '<Leader>nf', ':NvimTreeFindFile<CR>', with_desc("Find file in NvimTree"))
