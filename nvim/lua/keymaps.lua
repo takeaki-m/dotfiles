@@ -87,12 +87,6 @@ keymap('n', '<Leader>cs', function()
   })
 end, { noremap = true, silent = true, desc = "Edit Claude settings" })
 
--- dotfilesディレクトリをフローティングターミナル内のNeovimで開く
--- どのプロジェクトからでも設定ファイルを編集可能にする（Ctrl-\のターミナルトグルと同様の操作感）
-keymap({ 'n', 't' }, '<Leader>df', function()
-  Snacks.terminal.toggle("nvim .", { cwd = vim.fn.expand("~/settings/dotfiles/") })
-end, { noremap = true, silent = true, desc = "Open dotfiles in floating Neovim" })
-
 -- Snacksを利用してzoomin / zoomout
 keymap('n', '<Leader>z', ":lua Snacks.zen.zoom()<CR>", with_desc("Toggle zoom"))
 
