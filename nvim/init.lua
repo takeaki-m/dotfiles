@@ -274,6 +274,7 @@ local function setup_plugins()
             'gh_actions_ls',
             'tailwindcss',
             'yamlls',
+            'astro',
           }
         })
       end
@@ -579,6 +580,7 @@ vim.lsp.enable('biome')
 vim.lsp.enable('gh_actions_ls')
 vim.lsp.enable('tailwindcss')
 vim.lsp.enable('postgres_lsp')
+vim.lsp.enable('astro')
 -- 他のライブラリとの依存関係があるため初期化外で設定する。
 -- nvim起動後にsourceでreloadしても問題ないため
 local cmp = require("cmp")
