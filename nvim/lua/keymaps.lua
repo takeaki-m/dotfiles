@@ -32,8 +32,9 @@ keymap('n', '-', '<C-x>', with_desc("Decrement number"))
 
 -- hilight off in two ESC times
 keymap('n', '<Esc><Esc>', ':nohlsearch<CR>', with_desc("Clear search highlight"))
-keymap('n', '<C-j>', ':bnext<CR>', with_desc("Next buffer"))
-keymap('n', '<C-k>', ':bprev<CR>', with_desc("Previous buffer"))
+-- terminalのescと重複して操作が不便になるためコメントアウトする
+-- keymap('n', '<C-j>', ':bnext<CR>', with_desc("Next buffer"))
+-- keymap('n', '<C-k>', ':bprev<CR>', with_desc("Previous buffer"))
 
 keymap('n', 'g:', 'g;', with_desc("Go to older change"))
 
