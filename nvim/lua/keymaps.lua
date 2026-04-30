@@ -151,8 +151,12 @@ keymap("t", "<C-]>", "<C-\\><C-n>", with_desc("Exit terminal mode"))
 -- options.luaで定義したグローバル関数を参照
 ---@diagnostic disable-next-line: undefined-field
 local refresh_lazygit_theme = _G.refresh_lazygit_theme
-keymap('n', '<Leader>g', function() refresh_lazygit_theme(); vim.cmd('LazyGitBuf') end, with_desc("Open LazyGit"))
+-- `<Leader>g*` プレフィックスをfugitiveに譲るため、LazyGitBufは`<Leader>lb`に移動
+-- `<Leader>lg` (LazyGit floating) との対称性 (l=lazygit, b=buffer / g=floating) も担保
+keymap('n', '<Leader>lb', function() refresh_lazygit_theme(); vim.cmd('LazyGitBuf') end, with_desc("Open LazyGit buffer"))
 keymap('n', '<Leader>lg', function() refresh_lazygit_theme(); vim.cmd('LazyGit') end, with_desc("Open LazyGit"))
+-- fugitive: `:Git` status バッファを開く。以後はバッファ内のデフォルトキー (s, u, =, cc) で操作
+keymap('n', '<Leader>gs', ':Git<CR>', with_desc("Open Git status (fugitive)"))
 -- move to specified line with <CR> insted of G
 -- keymap('n', '<CR>', 'G', opts)
 -- move top of file with <BS> instead of gg
