@@ -21,5 +21,6 @@ ls.add_snippets("all", {
   s(":op",  { t("Open AI") }),
   s(":pr",  { t("Provider") }),
   s(":ll",  { t("LLM") }),
+  s(":ms",  { t("Microsoft") }),
 })
 
