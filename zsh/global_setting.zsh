@@ -624,15 +624,8 @@ function ssh() {
 # - 以下にまとめて設定すること
 # --------------------
 
-# vi keybindをdefaultとする
-# emacsに戻すためには以下を有効化すること
-#keybind -e
-
-# tmux接続時にvim keybindになる場合があるため明示的にemux keybindとする
-if [[ -n "$TMUX" ]]; then
-  #bindkey -e
-  bindkey -v
-fi
+# emacs keybindをdefaultとする
+bindkey -e
 
 
 # 前方一致
@@ -645,20 +638,7 @@ fi
 bindkey              '^I'         menu-complete
 bindkey "$terminfo[kcbt]" reverse-menu-complete
 
-# vi modeのinsertモードでemacs風キーバインドを併用する
-# 原理: bindkey -M viins で insert mode のみにバインドを追加できる
-# これにより vi mode のカーソル表示(block/beam)を維持しつつ、emacs風の操作が可能
-bindkey -M viins '^N' down-line-or-history         # 履歴: 次へ (複数行なら次の行)
-bindkey -M viins '^P' up-line-or-history           # 履歴: 前へ (複数行なら前の行)
-bindkey -M viins '^A' beginning-of-line           # 行頭へ移動
-bindkey -M viins '^E' end-of-line                 # 行末へ移動
-bindkey -M viins '^F' forward-char                # 一文字進む
-bindkey -M viins '^B' backward-char               # 一文字戻る
-bindkey -M viins '^D' delete-char-or-list         # 文字削除 or 補完リスト表示
-bindkey -M viins '^K' kill-line                   # カーソルから行末まで削除
-bindkey -M viins '^W' backward-kill-word          # 単語単位で後方削除
-# source <(fzf --zsh) が実行され、C-r に fzf-history-widget がバインドされるため、defaultの履歴広報検索は無効化
-#bindkey -M viins '^R' history-incremental-search-backward  # 履歴の後方検索
+# emacsモードではC-n/C-p/C-a/C-e/C-f/C-b/C-d/C-k/C-wはデフォルトで有効
 
 # 補完メニュー選択中のキーバインド
 # menu selectが有効な場合、候補一覧の中をC-n/C-pで移動できるようにする
@@ -703,25 +683,11 @@ edit-with-nvim() {
 }
 
 zle -N edit-with-nvim
-# vi modeではESC(\ee)がinsert→normal切替と競合するため、C-oに変更
-bindkey -M viins '^O' edit-with-nvim
+bindkey '^O' edit-with-nvim
+# PROMPT='%n@%m %~ %# '
 
 
-# terminalをvi modeにしたvi modeでのinsertかnormalかを視覚的に表示する
-# ~/.zshrc に追記
-
-KEYTIMEOUT=1
-
-function zle-line-init zle-keymap-select {
-    case $KEYMAP in
-        vicmd)      echo -ne "\e[2 q";; # Block cursor
-        main|viins) echo -ne "\e[6 q";; # Beam cursor
-    esac
-    zle reset-prompt
-}
-
-zle -N zle-line-init
-zle -N zle-keymap-select
+PROMPT='%~ %# '
 
 # 利用しないためコメントアウト
 # ghqとの連携。ghqの管理化にあるリポジトリを一覧表示する。ctrl - ]にバインド。
