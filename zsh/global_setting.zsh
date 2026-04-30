@@ -683,10 +683,9 @@ edit-with-nvim() {
 
 zle -N edit-with-nvim
 bindkey '^O' edit-with-nvim
-# PROMPT='%n@%m %~ %# '
-
-
-PROMPT='%~ %# '
+#PROMPT='%n@%m %~ %# '
+# PROMPT='%~ %# '
+# 上記のPROMPTは342行目の git-aware な PS1（__git_ps1 でブランチ名を表示）を上書きしてしまうためコメントアウト
 
 # 利用しないためコメントアウト
 # ghqとの連携。ghqの管理化にあるリポジトリを一覧表示する。ctrl - ]にバインド。
