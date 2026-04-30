@@ -145,7 +145,11 @@ vim.cmd([[
 -- コマンドラインモードでc-n,c-pでも補完を有効にするために方向キーに割り当てる
 --keymap('c', '<C-p>', '<Up>', opts)
 --keymap('c', '<C-n>', '<Down>', opts)
-keymap("t", "<C-]>", "<C-\\><C-n>", with_desc("Exit terminal mode"))
+-- C-/でターミナルモード脱出
+-- 端末によってはC-/が C-_ (0x1F) として送信されるため両方マップ
+-- C-jは入れ子Neovim(lazygit内の編集等)のinsert mode ESCと競合するため使用不可
+keymap("t", "<C-/>", "<C-\\><C-n>", with_desc("Exit terminal mode"))
+keymap("t", "<C-_>", "<C-\\><C-n>", with_desc("Exit terminal mode (C-/ fallback)"))
 
 -- LazyGit起動前にOSテーマを再検出し、テーマ設定を更新してから起動する
 -- options.luaで定義したグローバル関数を参照
