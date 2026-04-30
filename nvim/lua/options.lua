@@ -23,7 +23,6 @@ local options = {
   tabstop = 2,
   -- display width of tab character outside the beginning of a line
   shiftwidth = 2,
-  cursorline = true,
   -- user clipboard
   clipboard = "unnamed",
   -- 途中から検索開始する
@@ -79,6 +78,13 @@ local options = {
   -- "yes"で固定すればそのコストがなくなる。gitsignsやLSP
   -- diagnosticsを使っている現在の構成では合理的。
   signcolumn = "yes",
+  guicursor = table.concat({
+    "n-v-c:block",     -- Normal/Visual/Command-line normal
+    "i-ci-ve:ver25",   -- Insert系
+    "r-cr:hor20",      -- Replace系
+    "o:hor50",         -- Operator-pending
+    "t:ver25",         -- Terminal-Job mode（コマンド入力中）
+  }, ","),
 }
 
 -- active all options
@@ -134,6 +140,19 @@ vim.defer_fn(function ()
   vim.g.lazygit_floating_window_scaling_factor = 1 -- scaling factor for floating window
   _G.refresh_lazygit_theme()
 end, 0)
+
+-- 全体: アクティブなwindowのみcursorlineを表示してフォーカス位置を強調する
+-- 詳細: WinEnter/WinLeaveでwindow-localに切り替える、Vim伝統の鉄板パターン
+-- 背景: 全window常時ONだと「今いるwindow」が判別しづらいため、active側だけに出す
+local cursorline_group = vim.api.nvim_create_augroup("CursorLineOnActiveWin", {})
+vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
+  group = cursorline_group,
+  callback = function() vim.opt_local.cursorline = true end,
+})
+vim.api.nvim_create_autocmd("WinLeave", {
+  group = cursorline_group,
+  callback = function() vim.opt_local.cursorline = false end,
+})
 
 -- claudecodeなどで編集された場合に備えて、編集をチェックする
 -- フォーカスを戻した時やバッファ切り替え時に更新チェック
