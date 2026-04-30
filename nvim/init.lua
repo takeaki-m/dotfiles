@@ -384,8 +384,32 @@ local function setup_plugins()
         require("nvim-tree").setup({
           on_attach = nvim_tree_attach,
           -- git 統合を有効化
+          -- 全体構成: フロート有効化 → サイズと位置を screen から動的計算 → border を rounded
+          -- 詳細: open_win_config はトグルのたびに screen サイズから再計算するため、
+          -- ターミナルをリサイズしても常に中央に表示される
           view = {
-            width = 50,
+            float = {
+              enable = true,
+              open_win_config = function()
+                local screen_w = vim.opt.columns:get()
+                local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
+                local window_w = math.floor(screen_w * 0.7)
+                local window_h = math.floor(screen_h * 0.8)
+                return {
+                  border = "rounded",
+                  relative = "editor",
+                  row = math.floor((screen_h - window_h) / 2),
+                  col = math.floor((screen_w - window_w) / 2),
+                  width = window_w,
+                  height = window_h,
+                }
+              end,
+            },
+            -- フロート時は float.open_win_config の width が使われるが、
+            -- nvim-tree が内部的に view.width を参照する箇所と整合させる
+            width = function()
+              return math.floor(vim.opt.columns:get() * 0.7)
+            end,
           },
           git = {
             enable = true,  -- git関連の情報を有効にする
