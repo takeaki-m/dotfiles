@@ -129,3 +129,120 @@ vim.api.nvim_create_user_command("CodeBlock", function (opts)
   vim.fn.append(e, "```")
   vim.fn.append(s - 1, "```")
 end, { range = true})
+
+-- =============================================================================
+-- 全体構成: 自分で定義したキーマップだけ / それ以外(デフォルト/プラグイン)だけを
+--           Telescope で一覧表示するカスタムピッカー
+--
+-- 背景:
+--   :Telescope keymaps は登録された全マッピングを表示するため、
+--   自分のカスタム定義とNeovim/プラグインのデフォルトが混在して目的のキーを探しづらい。
+--
+-- 仕組み:
+--   1. vim.api.nvim_get_keymap(mode) で登録済みマッピングと sid (script ID) を取得
+--   2. vim.fn.getscriptinfo({sid=...}) で sid を実ファイルパスへ解決
+--   3. パスが ユーザー設定ディレクトリ (vim.fn.stdpath("config") 配下、または
+--      symlink 解決後のパス) であれば「ユーザー定義」と判定
+--   4. only_custom 引数で表示対象を切り替えて Telescope ピッカーへ流し込む
+--
+-- 操作:
+--   <CR> で選択したキーマップが定義されているファイル/行にジャンプする。
+-- =============================================================================
+local function open_keymaps_picker(only_custom)
+  -- pckrのcmd遅延読み込み対応:
+  --  init.luaで telescope は cmd = { 'Telescope' } として登録されており、
+  --  :Telescope系コマンドが一度も叩かれていない状態では rtp に追加されていない。
+  --  本コマンドはユーザー定義名 (:MyKeymaps / :DefaultKeymaps) のため遅延発火しないので、
+  --  pcall で明示的にロードを試みる(既にロード済みなら何もしないので副作用なし)。
+  if not package.loaded["telescope.pickers"] then
+    pcall(vim.cmd, "Pckr load telescope.nvim")
+  end
+  local pickers = require("telescope.pickers")
+  local finders = require("telescope.finders")
+  local actions = require("telescope.actions")
+  local action_state = require("telescope.actions.state")
+  local conf = require("telescope.config").values
+
+  -- ユーザー定義判定の基準ディレクトリ
+  --   user_root          : vim.fn.stdpath("config") (通常 ~/.config/nvim)
+  --   user_root_resolved : symlinkを解決した実体パス (例: ~/settings/dotfiles/nvim)
+  -- dotfilesをsymlink運用しているとscriptパスは実体側で記録されるため、両方候補に含める。
+  local user_root = vim.fn.stdpath("config")
+  local user_root_resolved = vim.fn.resolve(user_root)
+  local function is_user_path(path)
+    if not path or path == "" then return false end
+    return path:find(user_root, 1, true) ~= nil
+        or path:find(user_root_resolved, 1, true) ~= nil
+  end
+
+  -- 対象とするマッピングモード
+  -- n=normal, i=insert, v=visual+select, x=visual, s=select, t=terminal, c=cmdline, o=operator-pending
+  local modes = { "n", "i", "v", "x", "s", "t", "c", "o" }
+
+  local results = {}
+  for _, mode in ipairs(modes) do
+    for _, m in ipairs(vim.api.nvim_get_keymap(mode)) do
+      -- sid から定義スクリプトのパスを解決
+      -- sid が無い / 0 以下のものはユーザースクリプト由来ではないとみなす
+      local path = ""
+      if m.sid and m.sid > 0 then
+        local info = vim.fn.getscriptinfo({ sid = m.sid })
+        if info and info[1] then path = info[1].name end
+      end
+      local is_user = is_user_path(path)
+      if (only_custom and is_user) or (not only_custom and not is_user) then
+        -- rhs はLuaコールバック定義の場合、空文字列または nil になるため別表示にする
+        local rhs_str
+        if type(m.rhs) == "string" and m.rhs ~= "" then
+          rhs_str = m.rhs
+        elseif m.callback then
+          rhs_str = "<lua callback>"
+        else
+          rhs_str = ""
+        end
+        table.insert(results, {
+          mode = mode,
+          lhs = m.lhs,
+          rhs = rhs_str,
+          desc = m.desc or "",
+          path = path,
+          lnum = m.lnum or 0,
+        })
+      end
+    end
+  end
+
+  pickers.new({}, {
+    prompt_title = only_custom and "Custom Keymaps (user defined)" or "Default / Plugin Keymaps",
+    finder = finders.new_table({
+      results = results,
+      entry_maker = function(e)
+        -- desc があれば優先表示、無ければ rhs を表示。末尾にファイル位置を付与
+        local label = e.desc ~= "" and e.desc or e.rhs
+        local display = string.format("[%s] %-22s %-45s | %s:%d",
+          e.mode, e.lhs, label, e.path, e.lnum)
+        -- ordinalにmode/lhs/desc/pathを全て含めて、どの観点でも絞り込めるようにする
+        local ordinal = table.concat({ e.mode, e.lhs, e.desc, e.rhs, e.path }, " ")
+        return { value = e, display = display, ordinal = ordinal }
+      end,
+    }),
+    sorter = conf.generic_sorter({}),
+    -- <CR>: 選択したキーマップが定義されたファイルの該当行にジャンプ
+    attach_mappings = function(prompt_bufnr)
+      actions.select_default:replace(function()
+        local entry = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+        if entry and entry.value and entry.value.path ~= "" then
+          local lnum = entry.value.lnum > 0 and entry.value.lnum or 1
+          vim.cmd("edit +" .. lnum .. " " .. vim.fn.fnameescape(entry.value.path))
+        end
+      end)
+      return true
+    end,
+  }):find()
+end
+
+vim.api.nvim_create_user_command("MyKeymaps", function() open_keymaps_picker(true) end,
+  { desc = "ユーザー設定ディレクトリ由来のキーマップだけをTelescopeで一覧表示" })
+vim.api.nvim_create_user_command("DefaultKeymaps", function() open_keymaps_picker(false) end,
+  { desc = "ユーザー定義以外(デフォルト/プラグイン)のキーマップをTelescopeで一覧表示" })
