@@ -430,6 +430,14 @@ local function setup_plugins()
               "^\\.husky",
             }
           },
+          -- ライブフィルタ(`f`キー)の挙動
+          -- always_show_folders = false にすると、フィルタに一致しない兄弟ディレクトリを
+          -- 非表示にできる。マッチしたノードに至るパス上のフォルダのみ残るため、
+          -- telescope風にノイズの少ない絞り込み結果になる
+          live_filter = {
+            prefix = "[FILTER]: ",
+            always_show_folders = false,
+          },
           -- レンダラー設定
           renderer = {
             icons = {
