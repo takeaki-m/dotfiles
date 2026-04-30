@@ -158,6 +158,29 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- 全体: 全角スペース(U+3000)を可視化する
+-- 背景:
+--   listchars のキー(eol/tab/trail/space/nbsp 等)は全角スペースを対象に取らない。
+--   全角スペースは文字カテゴリ上「通常文字」扱いのため、listchars の空白系キーでは捕捉できないため。
+--   そこで matchadd() で正規表現マッチに対してハイライトを付与する。
+-- 詳細:
+--   matchadd() は window-local な仕組みのため、新しい window を開くたびに登録する必要がある。
+--   重複登録を避けるため、登録IDを window-local 変数(vim.w)に保持してガードする。
+-- 表示形式の選択:
+--   背景色塗り(濃い赤)を採用。出現頻度が低いノイズ系の記号は「出たときに即気付ける」表示が合理的。
+--   $/>./- は頻出のため控えめな記号にしているが、全角スペースは性格が異なる。
+vim.api.nvim_set_hl(0, "ZenkakuSpace", { bg = "#7C2D2D" })
+
+local zenkaku_group = vim.api.nvim_create_augroup("ZenkakuSpaceHighlight", {})
+vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "VimEnter" }, {
+  group = zenkaku_group,
+  callback = function()
+    if vim.w.zenkaku_match_id == nil then
+      vim.w.zenkaku_match_id = vim.fn.matchadd("ZenkakuSpace", "　")
+    end
+  end,
+})
+
 -- 全体: markdown固有の表示設定
 -- 詳細: nvim-markdownプラグインの設定を上書きし、markdown編集時の表示を調整
 vim.api.nvim_create_autocmd("FileType", {
