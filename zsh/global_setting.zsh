@@ -1,5 +1,4 @@
-# PROMPT='%n@%m %~ %# '
-PROMPT='%~ %# '
+
 # ディレクトリ移動
 setopt AUTO_PUSHD #自動的にディレクトリスタックに追加
 setopt pushd_ignore_dups #ディレクトリスタックに重複したディレクトリを追加しない
