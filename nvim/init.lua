@@ -210,7 +210,18 @@ local function setup_plugins()
           sections = {
             lualine_a = { 'mode' },
             lualine_b = { '' },
-            lualine_c = { 'filename' },
+            lualine_c = {
+              'filename',
+              -- fugitive提供のstatusline表記を追加。
+              -- 背景: :Gdiffsplit (dv/dh) でdiff bufferを開いた際、
+              --   working tree側とindex/HEAD側はどちらも同じファイル内容を表示するため
+              --   見た目では判別できない。FugitiveStatusline()は
+              --     - working tree buffer: 空文字列
+              --     - index buffer:        [Git(0)]
+              --     - HEAD/blob buffer:    [Git(HEAD)] や [Git(<sha>)]
+              --   を返すので、statuslineに出すだけでどちらのバッファにいるか一目で分かる。
+              function() return vim.fn.FugitiveStatusline() end,
+            },
             lualine_x = { 'filetype' },     -- encoding formatを削除
             lualine_y = { 'progress' },     -- ファイル全体に対するカーソル位置の割合(Top/xx%/Bot)
             lualine_z = { 'location' }
