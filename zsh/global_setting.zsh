@@ -225,6 +225,58 @@ gcw() {
   fi
 }
 
+gci() {
+  issue_line=$(gh issue list --limit 100 | fzf)
+  [[ -z "$issue_line" ]] && { echo "issueが選択されなかったため処理を中断します" >&2; return 1; }
+  # gh issue listの出力先頭はissue番号。awkで抜き出す
+  local issue_no
+  issue_no=$(echo "$issue_line" | awk '{print $1}')
+  [[ -z "$issue_no" ]] && { echo "issue番号を取得できませんでした" >&2; return 1; }
+  # gh issue viewはstdinを読まないため、issue番号は位置引数で渡す。
+  task_name=$(gh issue view "$issue_no" --json number,title -q '[.number, .title] | join(" ")')
+  echo $task_name | pbcopy
+  echo "task titleとissue numberがclipboardにコピーされました。: ${task_name}" >&2
+}
+
+gwp() {
+    # 全体: PR連動worktreeを作成し、nvim + ClaudeCodeを起動する
+    # 詳細: gh pr listで一覧表示しfzfで選択 → 選択PRのheadRefNameを取得 →
+    #       そのブランチを使ってworktreeを作成しnvim+ClaudeCodeを起動する。
+    # gwc(issueベース)とは異なり、既存PRに紐づくブランチで作業を始める用途。
+    echo "Pull Requestを選択してください" >&2
+    local pr_line
+    pr_line=$(gh pr list --limit 100 | fzf)
+    [[ -z "$pr_line" ]] && { echo "PRが選択されなかったため処理を中断します" >&2; return 1; }
+
+    # gh pr listの出力先頭はPR番号。awkで抜き出す
+    local pr_no
+    pr_no=$(echo "$pr_line" | awk '{print $1}')
+    [[ -z "$pr_no" ]] && { echo "PR番号を取得できませんでした" >&2; return 1; }
+
+    # gh pr viewはstdinを読まないため、PR番号は位置引数で渡す。
+    # -q (--jq)でheadRefNameだけを抽出する
+    local branch
+    branch=$(gh pr view "$pr_no" --json headRefName -q .headRefName)
+    [[ -z "$branch" ]] && { echo "headRefNameを取得できませんでした" >&2; return 1; }
+    echo "選択されたPR: #${pr_no} (branch: ${branch})" >&2
+
+    # ブランチ名に / が含まれるとworktreeのパスがネストしてしまうため - に置換する。
+    # 加えてフォルダ名は英小文字に統一したいため、tr で大文字→小文字へ変換する。
+    # (zshの ${var:l} でも小文字化できるが、ここではtrでパイプ処理にまとめる)
+    local branch_with_hyphen
+    branch_with_hyphen=$(echo "$branch" | tr / - | tr '[:upper:]' '[:lower:]')
+    local worktree_path="../$branch_with_hyphen"
+
+    # リモート最新を取得してからworktreeを作成
+    git fetch origin "$branch" || { echo "git fetchに失敗しました" >&2; return 1; }
+    git worktree add "$worktree_path" "$branch" || { echo "git worktree addに失敗しました" >&2; return 1; }
+    cd "$worktree_path" || return 1
+
+    # gwcと同様、nvim起動と同時にClaudeCodeを立ち上げる
+    nvim . -c "term make init_apps; zsh" \
+        -c "ClaudeCode"
+}
+
 gwr() {
   local target
   target=$(git worktree list | grep -v develop | grep -v main | fzf --header "削除するworktreeとbranchを選択してください")
