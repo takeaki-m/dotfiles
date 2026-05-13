@@ -297,11 +297,13 @@ release() {
   echo "Release準備を開始します"
   echo "Releaseブランチを作成します"
   echo "Release branch suffix: リリース内容を英語で入力してください">&2
-  read -r branch_suffix
+  # readではなくvaredを使ってemacsキーバインド(Ctrl-H等)を有効化する
+  vared -c -p "content(english)" branch_suffix 
   git checkout -b "release/$(date '+%Y-%m')/$branch_suffix"
   echo "続けてPRを作成します"
   echo "PR title suffix: リリース内容を日本語で入力してください">&2
-  read -r pr_title_suffix
+  # readではなくvaredを使ってemacsキーバインド(Ctrl-H等)を有効化する
+  vared -c -p "content(Japanese)" pr_title_suffix 
   gh pr new --base main --title "Release/$(date '+%Y-%m')/${pr_title_suffix}"
 }
 
