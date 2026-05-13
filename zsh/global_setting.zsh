@@ -516,6 +516,11 @@ check_os_theme_is_dark() {
   | grep -qi true
 }
 
+function set_api_keys() {
+  set_openai
+  set_google_generative_ai_api_key
+}
+
 # 開発時にopen ai apiの設定を迅速にする関数
 function set_openai() {
     # 既に値がセットされているかチェック (-n は文字列の長さが0より大ならTrue)
