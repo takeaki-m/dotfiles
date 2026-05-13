@@ -129,7 +129,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "afplay /System/Library/Sounds/Glass.aiff"
+            "command": "jq -r '.cwd | split(\"/\") | last' | { read -r name; osascript -e \"display notification \\\"作業が完了しました [$name]\\\" with title \\\"Claude Code\\\" sound name \\\"Glass\\\"\"; }"
           }
         ]
       }
