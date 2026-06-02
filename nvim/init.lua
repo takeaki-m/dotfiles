@@ -504,6 +504,13 @@ local function setup_plugins()
         require("obsidian").setup({
           -- 旧コマンド形式(ObsidianXxx)を無効化し、新形式(Obsidian xxx)のみ使用する
           legacy_commands = false,
+          -- 全体: markdownの見た目(チェックボックス/箇条書き/conceal等)の描画は
+          --       render-markdown.nvim に一本化する
+          -- 詳細: obsidian.nvimもデフォルトで同種のUI描画を行うため、両方有効だと
+          --       描画が二重になりアイコンとテキストの位置がずれる
+          --       (例: "- [ ] test" が "- [ ] st" のように先頭文字が隠れる)。
+          --       そのためobsidian側のUI描画を無効化して競合を避ける。
+          ui = { enable = false },
           workspaces = {
             {
               name = "personal",
