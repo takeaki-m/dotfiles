@@ -48,9 +48,34 @@ local function setup_plugins()
       end
     },
     {
+      -- nvim-treesitter (main branch): フルリライト版
+      -- 全体構成: 旧master系のAPI(ensure_installed/auto_install/highlightモジュール等)は廃止され、
+      --   1) このプラグインは「パーサーと query の取得」だけを担当
+      --   2) ハイライト/折りたたみは Neovim ネイティブ (vim.treesitter.start / foldexpr) を使う(options.lua側)
+      --   3) パーサーは setup ではなく明示インストール (require('nvim-treesitter').install) で入れる
+      -- 背景: master branchは Neovim 0.12 のクエリディレクティブAPI変更(match[id]がTSNode→TSNode[]へ)
+      --   に未対応で、markdown injection 評価時に query_predicates.lua:141 で落ちる。
+      --   公式が master を locked 扱いにし main branch への移行を推奨している。
       'nvim-treesitter/nvim-treesitter',
+      branch = 'main',
+      run = ':TSUpdate',  -- インストール/更新時にパーサーを最新化
       config = function()
-        require("nvim-treesitter").setup()
+        -- 防御的記述: ブートストラップ時はまだ master branch のままで config が走るため、
+        --   main 専用 API (install) が存在しないことがある。
+        --   主に「初回 :PckrSync 前」「branch 切替直後の最初の起動」で発生する一過性問題。
+        --   pcall + 関数存在チェックで吸収し、:PckrSync 完了後の再起動で本来のパスに乗る。
+        local ok, ts = pcall(require, 'nvim-treesitter')
+        if not ok then return end
+        if type(ts.setup) == 'function' then ts.setup() end
+        if type(ts.install) == 'function' then
+          -- 普段使うパーサーを明示インストール (既にインストール済みなら no-op、非同期)
+          -- markdown / markdown_inline は markview.nvim の injection 評価で必須
+          ts.install({
+            'lua', 'vim', 'vimdoc', 'bash',
+            'markdown', 'markdown_inline',
+            'json', 'yaml', 'toml', 'regex',
+          })
+        end
       end
     },
     -- flash.nvim: 画面内の任意の位置に2-3キーストロークでジャンプする
@@ -67,44 +92,51 @@ local function setup_plugins()
         vim.keymap.set('o', 's', function() flash.jump() end, { noremap = true, silent = true, desc = "Flash jump" })
       end
     },
-    -- nvim-treesitter-textobjects: treesitterの構文木を利用してコード構造単位で選択・移動する
+    -- nvim-treesitter-textobjects (main branch):
+    --   treesitterの構文木を利用してコード構造単位で選択・移動する
+    -- 全体構成:
+    --   1) setup() でグローバル挙動 (lookahead / set_jumps) のみ宣言
+    --   2) キーマップは旧版の keymaps = {...} 宣言ではなく、vim.keymap.set で個別に書く
+    --      (main branch の設計方針: マッピングの責務をユーザー側に明示化)
+    --   3) select_textobject / goto_* の第2引数 'textobjects' は queries/<lang>/textobjects.scm を指す
     {
       "nvim-treesitter/nvim-treesitter-textobjects",
+      branch = 'main',
       config = function()
-        require("nvim-treesitter.configs").setup({
-          -- treesitter本体の設定（型定義の必須フィールド）
-          modules = {},
-          sync_install = false,
-          ensure_installed = {},
-          ignore_install = {},
-          auto_install = false,
-          textobjects = {
-            -- コード構造単位で選択する（visual/operatorモード）
-            -- af: 関数全体, if: 関数内部, aa: 引数全体, ia: 引数内部
-            select = {
-              enable = true,
-              lookahead = true,  -- カーソル前方のオブジェクトも対象にする
-              keymaps = {
-                ["af"] = "@function.outer",
-                ["if"] = "@function.inner",
-                ["aa"] = "@parameter.outer",
-                ["ia"] = "@parameter.inner",
-              },
-            },
-            -- コード構造単位でカーソル移動する
-            -- ]f: 次の関数先頭, [f: 前の関数先頭
-            move = {
-              enable = true,
-              set_jumps = true,  -- ジャンプリストに記録する
-              goto_next_start = {
-                ["]f"] = "@function.outer",
-              },
-              goto_previous_start = {
-                ["[f"] = "@function.outer",
-              },
-            },
+        require('nvim-treesitter-textobjects').setup({
+          select = {
+            lookahead = true,  -- カーソル前方のオブジェクトも対象にする
+          },
+          move = {
+            set_jumps = true,  -- ジャンプリストに記録する
           },
         })
+
+        local select = require('nvim-treesitter-textobjects.select')
+        local move   = require('nvim-treesitter-textobjects.move')
+
+        -- 選択（visual/operatorモード）
+        -- af: 関数全体, if: 関数内部, aa: 引数全体, ia: 引数内部
+        vim.keymap.set({ 'x', 'o' }, 'af',
+          function() select.select_textobject('@function.outer', 'textobjects') end,
+          { desc = 'Select around function' })
+        vim.keymap.set({ 'x', 'o' }, 'if',
+          function() select.select_textobject('@function.inner', 'textobjects') end,
+          { desc = 'Select inside function' })
+        vim.keymap.set({ 'x', 'o' }, 'aa',
+          function() select.select_textobject('@parameter.outer', 'textobjects') end,
+          { desc = 'Select around parameter' })
+        vim.keymap.set({ 'x', 'o' }, 'ia',
+          function() select.select_textobject('@parameter.inner', 'textobjects') end,
+          { desc = 'Select inside parameter' })
+
+        -- 移動: ]f 次の関数先頭, [f 前の関数先頭
+        vim.keymap.set({ 'n', 'x', 'o' }, ']f',
+          function() move.goto_next_start('@function.outer', 'textobjects') end,
+          { desc = 'Goto next function start' })
+        vim.keymap.set({ 'n', 'x', 'o' }, '[f',
+          function() move.goto_previous_start('@function.outer', 'textobjects') end,
+          { desc = 'Goto previous function start' })
       end
     },
     'nvim-lua/plenary.nvim',
