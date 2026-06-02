@@ -603,6 +603,27 @@ vim.lsp.config.lua_ls = {
     }
   }
 }
+-- terraformls の設定
+-- 全体構成: fugitive:// 等の仮想バッファでは terraform-ls を起動させない
+-- 背景: git worktree 内の .tf を fugitive 経由(:Gdiffsplit や :Git ステータスからの
+--   diff/index 表示)で開くと、バッファ名が "fugitive://..." という file 以外のスキームになる。
+--   terraform-ls は file:// 前提の実装で、それ以外の URI を MustParseURI で弾いて
+--   panic 終了(exit code 2)する既知のバグがある(semantic_tokens 要求時にクラッシュ)。
+--   そのため、サーバーの行儀に依存せずエディタ側で file スキーム以外を attach 対象から除外する。
+-- 詳細: root_dir をコールバック形式にし、file 以外のスキームでは on_dir を呼ばない
+--   = クライアントを起動させない(attach 後の detach 方式だと panic を起こす
+--   semanticTokens 要求との競合が残るため、起動させない方が確実)。
+vim.lsp.config.terraformls = {
+  root_dir = function(bufnr, on_dir)
+    local name = vim.api.nvim_buf_get_name(bufnr)
+    -- 通常ファイルは "/Users/..." だが、fugitive 等の仮想バッファは "scheme://..." になる
+    if name:match('^%a[%w+.-]*://') then
+      return -- on_dir を呼ばない → クライアントを起動しない
+    end
+    -- 通常ファイル: .terraform / .git を上方向に探索して root を決める
+    on_dir(vim.fs.root(bufnr, { '.terraform', '.git' }) or vim.fs.dirname(name))
+  end,
+}
 -- lspconfig で LSP サーバーを設定
 -- mason-lspconfig は lspconfig と連携して、インストールされた LSP サーバーを自動的に設定
 -- 個別のLSPサーバーの設定は lspconfig にて設定
