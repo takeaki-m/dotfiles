@@ -500,7 +500,7 @@ local function setup_plugins()
       -- cmd だと wiki link補完やUI装飾が手動コマンド実行まで無効になるため ft を使用
       ft = { 'markdown' },
       config = function()
-        local obsidian_valut_path = "/Users/take/Library/Mobile Documents/iCloud~md~obsidian/Documents/obsidian"
+        local obsidian_valut_path = "/Users/take/Documents/obsidian"
         require("obsidian").setup({
           -- 旧コマンド形式(ObsidianXxx)を無効化し、新形式(Obsidian xxx)のみ使用する
           legacy_commands = false,
