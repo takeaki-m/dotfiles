@@ -8,7 +8,8 @@
         "meta+x": "chat:externalEditor",
         "ctrl+g": null,
         "ctrl+q": "chat:stash",
-        "meta+m": "chat:modelPicker"
+        "meta+m": "chat:modelPicker",
+        "cmd+z": "chat:undo"
       }
     }
   ]
