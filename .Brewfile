@@ -25,12 +25,12 @@ brew 'ffmpeg'
 brew 'tpm'
 brew 'awscli-local'
 brew 'aspell'
+brew 'tree-sitter'
 cask "font-hack-nerd-font"
 cask "iterm2"
 cask "karabiner-elements"
 cask "obsidian"
 cask "slack"
-cask "visual-studio-code"
 cask "font-jetbrains-mono-nerd-font"
 cask "google-chrome"
 cask "discord"
