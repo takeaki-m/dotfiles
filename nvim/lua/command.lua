@@ -79,8 +79,8 @@ end, { nargs = '*' }) -- 引数の指定を許可
 -- backend:dev は OPENAI_API_KEY が必要なため、事前に set_openai を呼び出す
 vim.api.nvim_create_user_command('RunApps', function (opts)
   local args = vim.split(opts.args, " ")
-  local cmd1 = args[1] or "set_openai && pnpm run backend:dev"
-  local cmd2 = args[2] or "pnpm run frontend:dev"
+  local cmd1 = args[1] or "pnpm run frontend:dev"
+  local cmd2 = args[2] or "set_api_keys && pnpm run backend:dev"
   open_dual_terminals(cmd1, cmd2)
 end, { nargs = '*' }) -- 引数の指定を許可
 
