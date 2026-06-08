@@ -59,7 +59,7 @@ memo(){
 }
 
 today(){
-    local obsidian_home="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/obsidian"
+    local obsidian_home="$HOME/Documents/obsidian"
     local dir="$obsidian_home/daily"
     mkdir -p "$dir" || return 1
 
@@ -77,25 +77,28 @@ today(){
         local colorscheme="tokyonight-day"
     fi
 
+    command nvim "$monthly_note"
+
+    # Obsidianでdaily note方式ではなくて、weekly noteにするため次のコマンドをコメントアウトする
     # 昨日分のファイル存在で分岐
-    if [[ -f "$yesterday_note" ]]; then
-        # nvimのsplitコマンドにスペースを含むパスを渡すため、エスケープが必要
-        # zshのパラメータ展開を利用
-        # //: 全てのマッチを置換
-        # // : //にて全ての置換を対象として、その後でスペースを指定
-        # \\ : 置換文字列(バックスラッシュ+スペース)
-        # NOTE; yesterday_noteを指定しているが、splitで開くことができない。もし実現方法がわかれば修正する
-        local escaped_yesterday="${yesterday_note// /\\ }"
-        command nvim "$monthly_note" \
-          -c "vsplit $escaped_yesterday" \
-          -c "Obsidian today" \
-          # -c "colorscheme $colorscheme"
-    else
-        # 昨日分のファイルが存在しなければ、今日のファイルのみ開く
-        command nvim "$monthly_note" \
-          -c "Obsidian today" \
-          # -c "colorscheme $colorscheme"
-    fi
+    #if [[ -f "$yesterday_note" ]]; then
+    #    # nvimのsplitコマンドにスペースを含むパスを渡すため、エスケープが必要
+    #    # zshのパラメータ展開を利用
+    #    # //: 全てのマッチを置換
+    #    # // : //にて全ての置換を対象として、その後でスペースを指定
+    #    # \\ : 置換文字列(バックスラッシュ+スペース)
+    #    # NOTE; yesterday_noteを指定しているが、splitで開くことができない。もし実現方法がわかれば修正する
+    #    local escaped_yesterday="${yesterday_note// /\\ }"
+    #    command nvim "$monthly_note" \
+    #      -c "vsplit $escaped_yesterday" \
+    #      -c "Obsidian today" \
+    #      # -c "colorscheme $colorscheme"
+    #else
+    #    # 昨日分のファイルが存在しなければ、今日のファイルのみ開く
+    #    command nvim "$monthly_note" \
+    #      -c "Obsidian today" \
+    #      # -c "colorscheme $colorscheme"
+    #fi
 }
 
 zenn() {
