@@ -6,8 +6,49 @@
 
 [delta]
     navigate = true  # use n and N to move between diff sections
-    features = Coldark-Dark 
+    #features = Coldark-Dark 
     line-numbers = true
+    #features = my-theme
 
 [merge]
     conflictStyle = zdiff3
+
+[delta "my-theme"]
+    # based on "mantis-shrimp-lite" and  "chameleon"
+    # features
+    dark = true
+    side-by-side = true
+    keep-plus-minus-markers = true
+    line-numbers = true
+    # general
+    ## diff でその行が削除された場合や新規に追加された場合で色が適用されなかったので個別に上書きしている
+    map-styles = \
+       bold purple => bold brightred, \
+       bold cyan => bold brightgreen
+    # file decorations
+    file-added-label = [+]
+    file-copied-label = [==]
+    file-modified-label = [*]
+    file-removed-label = [-]
+    file-renamed-label = [->]
+    file-style = brightwhite bold
+    file-decoration-style = "#434C5E" ul
+    # commit
+    commit-style = yellow bold italic
+    commit-decoration-style = yellow ul
+    # diff decorations
+    hunk-header-style = omit
+    plus-style = brightgreen bold
+    plus-emph-style = brightgreen bold
+    plus-non-emph-style = bold
+    minus-style = brightred bold
+    minus-emph-style = brightred bold
+    minus-non-emph-style = bold
+    ## line numbers
+    line-numbers-left-format = " {nm:>3} │"
+    line-numbers-left-style = "#434C5E"
+    line-numbers-right-format = " {np:>3} │"
+    line-numbers-right-style = "#434C5E"
+    line-numbers-minus-style = brightred italic black
+    line-numbers-plus-style = brightgreen italic black
+    line-numbers-zero-style = "#434C5E" italic
