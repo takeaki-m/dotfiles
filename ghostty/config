@@ -1,6 +1,7 @@
 font-size = 16
 #theme = dark:Catppuccin Frappe,light:Flexoki Light
-theme = dark:Catppuccin Frappe,light:Nvim Light
+theme = dark:IR Black,light:Nvim Light
+#theme = dark:IR Black,light:Vimbones
 #theme = Hybrid
 cursor-style = block
 cursor-style-blink = false
