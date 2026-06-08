@@ -1,15 +1,16 @@
 --[[
   Claude Code統合用Neovimキーマップ設定
-  
+
   このファイルはClaude CodeとNeovimを統合するためのキーマップを定義します。
-  
+
   主な機能:
   - 基本操作: Claude Codeの起動、フォーカス、再開、継続
   - モデル選択: 使用するClaudeモデルの切り替え
   - コンテキスト管理: 現在のバッファやビジュアル選択範囲の送信
   - ファイルツリー統合: NvimTree等のファイルエクスプローラからのファイル追加
   - Diff管理: Claude Codeが提案する変更の承認/却下
-  
+  - 幅サイクル: Claude window の幅を 30%/50%/70% で順送り (<M-w>)
+
   キーマップのプレフィックス: <leader>a (AI/Claude Code用)
 --]]
 
@@ -125,3 +126,35 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Diff管理 (dy=yes/accept, dn=no/deny)
 keymap('n', '<leader>dy', '<cmd>ClaudeCodeDiffAccept<cr>', vim.tbl_extend('force', opts, { desc = 'Accept diff (yes)' }))
 keymap('n', '<leader>dn', '<cmd>ClaudeCodeDiffDeny<cr>', vim.tbl_extend('force', opts, { desc = 'Deny diff (no)' }))
+
+-- ============================================================================
+-- Claude window 幅サイクル (30% → 50% → 70% → 30% → ...)
+-- ============================================================================
+-- 全体: claudecode.nvim のデフォルト表示(右側 vsplit)はそのまま利用し、
+--       既存 window の幅だけを動的に変える。window の close/再生成は行わないため
+--       claudecode.nvim/snacks の管理状態に一切干渉せず、副作用が小さい。
+-- 使い方: 任意の場所から <M-w> を押すと、表示中の claude window の幅が次のステップに循環する。
+-- 補足: 「他 window と並べる以外で claude を大きく表示したい」用途には Vim 標準の
+--   <C-w>|  現在 window を最大幅に(他は最小化)
+--   <C-w>=  全 window を均等再分配(元に戻す)
+--   <C-w>T  現在 window を新規タブに移動(=実質フルスクリーン。gT で前タブに戻る)
+-- が便利。これらは追加実装不要で利用可能。
+-- ============================================================================
+local width_steps = { 30, 50, 70 }
+local width_idx = 1
+
+local function cycle_claude_width()
+  -- claude buffer を表示している window を探して、その幅だけを変える
+  for _, w in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(w)
+    if vim.api.nvim_buf_get_name(buf):match('^term://.*claude$') then
+      width_idx = width_idx % #width_steps + 1
+      vim.api.nvim_win_set_width(w, math.floor(vim.o.columns * width_steps[width_idx] / 100))
+      return
+    end
+  end
+  vim.notify('Claude Code window is not visible', vim.log.levels.INFO)
+end
+
+keymap('n', '<M-w>', cycle_claude_width,
+  vim.tbl_extend('force', opts, { desc = 'Cycle Claude width (30/50/70%)' }))

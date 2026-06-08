@@ -509,6 +509,8 @@ local function setup_plugins()
           ---@diagnostic disable-next-line: missing-fields
           terminal = {
             snacks_win_opts = {
+              -- 全体: 表示はプラグインデフォルト(右側 30% の vsplit)に任せる。
+              --       幅の動的変更は lua/claude.lua の cycle_claude_width(<M-w>) で行う。
               keys = {
                 -- 全体: Control-Dを無効化して誤終了を防ぐ
                 -- 詳細: ターミナルモードでControl-Dを押すとEOFシグナルが送信されclaude codeが終了するため、
