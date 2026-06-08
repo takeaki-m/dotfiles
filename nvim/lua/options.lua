@@ -205,9 +205,14 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "VimEnter" }, {
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function()
-    -- コードブロックの```を表示するため、conceallevelを1に設定
-    -- 0に設定するとobsidianからwarningが出るため1に設定
-    vim.opt_local.conceallevel = 1
+    -- 全体: render-markdown.nvim が conceal 対象(チェックボックスや記号等)を
+    --       「完全に隠してアイコンに置き換える」前提で描画するため、
+    --       conceallevel は 2 を設定する
+    -- 詳細: 1だと conceal 対象が 1文字スペースに潰れ、render-markdown が重ねる
+    --       アイコンとテキストの位置がずれて先頭文字が欠ける。
+    --       2 にすると conceal 対象が完全に隠れて位置ずれが解消する。
+    --       (obsidian の UI 描画は init.lua 側で無効化済みのため warning も出ない)
+    vim.opt_local.conceallevel = 2
     -- 全体: markdownファイルは見出し単位で折りたたんだ状態で開く
     -- 詳細: 長いドキュメントの全体構造を把握しやすくする。展開はzRで可能
     vim.opt_local.foldlevel = 0
