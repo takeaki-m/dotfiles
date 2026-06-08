@@ -292,8 +292,13 @@ gwp() {
     cd "$worktree_path" || return 1
 
     # gwcと同様、nvim起動と同時にClaudeCodeを立ち上げる
-    nvim . -c "term make init_apps; zsh" \
-        -c "ClaudeCode"
+    if [[ "$pr_no" =~ ^[0-9]+$ ]]; then
+        nvim . -c "term make init_apps; zsh" \
+            -c "ClaudeCode \"/check-pr $pr_no\""
+    else
+        nvim . -c "term make init_apps; zsh" \
+            -c "ClaudeCode"
+    fi
 }
 
 gwr() {
