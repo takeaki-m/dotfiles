@@ -153,6 +153,22 @@ gh() {
     GLAMOUR_STYLE=light command gh "$@"
   fi
 }
+gh_release_backend() {
+  local out
+  out=$(gh workflow run release-backend.yml --ref $(git branch --show-current) -f environment=dev 2>&1) || \
+  { echo "$out" >&2; return 1; }
+  local run_id=$(echo "$out" | grep -oE 'runs/[0-9]+' | head -1 | cut -d/ -f2)
+  [ -n "$run_id" ] && gh run watch --exit-status "$run_id"
+}
+
+gh_release_frontend() {
+  local out
+  out=$(gh workflow run release-frontend.yml --ref $(git branch --show-current) -f environment=dev -f cleanup=true 2>&1) || \
+
+  { echo "$out" >&2; return 1; }
+  local run_id=$(echo "$out" | grep -oE 'runs/[0-9]+' | head -1 | cut -d/ -f2)
+  [ -n "$run_id" ] && gh run watch --exit-status "$run_id"
+}
 ghdev() {
   echo "GitHub issueと関連付けてブランチを作成します">&2
   echo "Issue を選択してください">&2
