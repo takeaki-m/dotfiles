@@ -24,6 +24,39 @@ keymap('i', 'jj', '<ESC>', { silent = true, desc = "Escape" })
 -- Ctrl系キーはIMEをバイパスするため、日本語入力中でも確実にESCできる
 keymap('i', '<C-j>', '<Cmd>stopinsert<CR>', { silent = true, desc = "Escape" })
 
+-- Claude Code の terminal バッファでのみ jj→ESCバイト送信
+-- 全体構成: terminal mode のキーマップは子プロセスへの入力を変換する。
+--           nvim 自身の insert mode `jj`→ESC と感覚を揃えて、Claude Code の
+--           vim mode で normal mode に戻りやすくする。
+-- 詳細    : <C-j>(=LF=改行) は ASCII規格上Claude Code側で必ず改行になるため代替が必要。
+--           適用対象を bufname が `term://...claude` で終わるバッファに限定する。
+--           snacks_terminal の filetype だけで絞ると <C-\> のトグルターミナル(shell)も
+--           巻き込むため、claude を起動したバッファ名で更に絞り込む (claude.lua の
+--           is_claude_code_buffer と同じ判定基準)。これで lazygit・トグルターミナル・
+--           通常 shell での `jj` 操作には影響しない。
+--           shell経由で claude を起動するケース (bufname末尾が /bin/zsh) は識別
+--           不可能なため対象外 (利用頻度が低いため許容)。
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'snacks_terminal',
+  callback = function(args)
+    -- bufname は端末ジョブ起動時に確定するが、FileType 発火時点で未確定な場合に
+    -- 備えて schedule で 1 tick 遅延させてから判定する
+    vim.schedule(function()
+      if not vim.api.nvim_buf_is_valid(args.buf) then
+        return
+      end
+      local name = vim.api.nvim_buf_get_name(args.buf)
+      if name:match('^term://.*claude$') then
+        vim.keymap.set('t', 'jj', '<Esc>', {
+          buffer = args.buf,
+          silent = true,
+          desc = "Send ESC to Claude Code (vim mode)",
+        })
+      end
+    end)
+  end,
+})
+
 -- copy buffer all pages
 keymap('n', '<Leader>y', ':%y<CR>', with_desc("Yank entire buffer"))
 -- increment and decrement
