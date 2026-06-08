@@ -543,6 +543,7 @@ check_os_theme_is_dark() {
 function set_api_keys() {
   set_openai
   set_google_generative_ai_api_key
+  set_anthropic_api_key
 }
 
 # 開発時にopen ai apiの設定を迅速にする関数
@@ -556,10 +557,10 @@ function set_openai() {
     # -r: バックスラッシュをエスケープとして扱わない
     # -s: 入力文字を非表示にする
     read -rs "OPENAI_API_KEY?Enter OPENAI_API_KEY: "
-    
+
     # 外部に公開
     export OPENAI_API_KEY
-    
+
     # -s を使うと改行が表示されないため、手動で改行を入れる
     echo "\nOPENAI_API_KEY has been exported."
 }
@@ -575,13 +576,32 @@ function set_google_generative_ai_api_key() {
     # -r: バックスラッシュをエスケープとして扱わない
     # -s: 入力文字を非表示にする
     read -rs "GOOGLE_GENERATIVE_AI_API_KEY?Enter GOOGLE_GENERATIVE_AI_API_KEY: "
-    
+
     # 外部に公開
     export GOOGLE_GENERATIVE_AI_API_KEY
-    
+
     # -s を使うと改行が表示されないため、手動で改行を入れる
     echo "\nGOOGLE_GENERATIVE_AI_API_KEY has been exported."
 }
+
+function set_anthropic_api_key() {
+    # 既に値がセットされているかチェック (-n は文字列の長さが0より大ならTrue)
+    if [ -n "$ANTHROPIC_API_KEY" ]; then
+        echo "ANTHROPIC_API_KEY is already set. Skipping."
+        return 0
+    fi
+
+    # -r: バックスラッシュをエスケープとして扱わない
+    # -s: 入力文字を非表示にする
+    read -rs "ANTHROPIC_API_KEY?Enter ANTHROPIC_API_KEY: "
+
+    # 外部に公開
+    export ANTHROPIC_API_KEY
+
+    # -s を使うと改行が表示されないため、手動で改行を入れる
+    echo "\nANTHROPIC_API_KEY has been exported."
+}
+
 # nvim
 alias nvimconfig='nvim ~/.config/nvim/init.lua'
 # alias v='nvim'
