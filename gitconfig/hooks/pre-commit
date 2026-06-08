@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# グローバル pre-commit hook
+#
+# ローカルhookへのチェーン実行のみ（グローバル固有処理なし）
+# core.hooksPathを設定すると .git/hooks/ は無視されるため、
+# git secrets等のローカルhookが引き続き動作するようチェーン実行する
+
+LOCAL_HOOK="$(git rev-parse --git-dir)/hooks/$(basename "$0")"
+if [ -x "$LOCAL_HOOK" ]; then
+    exec "$LOCAL_HOOK" "$@"
+fi

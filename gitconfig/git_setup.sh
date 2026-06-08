@@ -24,5 +24,11 @@ git config --global commit.template $GIT_SET_PATH/.commit_template
 echo "### set core editor nvim ###"
 git config --global core.editor "nvim"
 
+# グローバルhooksを設定
+# checkout後のindex整合性チェックを全リポジトリに適用しつつ、
+# ローカルhook（git secrets等）をチェーン実行する
+echo "### set global hooks path ###"
+git config --global core.hooksPath "$GIT_SET_PATH/hooks"
+
 RET_CD=$?
 exit ${RET_CD}
