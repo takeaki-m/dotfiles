@@ -1,5 +1,16 @@
 gui:
   nerdFontsVersion: "3"
+  # If true, increase the height of the focused side window; creating an accordion
+  # effect.
+  # フォーカスしたパネルを拡大
+  expandFocusedSidePanel: true
+  # The weight of the expanded side panel, relative to the other panels. 2 means
+  # twice as tall as the other panels. Only relevant if `expandFocusedSidePanel`
+  # is true.
+  # 通常時のサイドバー比率を小さく
+  expandedSidePanelWeight: 2
+  mainPanelSplitMode: flexible
+  enlargedSideViewLocation: 'top'
 customCommands:
   # Conventional Commitをメニュー選択式で組み立てるカスタムコマンド
   # type選択 → scope入力(任意) の後、エディタが開きコミットメッセージを自由に記述可能
