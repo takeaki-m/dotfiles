@@ -61,10 +61,6 @@
       "Bash(osascript -e:*)",
       "mcp__codex__codex"
     ],
-    "ask": [
-      "Bash(git add:*)",
-      "Bash(git commit:*)"
-    ],
     "deny": [
       "NotebookEdit",
       "NotebookRead",
@@ -111,6 +107,10 @@
       "Write(~/.ssh/**)"
     ],
     "defaultMode": "plan"
+    "ask": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
   },
   "preferredNotifChannel": "terminal_bell",
   "hooks": {
