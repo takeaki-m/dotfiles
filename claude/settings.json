@@ -106,13 +106,12 @@
       "Write(~/.ssh/*)",
       "Write(~/.ssh/**)"
     ],
-    "defaultMode": "plan"
     "ask": [
       "Bash(git add:*)",
       "Bash(git commit:*)"
     ],
+    "defaultMode": "auto"
   },
-  "preferredNotifChannel": "terminal_bell",
   "hooks": {
     "Notification": [
       {
@@ -155,4 +154,6 @@
     ]
   },
   "alwaysThinkingEnabled": true
+  "tui": "default",
+  "preferredNotifChannel": "terminal_bell",
 }
