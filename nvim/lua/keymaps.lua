@@ -36,26 +36,27 @@ keymap('i', '<C-j>', '<Cmd>stopinsert<CR>', { silent = true, desc = "Escape" })
 --           通常 shell での `jj` 操作には影響しない。
 --           shell経由で claude を起動するケース (bufname末尾が /bin/zsh) は識別
 --           不可能なため対象外 (利用頻度が低いため許容)。
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'snacks_terminal',
-  callback = function(args)
-    -- bufname は端末ジョブ起動時に確定するが、FileType 発火時点で未確定な場合に
-    -- 備えて schedule で 1 tick 遅延させてから判定する
-    vim.schedule(function()
-      if not vim.api.nvim_buf_is_valid(args.buf) then
-        return
-      end
-      local name = vim.api.nvim_buf_get_name(args.buf)
-      if name:match('^term://.*claude$') then
-        vim.keymap.set('t', 'jj', '<Esc>', {
-          buffer = args.buf,
-          silent = true,
-          desc = "Send ESC to Claude Code (vim mode)",
-        })
-      end
-    end)
-  end,
-})
+-- Claude CodeのESCキーも発行されてしまい、意図せずClaude Codeを停止してしまうためコメントアウトする
+-- vim.api.nvim_create_autocmd('FileType', {
+--   pattern = 'snacks_terminal',
+--   callback = function(args)
+--     -- bufname は端末ジョブ起動時に確定するが、FileType 発火時点で未確定な場合に
+--     -- 備えて schedule で 1 tick 遅延させてから判定する
+--     vim.schedule(function()
+--       if not vim.api.nvim_buf_is_valid(args.buf) then
+--         return
+--       end
+--       local name = vim.api.nvim_buf_get_name(args.buf)
+--       if name:match('^term://.*claude$') then
+--         vim.keymap.set('t', 'jj', '<Esc>', {
+--           buffer = args.buf,
+--           silent = true,
+--           desc = "Send ESC to Claude Code (vim mode)",
+--         })
+--       end
+--     end)
+--   end,
+-- })
 
 -- copy buffer all pages
 keymap('n', '<Leader>y', ':%y<CR>', with_desc("Yank entire buffer"))
