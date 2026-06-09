@@ -1,7 +1,15 @@
 git:
+  # 全体構成: pagersは配列で複数のpagerを定義でき、diff画面で `|` (cyclePagers) を押すと
+  #           リストを順に切り替えられる。ここでは「上下分割(unified)」と「左右分割(side-by-side)」を
+  #           トグルできるよう2つ用意している。
   pagers:
+    # 1つ目(デフォルト): unified表示。1ファイル内で変更行を上下に並べて比較する。
     - colorArg: always
       pager: delta --paging=never --syntax-theme="Monokai Extended Bright"
+    # 2つ目: side-by-side表示。--side-by-side で旧/新を左右2カラムに分割する。
+    #         `|` キーで1つ目との間をトグルする。
+    - colorArg: always
+      pager: delta --paging=never --side-by-side --syntax-theme="Monokai Extended Bright"
 gui:
   theme:
     activeBorderColor:
