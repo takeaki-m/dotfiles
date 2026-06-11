@@ -352,6 +352,33 @@ local function setup_plugins()
       -- config 関数の中で setup を呼ぶのが pckr の正しい作法です
       config = function()
         local snacks = require("snacks")
+
+        -- scratch メモの「昇格(永続化)」処理
+        -- 全体設計: scratchは普段は使い捨て(自動保存はsnacks任せでファイル名管理不要)だが、
+        --   稀に正式に残したい時だけ、現在のバッファ内容をプロジェクト直下(cwd)へ
+        --   タイムスタンプ付き .md として書き出す。これにより「使い捨て感」と
+        --   「オンデマンド永続化」を両立する。
+        -- 詳細:
+        --   - 書き出し先は vim.fn.getcwd()。作業中リポジトリのルートに置かれるため、
+        --     そのコードに紐づくメモとして近くに残せる。
+        --   - 注意: cwd直下はgit管理対象に混ざりうる。コミット汚染を避けたい場合は
+        --     リポジトリの .gitignore に `memo_*.md` を追加すること。
+        local function promote_scratch(buf)
+          local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+          -- 空メモの誤昇格を防ぐ(全行が空白なら何もしない)
+          local has_content = false
+          for _, l in ipairs(lines) do
+            if l:match("%S") then has_content = true break end
+          end
+          if not has_content then
+            vim.notify("scratch が空のため昇格しません", vim.log.levels.WARN)
+            return
+          end
+          local path = vim.fn.getcwd() .. "/" .. os.date("memo_%Y%m%d_%H%M%S.md")
+          vim.fn.writefile(lines, path)
+          vim.notify("scratch を永続化しました: " .. path, vim.log.levels.INFO)
+        end
+
         -- 1. Setup
         snacks.setup({
           terminal = {
@@ -369,13 +396,43 @@ local function setup_plugins()
                 relativenumber = true,
               }
             }
-          }
+          },
+          -- scratch: コード確認中のメモ用フローティングウィンドウ
+          -- 全体設計: cwd/ブランチ単位で自動保存される器を用意し、UX上は使い捨てに見せる。
+          --   ファイル名を付ける操作が不要なため体感は使い捨てだが、内部的には保存されるので
+          --   誤って閉じてもロストしない(安全網)。
+          scratch = {
+            ft = "markdown", -- render-markdown.nvim / treesitter の装飾をそのまま活かす
+            win = {
+              border = "rounded",
+              -- scratchバッファ内専用のキー。markdownのフロート上でのみ有効なので
+              -- グローバルキーマップを汚さずに「昇格」操作を割り当てられる。
+              keys = {
+                promote = {
+                  "<leader>ms",
+                  function(self) promote_scratch(self.buf) end,
+                  desc = "scratchをプロジェクト直下に永続化",
+                  mode = "n",
+                },
+              },
+            },
+          },
         })
+
         -- 2. キーマッピング (vim.keymap.set を使用)
         -- Normal mode (n) と Terminal mode (t) の両方でトグルできるようにする
         vim.keymap.set({ "n", "t" }, "<C-\\>", function()
           snacks.terminal.toggle()
         end, { desc = "Toggle Terminal" })
+
+        -- scratch メモ: <Leader>. でトグル開閉(1キーでメモ⇔コードを往復)
+        vim.keymap.set("n", "<Leader>.", function()
+          snacks.scratch()
+        end, { desc = "Toggle scratch memo" })
+        -- 過去のscratchメモを一覧から選んで開く(cwd/ブランチ別に蓄積されたもの)
+        vim.keymap.set("n", "<Leader>S", function()
+          snacks.scratch.select()
+        end, { desc = "Select scratch memo" })
       end
     },
     {
