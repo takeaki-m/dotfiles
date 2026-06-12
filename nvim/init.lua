@@ -668,7 +668,33 @@ local function setup_plugins()
       after = { 'nvim-treesitter' },
       requires = { 'nvim-tree/nvim-web-devicons', opt = true }, -- if you prefer nvim-web-devicons
       config = function()
-        require('render-markdown').setup({})
+        -- 全体: 完了済みTODOを未完了と一目で区別できるようにする
+        -- 詳細: render-markdown.nvim のデフォルトはアイコンの色しか変わらず、
+        --       チェック済みタスクのテキストが未完了と同じ見た目で判別しにくい。
+        --       そこで完了タスク行全体に当てる専用ハイライト(取り消し線+グレー)を
+        --       定義し、checkbox.checked.scope_highlight に指定する。
+        vim.api.nvim_set_hl(0, 'RenderMarkdownCheckedScope', {
+          fg = '#6c7086', -- グレーアウト。カラースキームに合わせて調整可
+          strikethrough = true,
+        })
+        require('render-markdown').setup({
+          checkbox = {
+            checked = {
+              -- 枠なしの太いチェックマーク。セル内の余白が少なく大きく見えるため、
+              -- 未チェックの枠アイコンとの対比で完了状態が判別しやすい
+              icon = '󰄬 ',
+              highlight = 'RenderMarkdownChecked',
+              -- 完了タスクのテキスト全体を取り消し線+グレーで弱める
+              scope_highlight = 'RenderMarkdownCheckedScope',
+            },
+            unchecked = {
+              -- 幾何学記号の四角。Nerd Fontの枠アイコン(余白が大きい)より
+              -- 枠線がセル端近くまで描かれるため大きく見える
+              icon = '□ ',
+              highlight = 'RenderMarkdownUnchecked',
+            },
+          },
+        })
       end,
     },
   }
