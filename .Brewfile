@@ -42,4 +42,5 @@ cask "gcloud-cli"
 cask "firefox"
 cask "libreoffice"
 cask "codex-app"
+cask "alfred"
 
