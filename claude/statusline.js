@@ -62,8 +62,13 @@ process.stdin.on('end', () => {
     const rateLimitParts = [rl5hDisplay, rl7dDisplay].filter(s => s !== '');
     const rateLimitDisplay = rateLimitParts.length > 0 ? ` | ${rateLimitParts.join(' / ')}` : '';
 
-    // 出力: プログレスバー 使用率% | コスト | レート制限(5h / 7d)
-    const line = `${percentageColor}${progressBar}\x1b[0m ${percentageColor}${percentage}%\x1b[0m | ${costDisplay}${rateLimitDisplay}`;
+    // vim modeインジケーター（vim mode有効時のみ vim.mode が渡される）
+    // カーソル形状の変化はClaude Code側が未対応のため、その代替として
+    // ステータスライン行頭にモード名を背景反転で表示し、一目で判別可能にする
+    const vimDisplay = createVimIndicator(data.vim?.mode);
+
+    // 出力: [モード] プログレスバー 使用率% | コスト | レート制限(5h / 7d)
+    const line = `${vimDisplay}${percentageColor}${progressBar}\x1b[0m ${percentageColor}${percentage}%\x1b[0m | ${costDisplay}${rateLimitDisplay}`;
     console.log(line);
   } catch (error) {
     // エラー時のフォールバック表示
@@ -76,6 +81,28 @@ function getColorByUsage(percentage) {
   if (percentage >= 72) return '\x1b[91m'; // 赤（危険域）
   if (percentage >= 56) return '\x1b[33m'; // 黄（注意域）
   return '\x1b[32m'; // 緑（安全域）
+}
+
+// vim modeインジケーターを生成
+// 全体方針: モードごとに色を変え、背景反転(\x1b[7m)で塗りつぶして強調する。
+//   これによりカーソル形状が変わらなくても現在モードを瞬時に判別できる。
+// 詳細: vim mode無効時は vim.mode 自体が渡されないので空文字を返し、
+//   通常ユーザーの表示には一切影響を与えない。
+function createVimIndicator(mode) {
+  if (!mode) return '';
+
+  // モード→色のマッピング（INSERTは編集中＝緑、NORMALは青、VISUAL系はマゼンタ）
+  const colors = {
+    'NORMAL': '\x1b[34m',       // 青
+    'INSERT': '\x1b[32m',       // 緑
+    'VISUAL': '\x1b[35m',       // マゼンタ
+    'VISUAL LINE': '\x1b[35m',  // マゼンタ
+  };
+  const color = colors[mode] || '\x1b[37m';
+
+  // 文字だけを色付きで表示（囲み無し）。末尾スペースで後続表示と区切る
+  // ※囲み方式に戻す場合: return `${color}\x1b[7m ${mode} \x1b[0m `;
+  return `${color}${mode}\x1b[0m `;
 }
 
 // プログレスバーを生成（ブロック文字で使用率を視覚化）
