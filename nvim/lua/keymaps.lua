@@ -259,3 +259,9 @@ vim.keymap.set("n", "<leader>nl", "<CMD>Octo notification list<CR>", { desc = "L
 vim.keymap.set("n", "<leader>gs", function()
   require("octo.utils").create_base_search_command({ include_current_repo = true })
 end, { desc = "Search GitHub" })
+-- カーソル下のissue/PRリンク・@user・リアクションのポップアップを即時表示する。
+-- Octo標準の CursorHold ホバー(updatetime=4秒待ち)と同じ処理を手動で呼び出すもの。
+-- on_cursor_hold は octoバッファ以外では早期returnするためグローバルマップでも安全。
+vim.keymap.set("n", "<leader>gh", function()
+  require("octo").on_cursor_hold()
+end, { desc = "Show GitHub link/user popup (Octo hover)" })
