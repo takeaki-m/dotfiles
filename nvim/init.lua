@@ -724,6 +724,36 @@ local function setup_plugins()
             sign = true,
           },
         })
+
+        -- 全体: light モードで見出し/コード背景が黒文字とコントラスト不足になり
+        --       markdown が見づらい問題を、依存(colorscheme プラグイン)を増やさずに補正する。
+        -- 詳細: render-markdown 専用のハイライトグループを淡い色へ上書きする。
+        --       - コード背景は黒文字が読める淡いグレー
+        --       - 見出しは「濃いアクセント文字 × 淡いパステル背景」でコントラストを確保
+        --       dark モードでは render-markdown 既定色を尊重し、light のときだけ補正する。
+        --       colorscheme 適用時に色が再リンクされるため ColorScheme 契機でも再適用する。
+        local function tune_markdown_hl()
+          if vim.o.background ~= 'light' then return end
+          local set = vim.api.nvim_set_hl
+          set(0, 'RenderMarkdownCode', { bg = '#e6e9ef' })
+          set(0, 'RenderMarkdownCodeInline', { bg = '#e6e9ef' })
+          -- 見出し1(シアン)・2(グリーン)は既定色が気に入っているため触らない。
+          -- 3〜6 のみ、1・2の寒色トーンに色味を揃える teal→cyan→blue→indigo の
+          -- 寒色グラデーションへ変更する。各レベルは色相をずらして判別可能にする。
+          local headings = {
+            [3] = { fg = '#0ca678', bg = '#d6efe7' }, -- emerald/teal
+            [4] = { fg = '#1098ad', bg = '#d6ecef' }, -- cyan
+            [5] = { fg = '#1971c2', bg = '#d8e6f5' }, -- blue
+            [6] = { fg = '#6741d9', bg = '#e2dcf7' }, -- indigo
+          }
+          for level, c in pairs(headings) do
+            set(0, 'RenderMarkdownH' .. level, { fg = c.fg, bold = true })
+            set(0, 'RenderMarkdownH' .. level .. 'Bg', { bg = c.bg })
+          end
+        end
+        tune_markdown_hl()
+        -- setup() 後に登録するため render-markdown 自身の再リンクより後に走り、上書きが勝つ
+        vim.api.nvim_create_autocmd('ColorScheme', { callback = tune_markdown_hl })
       end,
     },
   }
