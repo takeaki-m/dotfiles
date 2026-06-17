@@ -74,6 +74,15 @@ local function setup_plugins()
             'lua', 'vim', 'vimdoc', 'bash',
             'markdown', 'markdown_inline',
             'json', 'yaml', 'toml', 'regex',
+            -- sql は PostgreSQL/MySQL 等の方言を含め1つのパーサーでカバーする
+            -- (postgresql という独立パーサーは存在しない)
+            'sql',
+            -- 普段の開発言語。パーサーを入れることでハイライトの正確性に加え、
+            -- foldexpr(treesitter折りたたみ)と textobjects(af/if/aa/ia)が機能する
+            'typescript', 'tsx', 'javascript', -- tsx は .tsx 用の別パーサー
+            'terraform', 'hcl',                -- .tf は terraform、.hcl は hcl
+            'html', 'css', 'csv', 'zsh',       -- zsh は専用パーサー(bash転用ではない)
+            'python',
           })
         end
       end
