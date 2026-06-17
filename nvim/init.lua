@@ -694,6 +694,26 @@ local function setup_plugins()
               highlight = 'RenderMarkdownUnchecked',
             },
           },
+          -- 全体: コードブロックを本文から見分けやすくする
+          -- 詳細: 「本文との区別(背景+境界線)」「言語の明示(ヘッダ)」「範囲の明示(余白)」
+          --       の3点で可読性を上げる。背景色はカラースキームの RenderMarkdownCode を尊重する。
+          code = {
+            -- 言語アイコン+名前のヘッダと背景の両方を表示
+            style = 'full',
+            -- 言語名・アイコンをブロック左上に表示
+            position = 'left',
+            -- 背景をコード内容の幅に合わせる(行末まで間延びさせない)
+            width = 'block',
+            -- 短いブロックでも最低幅を確保し、ヘッダが潰れないようにする
+            min_width = 40,
+            -- 上下に境界線を描いてブロックの範囲を明示する
+            border = 'thick',
+            -- ブロック内側の左右余白。コードが枠に接しないようにする
+            left_pad = 2,
+            right_pad = 2,
+            -- 左の sign 列に言語アイコンを表示
+            sign = true,
+          },
         })
       end,
     },
