@@ -72,6 +72,18 @@ keymap('n', '<Esc><Esc>', ':nohlsearch<CR>', with_desc("Clear search highlight")
 
 keymap('n', 'g:', 'g;', with_desc("Go to older change"))
 
+-- 全体: 折り返された行を「表示行」単位で上下移動できるようにする
+-- 背景: wrap 有効時、既定の j/k は「論理行」単位で動き、折り返された行内を
+--       1ステップで飛び越える。長文(折り返し前提のテキスト)では行内移動がしづらい。
+-- 詳細: ただし j/k を単純に gj/gk へ置換すると、relativenumber を使った
+--       カウント付き相対ジャンプ(例: 5j)まで表示行基準になり壊れる。
+--       そこで count が無い素の j/k のときだけ gj/gk にする expr マッピングとし、
+--       5j 等の論理行ジャンプは従来どおり維持する。
+--keymap({ 'n', 'x' }, 'j', function() return vim.v.count == 0 and 'gj' or 'j' end,
+--  { expr = true, silent = true, desc = "Down by display line (no count)" })
+--keymap({ 'n', 'x' }, 'k', function() return vim.v.count == 0 and 'gk' or 'k' end,
+--  { expr = true, silent = true, desc = "Up by display line (no count)" })
+
 -- terminal
 keymap('n', '<Leader>ter', ':vert botright term<CR>', with_desc("Open terminal (vertical)"))
 keymap('n', '<Leader>ster', ':bo term<CR>', with_desc("Open terminal (horizontal)"))

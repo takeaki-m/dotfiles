@@ -11,6 +11,9 @@ local options = {
   helplang = 'ja',
   swapfile = false,
   wrap = true,
+  -- 折り返しで継続した行の行頭に表示するマーカー。折り返し箇所を視認しやすくする
+  -- (wrap=true の実ファイルでの単語境界折り返し・インデント揃えは BufWinEnter の autocmd 側で設定)
+  showbreak = "↪ ",
   -- show line number
   number = true,
   -- show relative line number
@@ -83,7 +86,12 @@ local options = {
     "i-ci-ve:ver25",   -- Insert系
     "r-cr:hor20",      -- Replace系
     "o:hor50",         -- Operator-pending
-    "t:ver25",         -- Terminal-Job mode（コマンド入力中）
+    "t:block-TermCursor", -- Terminal-Job mode（Claude Code等のterminal内入力）。
+                       --   snacks含むnvim内蔵terminalのカーソルはこのt:設定が優先される。
+                       --   ver25(細い縦棒)だと入力位置を見失いやすいため、塗り面積が最大の
+                       --   blockにして視認性を確保する。
+                       --   さらに <C-/> で抜けたNormalモードもblockで形が同じになるため、
+                       --   入力可能状態のカーソルだけ専用ハイライト TermCursor(後述)で色分けする。
   }, ","),
 }
 
@@ -154,6 +162,29 @@ vim.api.nvim_create_autocmd("WinLeave", {
   callback = function() vim.opt_local.cursorline = false end,
 })
 
+-- 全体: 実ファイルを開いたウィンドウで折り返し(wrap)を必ず有効化する
+-- 背景:
+--   wrap は window-local 設定。nvim-tree は自分のツリーウィンドウへ window-local の
+--   nowrap を適用しており(nvim-tree の view-state.lua: wrap=false)、そこから
+--   ファイルを開くと、ファイル側ウィンドウが nowrap を引き継ぎ折り返されなくなる。
+--   options の wrap=true はグローバル既定なので、汚染されたウィンドウでは効かない。
+-- 詳細:
+--   - BufWinEnter(バッファがウィンドウに表示される契機)で、対象ウィンドウに
+--     wrap を opt_local で再適用し、汚染を打ち消す。
+--   - linebreak/breakindent も併せて設定し、単語境界での折り返し・インデント揃えにする。
+--   - 対象は buftype=="" の実ファイルのみ。nofile(nvim-tree等のUI)・terminal・
+--     help・quickfix は除外し、それらの nowrap を尊重する。
+--   - diff モード(:diffthis 等)は折り返さない方が比較しやすいため除外する。
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  callback = function()
+    if vim.bo.buftype == "" and not vim.wo.diff then
+      vim.opt_local.wrap = true
+      vim.opt_local.linebreak = true   -- 単語境界(スペース等)で折り返す
+      vim.opt_local.breakindent = true -- 折り返し行を元行のインデントに揃える
+    end
+  end,
+})
+
 -- claudecodeなどで編集された場合に備えて、編集をチェックする
 -- フォーカスを戻した時やバッファ切り替え時に更新チェック
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
@@ -189,6 +220,21 @@ vim.api.nvim_create_autocmd("FileType", {
 --   背景色塗り(濃い赤)を採用。出現頻度が低いノイズ系の記号は「出たときに即気付ける」表示が合理的。
 --   $/>./- は頻出のため控えめな記号にしているが、全角スペースは性格が異なる。
 vim.api.nvim_set_hl(0, "ZenkakuSpace", { bg = "#7C2D2D" })
+
+-- 全体: terminal入力可能状態(Terminal-Jobモード)のカーソルを緑ブロックで色分けする。
+--   terminalバッファでは <C-/> で抜けたNormalモードもblockのため、入力可能な
+--   Terminal-Jobモードと形が同じで見分けにくい。形は両方blockのまま、入力可能状態の
+--   カーソル色だけ緑に変えて「カーソルが緑＝今キー入力がClaude Codeに届く」と判別できるようにする。
+-- 詳細:
+--   blockカーソルでは bg が塗り色、fg がその上に重なる文字色。緑bgでも文字が読めるよう
+--   暗い fg を置く。Terminal-Jobモードのカーソルは TermCursor ハイライトを使う(guicursorの
+--   t:block-TermCursor で明示)。一方 Normalモードは通常の Cursor ハイライトを使うため影響しない。
+--   colorscheme 適用時に TermCursor が再リンクされ色が戻るため、ColorScheme契機でも再適用する。
+local function set_term_cursor_hl()
+  vim.api.nvim_set_hl(0, "TermCursor", { bg = "#2ea043", fg = "#1e1e1e" })
+end
+set_term_cursor_hl()
+vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", callback = set_term_cursor_hl })
 
 local zenkaku_group = vim.api.nvim_create_augroup("ZenkakuSpaceHighlight", {})
 vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "VimEnter" }, {
