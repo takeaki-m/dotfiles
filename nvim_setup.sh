@@ -1,6 +1,8 @@
 #!/bin/bash
 
 NVIM_DOT_FILE=init.lua
+# vim.pack の lockfile。VCS 管理して再現性を担保するため symlink で配置する。
+NVIM_LOCK_FILE=nvim-pack-lock.json
 NVIM_DOT_FILE_HOME_PATH=$HOME/settings/dotfiles/nvim
 NVIM_DOT_FILE_LUA_PATH=$NVIM_DOT_FILE_HOME_PATH/lua
 NVIM_DOT_FILE_LUA_PLUGINS_PATH=$NVIM_DOT_FILE_LUA_PATH/plugins
@@ -33,6 +35,19 @@ if [ ! -e $NVIM_HOME_PATH/$NVIM_DOT_FILE ]; then
 	ln -s $NVIM_DOT_FILE_HOME_PATH/$NVIM_DOT_FILE $NVIM_HOME_PATH/$NVIM_DOT_FILE
 else
 	echo "$NVIM_DOT_FILE $MESSAGE_FILE_EXIST"
+fi
+
+# vim.pack の lockfile を symlink する。
+# 背景: vim.pack は stdpath('config')/nvim-pack-lock.json をその場(fs_open 'w')で更新するため、
+#   symlink にしておけば書き込みは repo 側の実ファイルへ届き、VCS で再現性を管理できる。
+#   新規マシンでは、このリンクを張ってから nvim を起動すると lockfile の pinned revision で
+#   プラグインが復元される。
+echo "$NVIM_LOCK_FILE $MESSAGE_CHECK_FILE"
+if [ ! -e $NVIM_HOME_PATH/$NVIM_LOCK_FILE ]; then
+	echo "$NVIM_LOCK_FILE $MESSAGE_MAKE_FILE"
+	ln -s $NVIM_DOT_FILE_HOME_PATH/$NVIM_LOCK_FILE $NVIM_HOME_PATH/$NVIM_LOCK_FILE
+else
+	echo "$NVIM_LOCK_FILE $MESSAGE_FILE_EXIST"
 fi
 
 for file in $(ls $NVIM_DOT_FILE_LUA_PATH); do

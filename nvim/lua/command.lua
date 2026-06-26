@@ -149,13 +149,13 @@ end, { range = true})
 --   <CR> で選択したキーマップが定義されているファイル/行にジャンプする。
 -- =============================================================================
 local function open_keymaps_picker(only_custom)
-  -- pckrのcmd遅延読み込み対応:
-  --  init.luaで telescope は cmd = { 'Telescope' } として登録されており、
+  -- telescope の遅延読み込み対応:
+  --  init.luaで telescope は :Telescope 発火時にロードする遅延プラグインとして登録されており、
   --  :Telescope系コマンドが一度も叩かれていない状態では rtp に追加されていない。
   --  本コマンドはユーザー定義名 (:MyKeymaps / :DefaultKeymaps) のため遅延発火しないので、
-  --  pcall で明示的にロードを試みる(既にロード済みなら何もしないので副作用なし)。
+  --  pack_lazy.load で明示的にロードを試みる(既にロード済みなら何もしないので副作用なし)。
   if not package.loaded["telescope.pickers"] then
-    pcall(vim.cmd, "Pckr load telescope.nvim")
+    pcall(function() require("pack_lazy").load("telescope.nvim") end)
   end
   local pickers = require("telescope.pickers")
   local finders = require("telescope.finders")
