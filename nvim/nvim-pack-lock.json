@@ -13,7 +13,7 @@
       "src": "https://github.com/stevearc/aerial.nvim"
     },
     "claudecode.nvim": {
-      "rev": "288c9bf8834e5d7e401d1485fb5f684b1c2d7c72",
+      "rev": "2390c6e45c4789072c293ac69de051d169668b29",
       "src": "https://github.com/coder/claudecode.nvim"
     },
     "cmp-buffer": {
@@ -78,7 +78,7 @@
       "src": "https://github.com/hrsh7th/nvim-cmp"
     },
     "nvim-lspconfig": {
-      "rev": "bfcc0171a43f22afa61d927ffe9fcb6cb85dc99e",
+      "rev": "3371bf298c1f56efc26771ee961f461176958fb5",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-markdown": {
@@ -108,7 +108,7 @@
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "obsidian.nvim": {
-      "rev": "adec31aabb244790c12ba8f0d19672f22b075b6a",
+      "rev": "e5c03e7ce988e2aa53ae47a9de4c817621e4714b",
       "src": "https://github.com/obsidian-nvim/obsidian.nvim"
     },
     "plenary.nvim": {
