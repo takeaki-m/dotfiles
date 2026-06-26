@@ -487,7 +487,7 @@ alias brew_install='brew bundle --global'
 alias upbrew='brew update && brew upgrade && brew cleanup'
 alias reader='/usr/bin/open -a Safari `pbpaste`'
 
-alias dotfiles='cd ~/settings/dotfiles && vim . -c "ClaudeCode"'
+alias dotfiles='cd ~/settings/dotfiles && vim . -c "ClaudeStart"'
 alias lg='lazygit'
 alias pn='pnpm'
 alias aws_dev='aws sso login --profile dev-admin'

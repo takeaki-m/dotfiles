@@ -120,6 +120,14 @@ local function show_claude()
   open_claude(nil)
 end
 
+-- 外部起動(dotfiles エイリアス等)から、現在のレイアウト(既定=タブ全画面)で Claude を開くコマンド。
+-- 背景: dotfiles エイリアスは従来ネイティブの :ClaudeCode を呼んでいたが、これは snacks の
+--   右 split で開くだけで、独自の全画面ロジック(open_claude の wincmd T)を通らない。
+--   起動直後も全画面で開くため、show_claude を呼ぶ専用コマンドを公開し、エイリアス側で使う。
+vim.api.nvim_create_user_command("ClaudeStart", function()
+  show_claude()
+end, { desc = "Open Claude in current layout (default: fullscreen tab)" })
+
 -- Claude を非表示にする。表示中の Claude ウィンドウを閉じる。
 -- 全画面タブの場合は唯一のウィンドウなのでタブごと閉じてコードタブに戻る
 -- (他タブが存在するため E444 にはならない)。buffer/ジョブは残りセッションは継続。
