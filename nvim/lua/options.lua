@@ -13,6 +13,7 @@ local options = {
   wrap = true,
   -- 折り返しで継続した行の行頭に表示するマーカー。折り返し箇所を視認しやすくする
   -- (wrap=true の実ファイルでの単語境界折り返し・インデント揃えは BufWinEnter の autocmd 側で設定)
+  -- (↪ の色は後段の set_wrap_marker_hl でくすんだ紫に設定)
   showbreak = "↪ ",
   -- show line number
   number = true,
@@ -235,6 +236,36 @@ local function set_term_cursor_hl()
 end
 set_term_cursor_hl()
 vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", callback = set_term_cursor_hl })
+
+-- 全体: 折り返し継続行のマーカー(showbreak の ↪)を、テーマに馴染む控えめな色に
+--   して、1論理行が画面幅を超えて折り返されていることを「色」で視認できるようにする。
+--   既存の手掛かり(breakindent によるインデント揃え + ↪ 記号)に色を添えて補強する。
+-- 背景:
+--   showbreak には専用ハイライトが無く hl-NonText で描画される(:help hl-NonText)。
+--   NonText は eol の $ とも共有されるため、↪ を色付けすると $ も同色になる(今回は許容)。
+--   一方で NonText には以下も相乗りしており、素朴に色を変えると巻き添えになる:
+--     - tab(>.)/trail(-): hl-Whitespace 経由(既定で NonText にリンク)
+--     - バッファ末尾の ~  : hl-EndOfBuffer(既定で NonText にリンク)
+--   これらは「頻出だから控えめ」に保つ方針(listchars の設計意図)なので、NonText から
+--   切り離し、元の NonText 色(#4F5258 = NvimDarkGrey4)へ固定して見た目を据え置く。
+-- 色の選び方(原則):
+--   グレー系(本文の彩度ゼロ版)は明るくするほど本文に近づき紛れるため避け、
+--   有彩色を低彩度で使う。このテーマの構文色は寒色(青/シアン/緑)に偏るので、
+--   それらと白本文のどちらとも被らない「くすんだ紫(#9E8CBE)」を採用する。
+--   低彩度ゆえ主張は控えめで、寒色構文色とも白本文とも色相で差化できる。
+-- 詳細:
+--   colorscheme 適用時に各グループが既定へ再リンクされ色が戻るため、TermCursor 同様
+--   ColorScheme 契機でも再適用する。
+local WRAP_MARKER_COLOR = "#8FBEC2" -- くすんだ紫。微調整はこの値を変えるだけ
+local function set_wrap_marker_hl()
+  -- tab(>.)/trail(-) と 末尾の ~ は従来通り地味に(元の NonText 色へ固定して相乗りを断つ)
+  vim.api.nvim_set_hl(0, "Whitespace", { fg = "#4F5258" })
+  vim.api.nvim_set_hl(0, "EndOfBuffer", { fg = "#4F5258" })
+  -- 折り返しマーカー ↪ (と eol の $)を、くすんだ紫で控えめに色付けする
+  vim.api.nvim_set_hl(0, "NonText", { fg = WRAP_MARKER_COLOR })
+end
+set_wrap_marker_hl()
+vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", callback = set_wrap_marker_hl })
 
 local zenkaku_group = vim.api.nvim_create_augroup("ZenkakuSpaceHighlight", {})
 vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "VimEnter" }, {
