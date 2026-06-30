@@ -95,6 +95,14 @@ keymap('n', '<Leader>fb', ':Telescope buffers<CR>', with_desc("Find buffers"))
 keymap('n', '<Leader>b', ':Telescope buffers<CR>', with_desc("Find buffers"))
 keymap('n', '<Leader>fr', ':Telescope registers<CR>', with_desc("Select registers"))
 keymap('n', '<Leader>fs', ':Telescope lsp_document_symbols<CR>', with_desc("Find document symbols"))
+-- aerial outline を telescope で検索。markdown の見出しを階層インデント付き・ファイル出現順で表示するため、
+-- レベルが見えずソート順が逆になる lsp_document_symbols の代替として使う
+-- sorting_strategy=ascending を明示する理由:
+--   aerial拡張は telescope のデフォルト(descending)時に結果を反転してファイル順に揃えるが、
+--   シンボル0件のファイルだと default_selection_index が 0 となり nvim_win_set_cursor が
+--   "Invalid cursor line: out of range" で失敗する。ascending を渡すと反転処理を回避でき、
+--   0件でもエラーにならず、かつ ascending 自体がファイル出現順(上→下)表示になる。
+keymap('n', '<Leader>fa', ':Telescope aerial sorting_strategy=ascending<CR>', with_desc("Find outline (aerial)"))
 
 keymap('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', with_desc("Toggle NvimTree"))
 keymap('n', '<Leader>nf', ':NvimTreeFindFile<CR>', with_desc("Find file in NvimTree"))
