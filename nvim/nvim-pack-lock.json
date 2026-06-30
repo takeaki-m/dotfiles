@@ -62,7 +62,7 @@
       "src": "https://github.com/nvim-lualine/lualine.nvim"
     },
     "mason-lspconfig.nvim": {
-      "rev": "21c5b3ebeaa0412e28096bb0701434c51c1fbf76",
+      "rev": "47059d71b42d74b0a1e9f61c1d99d301039c3b5b",
       "src": "https://github.com/williamboman/mason-lspconfig.nvim"
     },
     "mason.nvim": {
@@ -108,8 +108,12 @@
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "obsidian.nvim": {
-      "rev": "e5c03e7ce988e2aa53ae47a9de4c817621e4714b",
+      "rev": "3fab7347007710209284d101b287c337ad4aa39c",
       "src": "https://github.com/obsidian-nvim/obsidian.nvim"
+    },
+    "octo.nvim": {
+      "rev": "b9a73e167f851a98d8f29d62658d3640bb8a7314",
+      "src": "https://github.com/pwntester/octo.nvim"
     },
     "plenary.nvim": {
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
