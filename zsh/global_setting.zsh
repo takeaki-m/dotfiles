@@ -245,12 +245,20 @@ gcw() {
 }
 
 gci() {
-  issue_line=$(gh issue list --limit 100 | fzf)
-  [[ -z "$issue_line" ]] && { echo "issueが選択されなかったため処理を中断します" >&2; return 1; }
-  # gh issue listの出力先頭はissue番号。awkで抜き出す
+  # 全体: issue番号からtask titleを組み立ててclipboardにコピーする。
+  #       引数でissue番号を受け取れば選択をスキップし、無ければfzfで選択する。
   local issue_no
-  issue_no=$(echo "$issue_line" | awk '{print $1}')
-  [[ -z "$issue_no" ]] && { echo "issue番号を取得できませんでした" >&2; return 1; }
+  if [[ -n "$1" ]]; then
+    # 引数指定時: issue番号が渡されたものとしてそのまま利用する
+    issue_no="$1"
+  else
+    # 引数なし: gh issue listで一覧表示しfzfで選択する
+    issue_line=$(gh issue list --limit 100 | fzf)
+    [[ -z "$issue_line" ]] && { echo "issueが選択されなかったため処理を中断します" >&2; return 1; }
+    # gh issue listの出力先頭はissue番号。awkで抜き出す
+    issue_no=$(echo "$issue_line" | awk '{print $1}')
+    [[ -z "$issue_no" ]] && { echo "issue番号を取得できませんでした" >&2; return 1; }
+  fi
   # gh issue viewはstdinを読まないため、issue番号は位置引数で渡す。
   task_name=$(gh issue view "$issue_no" --json number,title -q '[.number, .title] | join(" ")')
   echo $task_name | pbcopy
