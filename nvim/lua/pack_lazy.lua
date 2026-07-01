@@ -54,18 +54,35 @@ end
 
 -- コマンド発火で遅延ロードする
 -- 全体: 本体ロード前は stub コマンドを置き、初回呼び出しで本体をロード→stub削除→本体を再実行する。
+-- 補完について:
+--   stub は nargs="*" を持つが、-complete を与えないと Neovim の仕様上「引数位置で
+--   <Tab> を押すとリテラルの ^I が挿入される」(補完対象が無いため)。本体プラグインは
+--   通常サブコマンド補完(例: :Telescope find_files)を提供するので、この空白期間だけ
+--   補完が死んでいた。そこで stub にも complete 関数を持たせ、初回 <Tab> で本体を
+--   ロードしてから本体側の補完結果を返す(lazy.nvim と同じ手法)。
 --- @param spec table vim.pack の spec ({ src=..., version=... })
 --- @param cmds string[] 遅延発火させるコマンド名
 --- @param setup? function ロード後に一度だけ実行する設定
 function M.on_cmd(spec, cmds, setup)
   local name = register(spec, setup)
+  -- stub を全削除してから本体をロードする共通処理(実行・補完の両方から呼ぶ)
+  local function load_body()
+    -- 本体が同名コマンドを再定義するため、先に stub を全削除しておく
+    for _, c in ipairs(cmds) do
+      pcall(vim.api.nvim_del_user_command, c)
+    end
+    M.load(name)
+  end
+  -- 初回 <Tab> 時の補完: 本体をロードしてから、本体コマンドの補完候補を取り直して返す。
+  -- complete が関数の場合 Neovim は customlist 相当(返り値をそのまま候補にする)で扱うため、
+  -- getcompletion が ArgLead に一致するよう既に絞り込んだ候補をそのまま返せばよい。
+  local function complete(_, cmdline, _)
+    load_body()
+    return vim.fn.getcompletion(cmdline, "cmdline")
+  end
   for _, cmd in ipairs(cmds) do
     vim.api.nvim_create_user_command(cmd, function(o)
-      -- 本体が同名コマンドを再定義するため、先に stub を全削除しておく
-      for _, c in ipairs(cmds) do
-        pcall(vim.api.nvim_del_user_command, c)
-      end
-      M.load(name)
+      load_body()
       -- range / bang / args を引き継いで本体コマンドを再実行する
       local range = ""
       if o.range == 1 then
@@ -74,7 +91,7 @@ function M.on_cmd(spec, cmds, setup)
         range = o.line1 .. "," .. o.line2
       end
       pcall(vim.cmd, string.format("%s%s%s %s", range, cmd, o.bang and "!" or "", o.args))
-    end, { nargs = "*", bang = true, range = true, desc = "lazy-load " .. name })
+    end, { nargs = "*", bang = true, range = true, complete = complete, desc = "lazy-load " .. name })
   end
 end
 
