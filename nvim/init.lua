@@ -188,17 +188,24 @@ require("gitsigns").setup({
       opts.buffer = bufnr
       vim.keymap.set(mode, l, r, opts)
     end
-    -- Navigation（移動用の設定）
-    map("n", "]c", function()
-      if vim.wo.diff then return "]c" end
-      vim.schedule(function() gs.next_hunk() end)
-      return "<Ignore>"
-    end, { expr = true, desc = "Next git hunk" })
-    map("n", "[c", function()
-      if vim.wo.diff then return "[c" end
-      vim.schedule(function() gs.prev_hunk() end)
-      return "<Ignore>"
-    end, { expr = true, desc = "Previous git hunk" })
+    -- Navigation（hunk 移動）
+    -- 全体構成: git の変更ブロック(hunk)を前後に移動するキーマップ。
+    --           Corne v4 では [] がレイヤー操作でコスト高のため、1チョードで押せる
+    --           Ctrl+j/k に割り当てる。<C-h>/<C-l>=インデント(横方向)と対を成し、
+    --           <C-j>/<C-k>=hunk移動(縦方向)として hjkl 体系を統一する。
+    --           旧割当 ]c/[c は、サフィックスの c が change 演算子であるため
+    --           前置の ] を取りこぼすと削除事故を起こす危険があり、廃止した。
+    -- 競合しない根拠:
+    --   1. buffer-local マップ (map ヘルパーが opts.buffer=bufnr を付与)。gitsigns が
+    --      アタッチした実ファイルバッファにのみ登録されるため、ターミナル・NvimTree・
+    --      Telescope 等の特殊バッファには存在せず、それらの <C-j>/<C-k> を奪わない。
+    --   2. Normal モード専用。keymaps.lua の insert 用 <C-j>(=ESC) や、ターミナルの
+    --      子プロセスへ送る <C-j> は別モード(i / t)であり、マップテーブルが分離
+    --      されているため干渉しない。
+    --   3. 潰すのは native <C-j>(= j と同等の下移動)/<C-k>(未割当) のみで実損なし。
+    -- 新 API: next_hunk/prev_hunk は非推奨化されており、nav_hunk(方向) に統一された。
+    map("n", "<C-j>", function() gs.nav_hunk("next") end, { desc = "Next git hunk" })
+    map("n", "<C-k>", function() gs.nav_hunk("prev") end, { desc = "Previous git hunk" })
     -- 対象行の変更内容をフロートウィンドウで見る
     map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview git hunk" })
   end,
