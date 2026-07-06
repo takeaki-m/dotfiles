@@ -6,11 +6,12 @@
       "manipulators": [
         {
           "type": "basic",
+          "description": "optionalにcommandを含めない: space(=control+command)+sはtmux window移動ルールに譲るため。commandを許容するとこのルールが先勝ちしてプレフィックス送信になり、次window移動が動かなくなる",
           "from": {
             "key_code": "s",
             "modifiers": {
               "mandatory": [ "control" ],
-              "optional": [ "any" ]
+              "optional": [ "caps_lock", "shift", "option", "fn" ]
             }
           },
           "to": [
@@ -219,7 +220,6 @@
                 "^com\\.googlecode\\.iterm2$"
               ]
             }
-            ]
           ]
         }
       ]
