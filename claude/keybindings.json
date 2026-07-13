@@ -3,9 +3,16 @@
   "$docs": "https://code.claude.com/docs/en/keybindings",
   "bindings": [
     {
+      "context": "Global",
+      "bindings": {
+        "ctrl+t": "chat:externalEditor",
+        "meta+x": "app:toggleTodos"
+      }
+    },
+    {
       "context": "Chat",
       "bindings": {
-        "meta+x": "chat:externalEditor",
+        "ctrl+t": "chat:externalEditor",
         "ctrl+g": null,
         "ctrl+q": "chat:stash",
         "meta+m": "chat:modelPicker",
