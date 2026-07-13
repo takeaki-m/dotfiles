@@ -26,6 +26,7 @@ brew 'tpm'
 brew 'awscli-local'
 brew 'aspell'
 brew 'tree-sitter'
+brew 'herdr'
 cask "font-hack-nerd-font"
 cask "iterm2"
 cask "karabiner-elements"
