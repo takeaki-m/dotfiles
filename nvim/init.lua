@@ -282,7 +282,28 @@ require("ibl").setup()
 -- aerial: コードのアウトライン表示
 -- aerial自身のコストは~1.5msのため遅延化せず起動時に読み込む
 -- (telescope拡張の登録は telescope 側で行う。telescope は遅延読み込み)
-require("aerial").setup()
+-- filter_kind: アウトラインに表示するシンボル種別のホワイトリスト。
+-- 全体設計:
+--   aerialのデフォルトは Class/Function/Method など8種のみを表示し、Variable/Constant を除外する。
+--   このため TypeScript の `export const foo = ...`(drizzleのテーブル定義や定数配列)が
+--   アウトラインに出ず、レビュー時に構造を追えなかった。
+--   → ファイルタイプ別マップ("_"が既定フォールバック)で TS系だけ許可種別を広げる。
+--     他言語は既定のまま(全表示にすると他言語のアウトラインがノイズ化するため対象をTSに限定)。
+-- 詳細:
+--   - Variable/Constant: `export const ...` の定義本体。tsserverが版により両種別を使い分けるため両方許可。
+--   - Object: オブジェクトリテラルで組む定義(スキーマ等)を拾うため。
+local ts_kinds = {
+  "Class", "Constructor", "Enum", "Function", "Interface", "Module", "Method", "Struct",
+  "Constant", "Variable", "Object",
+}
+require("aerial").setup({
+  filter_kind = {
+    -- 既定(TS以外の全ファイルタイプ)。aerialのデフォルト8種を維持する
+    ["_"] = { "Class", "Constructor", "Enum", "Function", "Interface", "Module", "Method", "Struct" },
+    typescript = ts_kinds,
+    typescriptreact = ts_kinds,
+  },
+})
 
 -- snacks.nvim: ターミナル / scratch メモ等のユーティリティ群
 do
