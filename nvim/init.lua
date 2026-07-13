@@ -208,6 +208,22 @@ require("gitsigns").setup({
     map("n", "<C-k>", function() gs.nav_hunk("prev") end, { desc = "Previous git hunk" })
     -- 対象行の変更内容をフロートウィンドウで見る
     map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview git hunk" })
+    -- <C-j>/<C-k> の逐次移動に加え、全 hunk を Telescope 一覧から選んでジャンプする
+    -- 全体構成: 現在バッファの hunk を loclist へ流し込み、Telescope の loclist ピッカーで一覧表示する。
+    -- 設計意図(自前ピッカーを廃した理由):
+    --   hunk 一覧+選択ジャンプは gitsigns と telescope の標準機能だけで実現できる。
+    --   gitsigns.setqflist が hunk→リスト整形を、telescope.builtin.loclist が popup+preview+
+    --   選択ジャンプを担うため、両者の安定 API を繋ぐだけでよい(自前の finder/previewer 実装が不要)。
+    --   use_location_list=true で quickfix ではなく window-local な loclist を使い、グローバルな
+    --   quickfix を汚さない。open=false で loclist ウィンドウ自体は開かず telescope 側にのみ見せる。
+    map("n", "<leader>hl", function()
+      -- telescope は遅延ロードのため未ロードなら先に読み込む(既ロードなら無害)
+      if not package.loaded["telescope.builtin"] then
+        pcall(function() require("pack_lazy").load("telescope.nvim") end)
+      end
+      gs.setqflist(0, { use_location_list = true, open = false })
+      require("telescope.builtin").loclist()
+    end, { desc = "List git hunks (Telescope)" })
   end,
 })
 
