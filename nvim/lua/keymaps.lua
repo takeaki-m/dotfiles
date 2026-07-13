@@ -104,6 +104,36 @@ keymap('n', '<Leader>fs', ':Telescope lsp_document_symbols<CR>', with_desc("Find
 --   0件でもエラーにならず、かつ ascending 自体がファイル出現順(上→下)表示になる。
 keymap('n', '<Leader>fa', ':Telescope aerial sorting_strategy=ascending<CR>', with_desc("Find outline (aerial)"))
 
+-- []系ナビゲーションの入力コスト対策(leader をブラケットのプレフィックスに再マップ)
+-- 全体構成:
+--   Vim の [ ] は「前/次の◯◯へ移動」の一貫した名前空間(標準の [b/]b, [q/]q, [d/]d,
+--   組み込みモーション [{/]}/[z, treesitter の [f/]f 等)を持つが、Corne ではレイヤー
+--   操作でコストが高い。そこで leader(=Space, サムキー)を [ / ] に展開し、
+--   Space→j/k→suffix で名前空間全体を打てるようにする。
+-- 設計判断(なぜ leader なのか):
+--   他の押しやすいプレフィックスは全て塞がっている。C-n/C-p は macOS/Emacs 流の
+--   readline と衝突、; は Karabiner で : に入替済み、,f/t/F/T は flash.nvim が使用中、
+--   他の記号は Corne でどのみちレイヤー上。leader 直後の名前空間だけが空いている。
+-- 仕組み(remap=true が肝):
+--   noremap ではなく remap=true にすることで、展開後の [ / ] が「組み込みモーション」や
+--   「既存の [f/]f 等のマップ」へ再委譲される。これにより 2 行で名前空間全体が有効になる。
+-- キー割当:
+--   <Leader>j = ](next), <Leader>k = [(prev)。既存の <C-j>=次hunk / <C-k>=前hunk と
+--   同じ「j=下=次 / k=上=前」イディオムに揃え、学習コストを最小化する。
+-- 使用例: Space j b=]b(次buffer), Space k d=[d(前診断), Space j f=]f(次関数), Space k {=[{
+vim.keymap.set('n', '<Leader>j', ']', { remap = true, desc = "] prefix (next ...)" })
+vim.keymap.set('n', '<Leader>k', '[', { remap = true, desc = "[ prefix (prev ...)" })
+
+-- aerial サイドバー(常時表示のアウトラインツリー)
+-- 全体設計: <Leader>fa の telescope 検索が「単発でシンボルへ飛ぶ」用途なのに対し、
+--   こちらは画面横にツリーを常駐させ、レビュー中に「今どの関数/クラスの中か」を
+--   カーソル追従で把握し続けるための用途。両者は補完関係にあり使い分ける。
+-- 詳細:
+--   - <Leader>ao: サイドバーの開閉(AerialToggle)
+--   - <Leader>an: 現在位置周辺だけを表示するフローティングナビ(AerialNavToggle)
+keymap('n', '<Leader>ao', ':AerialToggle<CR>', with_desc("Toggle outline (aerial)"))
+keymap('n', '<Leader>an', ':AerialNavToggle<CR>', with_desc("Outline nav (aerial)"))
+
 keymap('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', with_desc("Toggle NvimTree"))
 keymap('n', '<Leader>nf', ':NvimTreeFindFile<CR>', with_desc("Find file in NvimTree"))
 keymap('n', '<Leader>nt', ':NvimTreeFocus<CR>', with_desc("Focus to NvimTree"))
