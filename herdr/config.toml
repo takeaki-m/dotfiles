@@ -1,0 +1,11 @@
+onboarding = false
+[ui]
+agent_panel_sort = "priority"
+[keys]
+prefix="ctrl+s"
+copy_mode = "prefix+v"
+split_vertical = "prefix+|"
+navigate_workspace_down = "j"
+navigate_workspace_up = "k"
+[theme]
+name = "vesper"
