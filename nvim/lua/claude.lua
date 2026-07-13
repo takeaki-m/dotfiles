@@ -41,6 +41,32 @@ local function is_claude_code_buffer()
 end
 
 -- ============================================================================
+-- 実行環境(マルチプレクサ)による Claude 連携モードの判定
+-- ============================================================================
+-- 全体: claude をどこで動かすかは実行環境で決まる(判定ロジックの詳細は claude_env.lua)。
+--   - "pane"  : herdr 配下。別 pane の claude と WebSocket でやり取りし、nvim 側は
+--               terminal を一切開かず、表示・フォーカス・レイアウトの管理もしない。
+--   - "buffer": tmux 配下や素の端末。従来どおり nvim buffer 内で claude を扱う。
+-- 連携の要点(モード非依存): 送信(at_mention)や diff 承認は WebSocket ベースで、
+--   マルチプレクサや buffer の有無に依存せず動く。pane モードで無効化するのは
+--   「terminal を開く/フォーカスする/レイアウトを変える」といった buffer 前提の操作のみ。
+-- ※ init.lua 側でも同モジュールを使い、pane モードでは terminal provider を "none" にして
+--   プラグイン内部(send_at_mention 成功後の ensure_visible)による buffer 起動も抑止する。
+local claude_env = require("claude_env")
+
+-- pane モードか(= herdr 配下で nvim buffer を使わない)
+local function is_pane_mode()
+  return claude_env.is_pane_mode()
+end
+
+-- pane モードで buffer 前提の操作(表示・フォーカス・起動・レイアウト)が呼ばれた時の通知。
+-- 黙って無視せず理由を伝えることで、誤操作(=nvim 側 claude が起動して pane 側と二重接続し、
+-- 送信が両方へブロードキャストされる状態)を防ぐ。
+local function notify_pane_mode()
+  vim.notify("herdr(pane)モード: claude は別 pane 側で操作してください", vim.log.levels.INFO)
+end
+
+-- ============================================================================
 -- Claude 表示レイアウト管理 (タブ全画面 ⇔ 右側split)
 -- ============================================================================
 -- 全体: フロートは使わず、Claude を「実ウィンドウ」として表示する。既定は専用タブでの
@@ -95,6 +121,11 @@ end
 --   claudecode.nvim の terminal.open は cmd_args を文字列として claude コマンドに
 --   連結する仕様のため、テーブルではなく文字列を渡す必要がある。
 local function open_claude(cmd_args)
+  -- pane モードでは nvim 側で terminal を開かない(claude は別 pane で起動済み)
+  if is_pane_mode() then
+    notify_pane_mode()
+    return
+  end
   local term = require("claudecode.terminal")
   if current_layout == "tab" then
     -- いったん現タブに vsplit で開かせ、その直後に専用タブへ移して全画面化する。
@@ -114,10 +145,26 @@ end
 
 -- Claude を表示してフォーカスする(既に表示中なら集中するだけ)
 local function show_claude()
+  -- pane モードでは表示すべき nvim buffer が無いので何もしない
+  if is_pane_mode() then
+    notify_pane_mode()
+    return
+  end
   if focus_claude_win() then
     return
   end
   open_claude(nil)
+end
+
+-- 送信後のフォーカス移動。
+-- buffer モードでは claude を表示してフォーカスする(従来 UX)。
+-- pane モードでは送信自体が主目的で完了しているため、何もしない(通知も出さない。
+-- 送信のたびに通知が出ると煩わしいため、明示的な表示操作とは区別する)。
+local function focus_after_send()
+  if is_pane_mode() then
+    return
+  end
+  show_claude()
 end
 
 -- 外部起動(dotfiles エイリアス等)から、現在のレイアウト(既定=タブ全画面)で Claude を開くコマンド。
@@ -142,6 +189,11 @@ end
 
 -- 表示/非表示をトグルする (<leader>ac)
 local function toggle_claude()
+  -- pane モードでは nvim 側に表示対象が無いのでトグルしない
+  if is_pane_mode() then
+    notify_pane_mode()
+    return
+  end
   if not hide_claude() then
     show_claude()
   end
@@ -150,6 +202,11 @@ end
 -- レイアウトを切り替えて即再表示する (<leader>aw)
 -- いったん閉じてから現在のレイアウトで開き直す。
 local function toggle_layout()
+  -- pane モードでは nvim buffer のレイアウト概念が無いので何もしない
+  if is_pane_mode() then
+    notify_pane_mode()
+    return
+  end
   hide_claude()
   current_layout = (current_layout == "tab") and "split" or "tab"
   open_claude(nil)
@@ -157,10 +214,12 @@ local function toggle_layout()
 end
 
 -- ヘルパー関数: コマンド実行後にフォーカス(現在のレイアウトで表示する)
+-- 全体: cmd は ClaudeCodeAdd 等の WebSocket 送信コマンドなので、モードに依らず必ず実行する。
+--   フォーカスだけをモードに応じて分岐する(pane モードでは何もしない)。
 local function with_focus(cmd)
   return function ()
     vim.cmd(cmd)
-    show_claude()
+    focus_after_send()
   end
 end
 
@@ -179,6 +238,11 @@ keymap('n', '<leader>aw', toggle_layout,
 -- normalモード: Claude Codeバッファなら離脱(タブ全画面なら前タブへ、split なら前ウィンドウへ)、
 --   それ以外なら Claude Code にフォーカス
 keymap('n', '<M-c>', function()
+  -- pane モードでは claude buffer が無く、フォーカス往復は herdr 側の操作で行う
+  if is_pane_mode() then
+    notify_pane_mode()
+    return
+  end
   if is_claude_code_buffer() then
     -- 全画面タブ(=タブ内に Claude しかない)なら前のタブへ、そうでなければ前ウィンドウへ
     if #vim.api.nvim_tabpage_list_wins(0) == 1 then
@@ -205,7 +269,15 @@ keymap('n', '<leader>ar', function() open_claude("--resume") end,
   vim.tbl_extend('force', opts, { desc = 'Resume Claude' }))
 keymap('n', '<leader>aC', function() open_claude("--continue") end,
   vim.tbl_extend('force', opts, { desc = 'Continue Claude' }))
-keymap('n', '<leader>am', '<cmd>ClaudeCodeSelectModel<cr>', vim.tbl_extend('force', opts, { desc = 'Select Claude model' }))
+-- モデル選択: ClaudeCodeSelectModel は選択後に nvim terminal で claude を起動する実装のため、
+--   pane モードでは意味を持たない(claude は pane 側で起動済み)。pane 側で /model を使う。
+keymap('n', '<leader>am', function()
+  if is_pane_mode() then
+    notify_pane_mode()
+    return
+  end
+  vim.cmd('ClaudeCodeSelectModel')
+end, vim.tbl_extend('force', opts, { desc = 'Select Claude model' }))
 -- コンテキスト送信(送信後にフォーカス)
 keymap('n', '<leader>ab', with_focus('ClaudeCodeAdd %'), vim.tbl_extend('force', opts, { desc = 'Add current buffer' }))
 -- 全体: 選択追跡を使わず範囲だけ送ってカーソル遅延を避ける
@@ -247,14 +319,14 @@ keymap('v', '<leader>as', function()
     end_line = math.max(line1, line2)
   end
   send_range_to_claude(start_line, end_line)
-  vim.schedule(show_claude)
+  vim.schedule(focus_after_send)
 end, vim.tbl_extend('force', opts, { desc = 'Send to Claude' }))
 -- 現在行を選択してClaudeに送信
 -- feedkeysの第3引数をtrueにすると、キューを即座に処理する
 keymap('n', '<leader>al', function ()
   local line = vim.api.nvim_win_get_cursor(0)[1]
   send_range_to_claude(line, line)
-  vim.schedule(show_claude)
+  vim.schedule(focus_after_send)
 end, vim.tbl_extend('force', opts, { desc = 'Send line and focus' }))
 
 
@@ -288,6 +360,11 @@ local width_steps = { 30, 50, 70 }
 local width_idx = 1
 
 local function cycle_claude_width()
+  -- pane モードでは幅調整対象の nvim window が無い
+  if is_pane_mode() then
+    notify_pane_mode()
+    return
+  end
   -- claude buffer を表示している window を探して、その幅だけを変える
   for _, w in ipairs(vim.api.nvim_list_wins()) do
     local buf = vim.api.nvim_win_get_buf(w)

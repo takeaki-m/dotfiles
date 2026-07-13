@@ -401,6 +401,30 @@ do
 end
 
 -- claudecode.nvim: Claude Code 連携
+-- 全体: 実行環境で terminal provider を切り替える(判定は claude_env.lua)。
+--   pane モード(herdr 配下)では別 pane の claude を使うため、nvim 側 terminal を
+--   no-op provider("none")にする。これをしないと、送信(send_at_mention)の成功後に
+--   プラグイン内部が ensure_visible() で nvim buffer の claude を起動してしまい、
+--   pane 側と二重接続になる(送信が両方へ飛ぶ)。claude.lua 側のキーマップ分岐だけでは
+--   このプラグイン内部の起動は止められないため、provider レベルで抑止する。
+local claude_env = require("claude_env")
+---@diagnostic disable-next-line: missing-fields
+local claude_terminal = {
+  -- 全体: 実ウィンドウ(vsplit)として開く。フロートは使わない。
+  --   起動時の全画面表示は lua/claude.lua 側で、開いた直後に wincmd T で専用タブへ移して実現する。
+  snacks_win_opts = {
+    position = "right",
+    width = 0.40,
+    keys = {
+      -- Control-D 無効化は claude.lua 側の事情に応じて調整(現状は未設定)
+    },
+  },
+}
+if claude_env.is_pane_mode() then
+  -- buffer を一切開かない no-op provider。送信・diff 等の WebSocket 機能はそのまま動く。
+  claude_terminal.provider = "none"
+end
+
 require("claudecode").setup({
   -- 全体: リアルタイム選択トラッキングを無効化してカーソル遅延を回避する
   -- 詳細: 選択送信は手動コマンド側で範囲を直接送るため、追跡は不要
@@ -408,18 +432,7 @@ require("claudecode").setup({
   visual_demotion_delay_ms = 100,
   log_level = "warn",
   -- 全体: claude codeターミナル固有のキーマップ設定(snacks.nvim のターミナルウィンドウ経由)
-  ---@diagnostic disable-next-line: missing-fields
-  terminal = {
-    -- 全体: 実ウィンドウ(vsplit)として開く。フロートは使わない。
-    --   起動時の全画面表示は lua/claude.lua 側で、開いた直後に wincmd T で専用タブへ移して実現する。
-    snacks_win_opts = {
-      position = "right",
-      width = 0.40,
-      keys = {
-        -- Control-D 無効化は claude.lua 側の事情に応じて調整(現状は未設定)
-      },
-    },
-  },
+  terminal = claude_terminal,
 })
 
 -- render-markdown.nvim: markdown のインライン装飾(treesitter の後にロード済み)
