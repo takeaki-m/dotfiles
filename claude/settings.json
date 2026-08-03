@@ -152,7 +152,15 @@
       "Working"
     ]
   },
-  "alwaysThinkingEnabled": true
-  "tui": "default",
+  "alwaysThinkingEnabled": true,
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
+  "theme": "auto",
+  "editorMode": "vim",
+  "vimInsertModeRemaps": {
+    "jj": "<Esc>"
+  },
   "preferredNotifChannel": "terminal_bell",
+  "autoCompactEnabled": false,
+  "skipAutoPermissionPrompt": true
 }
