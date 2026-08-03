@@ -101,9 +101,9 @@
       "Read(id_rsa)",
       "Read(~/.ssh/*)",
       "Read(~/.ssh/**)",
-      "Write(.env*)",
-      "Write(~/.ssh/*)",
-      "Write(~/.ssh/**)"
+      "Edit(.env*)",
+      "Edit(~/.ssh/*)",
+      "Edit(~/.ssh/**)"
     ],
     "ask": [
       "Bash(git add:*)",
