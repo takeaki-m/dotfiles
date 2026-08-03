@@ -21,10 +21,21 @@ notify = ["osascript", "-e", "display notification \"Task Complete!!!\" with tit
 
 
 [tui]
-#　デスクトップ通知に関する設定
+# プロンプト入力の編集方針:
+# - 入力欄をVimのNormalモードで開始し、長文プロンプトをVim操作で編集する
+vim_mode_default = true
+
+# デスクトップ通知に関する設定
 # - "agent-turn-complete": エージェントの１ターン処理が完了した際に通知
 # - "approval-requested": ユーザーの操作や承認が必要な時に通知
 notifications = ["agent-turn-complete","approval-requested"]
+
+# キーマップ設計:
+# - 使用頻度の高い外部エディタ起動をCtrl-Tへ移す
+# - Ctrl-Tの既定機能だったトランスクリプト表示は、覚えやすいAlt-Tへ退避して競合を避ける
+[tui.keymap.global]
+open_external_editor = "ctrl-t"
+open_transcript = "alt-t"
 
 [tools]
 web_search_request = true
