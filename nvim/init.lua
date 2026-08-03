@@ -123,6 +123,11 @@ do
         "typescript", "tsx", "javascript", -- tsx は .tsx 用の別パーサー
         "terraform", "hcl",                -- .tf は terraform、.hcl は hcl
         "html", "css", "csv", "zsh",       -- zsh は専用パーサー(bash転用ではない)
+        -- astro: .astro は frontmatter(TS) + テンプレート(HTML) + <style>(CSS) の複合ファイル。
+        -- astro パーサー自身は「どこからどこまでが何の言語か」の枠組みだけを担当し、
+        -- 各ブロックの実体は injection で typescript / html / css のパーサーに委譲する。
+        -- そのため上記3つが揃っていることが前提(いずれも本リストで導入済み)。
+        "astro",
         "python",
       })
     end
@@ -286,6 +291,8 @@ require("mason-lspconfig").setup({
     "tailwindcss",
     "yamlls",
     "astro",
+    "cssls",
+    "html",
   },
 })
 
@@ -698,6 +705,25 @@ lazy.on_event(gh("windwp/nvim-autopairs"), "InsertEnter", function()
   require("nvim-autopairs").setup({})
 end)
 
+-- nvim-ts-autotag: HTML/JSX 系のタグ自動クローズ・ペアリネーム
+-- 全体構成:
+--   nvim-autopairs は「1文字ペア((/[/クォート)」専門で、閉じタグの生成はできない。
+--   </a> を作るには「開きタグのタグ名は何か」「既に閉じられていないか」の判定が要り、
+--   これは構文解析が必要なため treesitter ベースの本プラグインが担当する。
+-- 発火トリガ: `>` を打鍵した瞬間(Enter ではない)。<a> → <a>|</a> になる。
+--   加えて開きタグ側をリネームすると閉じタグも追従する。
+-- on_event ではなく on_ft を使う理由:
+--   本プラグインは setup 内で FileType autocmd を張り、バッファローカルに `>`/<BS> を
+--   マップする。InsertEnter でロードすると現バッファの FileType は既に発火済みで
+--   マップが張られない。on_ft はロード後に FileType を再発火するためこの問題が起きない。
+-- 対象 filetype: treesitter パーサーを導入済みのものだけを列挙する。
+--   本プラグインは構文木を前提とするため、パーサーが無い filetype を並べても機能しない。
+lazy.on_ft(gh("windwp/nvim-ts-autotag"), {
+  "astro", "html", "javascriptreact", "typescriptreact",
+}, function()
+  require("nvim-ts-autotag").setup()
+end)
+
 -- common conf for all language server
 vim.lsp.config('*', {
   capabilities = require("cmp_nvim_lsp").default_capabilities(),
@@ -748,6 +774,45 @@ vim.lsp.config.terraformls = {
     on_dir(vim.fs.root(bufnr, { '.terraform', '.git' }) or vim.fs.dirname(name))
   end,
 }
+-- astro の設定
+-- 全体構成: astro-ls は起動時に init_option `typescript.tsdk`(TypeScript 本体の lib ディレクトリ)を
+--   必須で要求する。未指定だと initialize が InternalError で失敗しサーバーが起動しない。
+--   ここではその解決を「プロジェクト優先・mason フォールバック」の2段構えにする。
+-- 背景1: lspconfig 標準の astro 設定は util.get_typescript_server_path() で
+--   プロジェクトの node_modules/typescript を上方向探索するだけで、グローバル TS は見ない。
+--   そのため node_modules の無い場所で .astro を開くと必ず失敗する。
+-- 背景2: TypeScript 7.x は npm パッケージから typescript.js / tsserverlibrary.js を削除したため、
+--   ディレクトリが存在しても tsdk として使えない。実際 astro-language-server が同梱する TS は
+--   7.0.2 でどちらのファイルも持たない。したがって「存在するか」ではなく
+--   「typescript.js が実在するか」で検証する必要がある。
+-- 詳細: フォールバック先は mason の typescript-language-server が同梱する TS(6.x)。
+--   ts_ls を ensure_installed 済み(本ファイル上部)なので必ず存在し、追加のグローバル導入が不要。
+--   stdpath('data') 経由で組み立てるためマシン間で可搬。
+local function astro_tsdk()
+  -- tsdk として使えるかの判定: ディレクトリの有無ではなく typescript.js の実在で見る
+  local function usable(dir)
+    return dir and dir ~= '' and vim.uv.fs_stat(dir .. '/typescript.js') ~= nil
+  end
+  return function(_, config)
+    -- 1) プロジェクトローカルを優先する。型の解釈をプロジェクトの TS 版に合わせるため
+    local tsdk = require('lspconfig.util').get_typescript_server_path(config.root_dir)
+    if not usable(tsdk) then
+      -- 2) mason 同梱の TS にフォールバック
+      tsdk = vim.fs.joinpath(vim.fn.stdpath('data'),
+        'mason/packages/typescript-language-server/node_modules/typescript/lib')
+      if not usable(tsdk) then
+        vim.notify('astro: 使用可能な typescript.tsdk が見つかりません', vim.log.levels.WARN)
+        return
+      end
+    end
+    config.init_options = config.init_options or {}
+    config.init_options.typescript = config.init_options.typescript or {}
+    config.init_options.typescript.tsdk = tsdk
+  end
+end
+vim.lsp.config.astro = {
+  before_init = astro_tsdk(),
+}
 -- lspconfig で LSP サーバーを設定
 -- mason-lspconfig は lspconfig と連携して、インストールされた LSP サーバーを自動的に設定
 -- 個別のLSPサーバーの設定は lspconfig にて設定
@@ -762,6 +827,8 @@ vim.lsp.enable('gh_actions_ls')
 vim.lsp.enable('tailwindcss')
 vim.lsp.enable('postgres_lsp')
 vim.lsp.enable('astro')
+vim.lsp.enable('html')
+vim.lsp.enable('cssls')
 -- 他のライブラリとの依存関係があるため初期化外で設定する。
 -- nvim起動後にsourceでreloadしても問題ないため
 local cmp = require("cmp")
