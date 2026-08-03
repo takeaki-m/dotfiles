@@ -118,7 +118,19 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '[(.cwd | split(\"/\") | last), .message] | @tsv' | { IFS=$'\\t' read -r name message; osascript -e \"display notification \\\"$message\\\" with title \\\"Claude Code 権限要求 [$name]\\\" sound name \\\"Glass\\\"\"; }"
+            "command": "~/.claude/claude-notify-list.sh record permission"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/take/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
           }
         ]
       }
@@ -129,7 +141,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.cwd | split(\"/\") | last' | { read -r name; osascript -e \"display notification \\\"作業が完了しました [$name]\\\" with title \\\"Claude Code\\\" sound name \\\"Glass\\\"\"; }"
+            "command": "~/.claude/claude-notify-list.sh record stop"
           }
         ]
       }
