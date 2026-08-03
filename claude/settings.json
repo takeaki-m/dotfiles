@@ -137,11 +137,12 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "~/.claude/statusline.js"
+    "command": "~/.claude/statusline.js",
+    "hideVimModeIndicator": true
   },
   "enabledPlugins": {
-    "typescript-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true
+    "lua-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
   },
   "spinnerVerbs": {
     "mode": "replace",
