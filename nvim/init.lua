@@ -73,6 +73,9 @@ vim.pack.add({
   gh("uga-rosa/cmp-dictionary"),
   -- render-markdown は treesitter の後にロードする(配列順で担保)
   gh("MeanderingProgrammer/render-markdown.nvim"),
+  -- colorscheme
+  gh("EdenEast/nightfox.nvim"),
+  gh("kepano/flexoki-neovim")
 })
 
 -- nvim-treesitter(main): インストール/更新時にパーサーを最新化する
