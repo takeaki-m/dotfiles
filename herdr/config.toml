@@ -7,5 +7,11 @@ copy_mode = "prefix+v"
 split_vertical = "prefix+|"
 navigate_workspace_down = "j"
 navigate_workspace_up = "k"
+last_pane = 'prefix+Space'
+[ui.toast]
+delivery = "terminal"
+delay_seconds = 1
+[ui.toast.herdr]
+position = "bottom-right"
 [theme]
-name = "vesper"
+name = "one-light"
