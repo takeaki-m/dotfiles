@@ -81,5 +81,18 @@ keybinding:
     # ctrl-dスクロール時にctrlが外れてdが単独入力され、
     # 変更がdiscardされる誤操作を防止するためにd→D(Shift+D)に変更
     remove: "D"
+    # diff表示のスクロールキーをvimの意味論に合わせるための置き換え
+    # lazygitのmain windowのスクロール量はgui.scrollHeight(既定2行)の固定値であり、
+    # vimのctrl-d/ctrl-u(半ページ)ではなくctrl-e/ctrl-y(1行スクロール)に相当する挙動になる。
+    # キー名と実挙動のずれをなくすため、alt2の割り当てをctrl-e/ctrl-yへ変更する。
+    # なお大きく移動したい場合は"0"(focusMainView)でdiffにフォーカスし、","/"."のページ送りを使う
+    scrollDownMain-alt2: <ctrl+e>
+    scrollUpMain-alt2: <ctrl+y>
   # commitChangesはデフォルトの"c"、commitChangesWithEditorはデフォルトの"C"のまま
   # Conventional Commitカスタムコマンドは"V"に割り当て
+  # パネル固有のキーはuniversalの同名キーより優先される。
+  # そのためbranchesパネルで<ctrl+y>を上スクロールに使うには、
+  # デフォルトの割り当て(copyPullRequestURL)を解除しておく必要がある
+  branches:
+    # PRのURLはO(PRオプション)やG(ブラウザで開く)から辿れるため、無効化しても代替手段はある
+    copyPullRequestURL: <disabled>
