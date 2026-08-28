@@ -11,6 +11,14 @@ gui:
   expandedSidePanelWeight: 2
   mainPanelSplitMode: flexible
   enlargedSideViewLocation: 'top'
+git:
+  # diff表示の前後に含めるコンテキスト行数(git diffの -U <n> に相当)
+  # 既定の3行では変更行の周辺しか見えずレビューしづらいため広げている。
+  # `{`/`}`(decrease/increaseContextInDiffView)でも変更できるが、その値は保存されず
+  # lazygitを起動するたびに既定値へ戻るため、常用する値はここで指定する
+  # なお同じgitキーをtheme_light.yml/theme_dark.yml側でも使っているが、
+  # 複数の設定ファイルはキー単位でマージされるため上書きは発生しない
+  diffContextSize: 7
 customCommands:
   # Conventional Commitをメニュー選択式で組み立てるカスタムコマンド
   # type選択 → scope入力(任意) の後、エディタが開きコミットメッセージを自由に記述可能
