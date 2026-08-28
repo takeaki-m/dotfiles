@@ -228,11 +228,17 @@ gwc() {
     # 引用符の通り道: zsh \" → nvim opts.args内に " → claudecode.nvimがclaude CLIへ渡す際に
     # shellを経由して引用符が剥がれ、claudeが /check-issue <番号> を1位置引数として受け取る
     if [[ "$issue_no" =~ ^[0-9]+$ ]]; then
-        nvim . -c "term make init_apps; zsh" \
-            -c "ClaudeCode \"/check-issue $issue_no\""
+        make init_apps
+        # nvimの起動ではなく、claudeのみを起動する
+        claude "/check-issue $issue_no"
+        #nvim . -c "term make init_apps; zsh" \
+        #    -c "ClaudeCode \"/check-issue $issue_no\""
     else
-        nvim . -c "term make init_apps; zsh" \
-            -c "ClaudeCode"
+        # nvimの起動ではなく、claudeのみを起動する
+        make init_apps
+        claude
+        #nvim . -c "term make init_apps; zsh" \
+        #    -c "ClaudeCode"
     fi
 }
 
