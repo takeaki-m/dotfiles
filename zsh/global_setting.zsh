@@ -228,6 +228,7 @@ gwc() {
     # 引用符の通り道: zsh \" → nvim opts.args内に " → claudecode.nvimがclaude CLIへ渡す際に
     # shellを経由して引用符が剥がれ、claudeが /check-issue <番号> を1位置引数として受け取る
     if [[ "$issue_no" =~ ^[0-9]+$ ]]; then
+        cd ./
         make init_apps
         # nvimの起動ではなく、claudeのみを起動する
         claude "/check-issue $issue_no"
@@ -235,6 +236,7 @@ gwc() {
         #    -c "ClaudeCode \"/check-issue $issue_no\""
     else
         # nvimの起動ではなく、claudeのみを起動する
+        cd ./
         make init_apps
         claude
         #nvim . -c "term make init_apps; zsh" \
@@ -624,6 +626,39 @@ alias pcopy='pwd | sed "s/^\(.*\)$/'\''\1'\''/" | tr -d '\''\n'\'' | pbcopy'
 # xman関数を定義
 function xman() { open x-man-page://$@ ; }
 
+# ASCII 形式のテーブルをmarkdown形式のテーブルに変換
+# coding Agentの出力したASCIIテーブルを読みやすいように変換するため
+ascii2md() {
+  local script=~/.local/bin/ascii2md.py
+  local src converted
+
+  if (( ! $+commands[python3] )); then
+    echo "ascii2md: python3 が見つかりません" >&2
+    return 1
+  fi
+  if [[ ! -r $script ]]; then
+    echo "ascii2md: $script が読めません。dotfiles/script/setup.sh を実行してください" >&2
+    return 1
+  fi
+
+  src=$(pbpaste)
+  if [[ -z $src ]]; then
+    echo "ascii2md: クリップボードが空です" >&2
+    return 1
+  fi
+
+  # pbpaste | python3 | pbcopy と直列に繋ぐと、変換が失敗しても pbcopy が
+  # 実行されてクリップボードが空で上書きされる(パイプラインの各段は独立に
+  # 走り、終了ステータスも最後の pbcopy のものになる)。
+  # そのため「変換 → 成否を確認 → 適用」の順に分けている。
+  converted=$(printf '%s' "$src" | python3 "$script") || {
+    echo "ascii2md: 変換に失敗しました。クリップボードは変更していません" >&2
+    return 1
+  }
+
+  printf '%s' "$converted" | pbcopy
+  echo "Converted ASCII table to Markdown in clipboard!"
+}
 
 # postgres
 alias postgres='postgres -D /usr/local/var/postgres'
