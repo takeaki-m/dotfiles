@@ -770,25 +770,65 @@ function ssh() {
 
 # --------------------
 # keybind
-# - bindkey -eの設定より、後に設定しなければkeybindが無効となる
+# - モード選択(bindkey -v)より後に設定しなければkeybindが無効となる
 # - 以下にまとめて設定すること
 # --------------------
 
-# emacs keybindをdefaultとする
-bindkey -e
+# ---------------------------------------------
+# vi モードを基本に、挿入モードでは Emacs キーを使う
+# ---------------------------------------------
+# 全体構成:
+#   1. main キーマップを viins に切り替える（モード選択）
+#   2. 挿入モード(viins)に Emacs 相当のキーを張り直す
+#   3. 補完メニューなど個別キーマップの調整
+#
+# 1 を必ず最初に行う。zsh の main はキーマップの実体ではなく他キーマップへの
+# リンクで、bindkey -e/-v はリンク先を差し替えるだけ。後から -v すると、
+# それ以前に -M なしで張った設定が旧キーマップに取り残されて無効になる。
+bindkey -v
 
+# Esc の反応遅延を詰める。既定の 40(=0.4秒)は、viins に既定登録されている
+# ^[ 始まりシーケンス（矢印キー等）との判別待ちがそのまま体感遅延になるため
+KEYTIMEOUT=1
 
-# 前方一致
-# 入力補完
+# --- 挿入モードでの Emacs キー ---
+# 移動
+bindkey -M viins '^A' beginning-of-line       # 行頭
+bindkey -M viins '^E' end-of-line             # 行末
+bindkey -M viins '^B' backward-char           # 左
+bindkey -M viins '^F' forward-char            # 右
+bindkey -M viins '^[b' backward-word          # 前の単語
+bindkey -M viins '^[f' forward-word           # 次の単語
+
+# 履歴
+bindkey -M viins '^P' up-line-or-history      # 前の履歴
+bindkey -M viins '^N' down-line-or-history    # 次の履歴
+bindkey -M viins '^[.' insert-last-word       # 直前コマンドの最後の引数
+
+# 削除・編集
+# viins 既定の vi-* 系ウィジェットは「挿入モードを開始した位置」より前を
+# 編集できない vi 由来の制限があるため、Emacs 版に置き換える。
+# ^K と ^Y は viins では self-insert（制御文字がそのまま入る）なので必須。
+bindkey -M viins '^?' backward-delete-char    # Backspace
+bindkey -M viins '^H' backward-delete-char    # Ctrl-H も同じ扱い
+bindkey -M viins '^W' backward-kill-word      # 直前の単語を削除
+bindkey -M viins '^U' kill-whole-line         # 行全体を削除
+bindkey -M viins '^K' kill-line               # カーソル以降を削除
+bindkey -M viins '^Y' yank                    # 貼り付け
+bindkey -M viins '^D' delete-char-or-list     # 前方削除 / 候補一覧
+bindkey -M viins '^_' undo                    # undo
+
+# ^R は張らない。fzf(fzf --zsh)が viins/vicmd 双方に fzf-history-widget を
+# 張っており、このファイルは fzf.zsh より後に読まれるため上書きしてしまう
+
+# --- 補完 ---
+# 前方一致 / 入力補完
 # zsh-autocomplete: リアルタイム補完機能
 # 無効化理由: 入力中の自動表示が煩わしいため。
 # 現在は zsh-completions + fzf の組み合わせで補完・検索機能を実現している。
 #source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-# zsh-autocompleteのキーバインドを変更する
-bindkey              '^I'         menu-complete
-bindkey "$terminfo[kcbt]" reverse-menu-complete
-
-# emacsモードではC-n/C-p/C-a/C-e/C-f/C-b/C-d/C-k/C-wはデフォルトで有効
+bindkey -M viins '^I' menu-complete
+bindkey -M viins "$terminfo[kcbt]" reverse-menu-complete
 
 # 補完メニュー選択中のキーバインド
 # menu selectが有効な場合、候補一覧の中をC-n/C-pで移動できるようにする
@@ -796,6 +836,55 @@ bindkey -M menuselect '^N' down-line-or-history   # 補完メニュー: 下へ
 bindkey -M menuselect '^P' up-line-or-history     # 補完メニュー: 上へ
 bindkey -M menuselect '^F' forward-char           # 補完メニュー: 右へ
 bindkey -M menuselect '^B' backward-char          # 補完メニュー: 左へ
+
+# --- vi のテキストオブジェクトと surround ---
+# bindkey -v だけでは ci" / di( が使えないため、zsh 標準の関数で補う
+autoload -Uz select-bracketed select-quoted
+zle -N select-bracketed
+zle -N select-quoted
+for _m in visual viopp; do
+  for _c in {a,i}${(s..)^:-'()[]{}<>bB'}; do bindkey -M $_m $_c select-bracketed; done
+  for _c in {a,i}{\',\",\`};            do bindkey -M $_m $_c select-quoted;    done
+done
+unset _m _c
+
+# cs"' / ds" / ys iw " といった surround 操作
+autoload -Uz surround
+zle -N delete-surround surround
+zle -N add-surround    surround
+zle -N change-surround surround
+bindkey -M vicmd  cs change-surround
+bindkey -M vicmd  ds delete-surround
+bindkey -M vicmd  ys add-surround
+bindkey -M visual S  add-surround
+
+# ---------------------------------------------
+# モード表示: カーソル形状でノーマル/挿入を見分ける
+# ---------------------------------------------
+# DECSCUSR(CSI Ps SP q)で端末にカーソル形状を指示する。
+#   2 = 非点滅ブロック（ノーマルモード）
+#   6 = 非点滅の縦棒（挿入モード）
+# 点滅する 1/3/5 ではなく非点滅の 2/6 を使い、ghostty の
+# cursor-style-blink = false と挙動を揃える。
+# 前提: ghostty 側が shell-integration-features = no-cursor であること
+#       （有効だと ghostty のシェル統合がカーソルを書き換えて競合する）
+_vi_cursor_block() { printf '\e[2 q' }
+_vi_cursor_beam()  { printf '\e[6 q' }
+_vi_cursor_apply() {
+  case ${KEYMAP:-viins} in
+    (vicmd) _vi_cursor_block ;;
+    (*)     _vi_cursor_beam  ;;
+  esac
+}
+# キーマップ切替時・行編集の開始時・終了時の3点で更新する。
+# 終了時にブロックへ戻さないと、起動したコマンドに縦棒カーソルが残ってしまう。
+# add-zle-hook-widget は zle -N 済みのウィジェットしか受け付けないため先に登録する
+zle -N _vi_cursor_apply
+zle -N _vi_cursor_block
+autoload -Uz add-zle-hook-widget
+add-zle-hook-widget keymap-select _vi_cursor_apply
+add-zle-hook-widget line-init     _vi_cursor_apply
+add-zle-hook-widget line-finish   _vi_cursor_block
 
 #--------------------
 # 入力するコマンドをエディタで編集する
@@ -833,7 +922,9 @@ edit-with-nvim() {
 }
 
 zle -N edit-with-nvim
-bindkey '^O' edit-with-nvim
+# 挿入・ノーマルどちらのモードからでも起動できるようにする
+bindkey -M viins '^O' edit-with-nvim
+bindkey -M vicmd '^O' edit-with-nvim
 #PROMPT='%n@%m %~ %# '
 # PROMPT='%~ %# '
 # 上記のPROMPTは342行目の git-aware な PS1（__git_ps1 でブランチ名を表示）を上書きしてしまうためコメントアウト
