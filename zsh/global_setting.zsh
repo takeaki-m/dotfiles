@@ -220,6 +220,13 @@ gwc() {
     git worktree add "$worktree_path" "$branch"
     cd "$worktree_path"
 
+    # 全体: cd直後に新しいcwdをターミナル側へ通知し、herdrのサイドバー表示を更新させる。
+    # 背景: herdrはpaneが出力するOSC 1337;CurrentDirでcwdを追跡しているが、このシーケンスは
+    #       precmdフック(シェルがプロンプトに戻ったとき)にしか送られない。gwcはcdの後も
+    #       make/claudeで前景を占有し続けるため通知が飛ばず、表示がcd前のまま固まる。
+    #       詳細な経緯はgwp側の同じ行のコメントを参照。
+    printf '\033]1337;CurrentDir=%s\007' "$PWD"
+
     # ブランチ名 feature/123-content から "123" を取り出す
     # zshパラメータ展開: ${${branch#*/}%%-*} は「最初の / より後ろ」かつ「最初の - より前」
     local issue_no="${${branch#*/}%%-*}"
@@ -228,7 +235,6 @@ gwc() {
     # 引用符の通り道: zsh \" → nvim opts.args内に " → claudecode.nvimがclaude CLIへ渡す際に
     # shellを経由して引用符が剥がれ、claudeが /check-issue <番号> を1位置引数として受け取る
     if [[ "$issue_no" =~ ^[0-9]+$ ]]; then
-        cd ./
         make init_apps
         # nvimの起動ではなく、claudeのみを起動する
         claude "/check-issue $issue_no"
@@ -236,7 +242,6 @@ gwc() {
         #    -c "ClaudeCode \"/check-issue $issue_no\""
     else
         # nvimの起動ではなく、claudeのみを起動する
-        cd ./
         make init_apps
         claude
         #nvim . -c "term make init_apps; zsh" \
@@ -307,13 +312,24 @@ gwp() {
     git worktree add "$worktree_path" "$branch" || { echo "git worktree addに失敗しました" >&2; return 1; }
     cd "$worktree_path" || return 1
 
+    # 全体: cd直後に新しいcwdをターミナル側へ通知し、herdrのサイドバー表示(ディレクトリ/ブランチ)を
+    #       その場で更新させる。
+    # 背景: herdrはpaneが出力するOSC 1337;CurrentDirでcwdを追跡している。このシーケンスは
+    #       ~/.iterm2_shell_integration.zsh のprecmdフック、つまり「シェルがプロンプトに戻った
+    #       とき」にしか送られない。gwpはcdの後もmake/claudeで前景を占有し続けプロンプトに
+    #       戻らないため、通知が一度も飛ばずサイドバーがcd前の表示のまま固まっていた。
+    #       (ClaudeCodeをCtrl-Cで抜けるとプロンプトが出て、そこで初めて更新されていた)
+    # 詳細: precmdが送るものと同じシーケンスを手動で送る。herdrはOSC 7(file://形式)には
+    #       非対応なので、こちらの形式を使う必要がある。
+    printf '\033]1337;CurrentDir=%s\007' "$PWD"
+
     # gwcと同様、nvim起動と同時にClaudeCodeを立ち上げる
     if [[ "$pr_no" =~ ^[0-9]+$ ]]; then
-        nvim . -c "term make init_apps; zsh" \
-            -c "ClaudeCode \"/check-pr $pr_no\""
+        make init_apps
+        claude "/check-pr $pr_no"
     else
-        nvim . -c "term make init_apps; zsh" \
-            -c "ClaudeCode"
+        make init_apps
+        claude
     fi
 }
 
