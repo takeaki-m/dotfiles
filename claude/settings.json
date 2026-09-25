@@ -21,7 +21,8 @@
       "mcp__aws-knowledge",
       "Bash(terraform fmt -check:*)",
       "Bash(pnpm biome check:*)",
-      "Bash(pnpm -F * biome check:*)",
+      "Bash(pnpm -F frontend biome check:*)",
+      "Bash(pnpm -F backend biome check:*)",
       "Bash(pnpm build:*)",
       "Bash(pnpm -F api-schema build:*)",
       "Bash(pnpm -F @aim-management/api-schema build:*)",
@@ -63,7 +64,7 @@
     ],
     "deny": [
       "NotebookEdit",
-      "Bash(.*\\.ssh/.*:*)",
+      "Bash(.*\\.ssh/.*)",
       "Bash(chgrp:*)",
       "Bash(chown:*)",
       "Bash(curl:*)",
