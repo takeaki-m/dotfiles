@@ -7,6 +7,7 @@
 #
 #   record 役 : Claude Code のフックから呼ばれ、通知1件をログに追記する。
 #               あわせて従来どおり macOS 通知(osascript)も発火する。
+#               ただし herdr 配下(HERDR_ENV=1)では herdr の通知と重複するため何もしない。
 #   menu   役 : tmux の keybind(prefix + a)から display-popup 経由で呼ばれ、
 #               ログを fzf 表示し、選んだ window へ switch-client で移動する。
 #
@@ -60,6 +61,14 @@ resolve_target() {
 do_record() {
     local kind="${1:-}"
     local input name message target label epoch
+
+    # herdr 配下では herdr 自身が通知を出すため、ここでの通知は重複になる。
+    # 判定は herdr-agent-state.sh と同じ HERDR_ENV=1 を使う(herdr が設定する変数)。
+    # tmux ログも herdr 配下では $TMUX が無く記録されないため、丸ごとスキップしてよい。
+    if [ "${HERDR_ENV:-}" = "1" ]; then
+        cat >/dev/null   # フックの JSON を読み捨てて終了(書き込み側の SIGPIPE 回避)
+        return 0
+    fi
 
     input="$(cat)"
 
