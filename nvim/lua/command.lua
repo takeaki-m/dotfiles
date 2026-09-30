@@ -68,7 +68,11 @@ local function open_dual_terminals(cmd1, cmd2)
 end
 
 vim.api.nvim_create_user_command('RunDual', function (opts)
-  local args = vim.split(opts.args, " ")
+  -- trimempty で空要素を除去する
+  -- 背景: 引数なしの場合 vim.split("", " ") は { "" } を返し、
+  --       Luaでは空文字列も真と評価されるため `args[1] or default` が
+  --       デフォルト値ではなく空文字列を選んでしまう
+  local args = vim.split(opts.args, " ", { trimempty = true })
   local cmd1 = args[1] or "echo 'No command 1'"
   local cmd2 = args[2] or "echo 'No command 2'"
   open_dual_terminals(cmd1, cmd2)
@@ -78,7 +82,8 @@ end, { nargs = '*' }) -- 引数の指定を許可
 -- フロントエンドとバックエンドの開発サーバーを同時に起動するコマンド
 -- backend:dev は OPENAI_API_KEY が必要なため、事前に set_openai を呼び出す
 vim.api.nvim_create_user_command('RunApps', function (opts)
-  local args = vim.split(opts.args, " ")
+  -- trimempty の理由は RunDual のコメントを参照
+  local args = vim.split(opts.args, " ", { trimempty = true })
   local cmd1 = args[1] or "pnpm run frontend:dev"
   local cmd2 = args[2] or "set_api_keys && pnpm run backend:dev"
   open_dual_terminals(cmd1, cmd2)

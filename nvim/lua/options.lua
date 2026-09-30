@@ -121,7 +121,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 })
 
 -- osがdark modeかどうかを判定する
-local function is_os_dark_mode()
+function _G.is_os_dark_mode()
   local handle = io.popen(
     'osascript -e \'tell application "System Events" to tell appearance preferences to return dark mode\'')
   if handle then
@@ -295,3 +295,5 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.foldlevel = 0
   end,
 })
+vim.cmd.packadd('nvim.undotree')
+vim.cmd.packadd('nvim.difftool')
