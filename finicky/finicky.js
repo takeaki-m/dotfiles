@@ -1,5 +1,5 @@
 export default {
-    defaultBrowser: "Zen",
+    defaultBrowser: "Firefox",
     options: {
       // hide the finicky icon from the menu bar
       hideIcon: true
@@ -16,6 +16,6 @@ export default {
             },
             browser: "Google Chrome"
         },
-        { match: () => true, browser: "Zen" }
+        { match: () => true, browser: "Firefox" }
     ]
 };
