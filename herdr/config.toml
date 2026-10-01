@@ -1,6 +1,14 @@
 onboarding = false
 [ui]
 agent_panel_sort = "priority"
+[ui.toast]
+delivery = "herdr"
+delay_seconds = 1
+[ui.toast.herdr]
+position = "bottom-right"
+[theme]
+name = "gruvbox-light"
+auto_switch = false
 [keys]
 prefix="ctrl+s"
 copy_mode = "prefix+v"
@@ -8,10 +16,10 @@ split_vertical = "prefix+|"
 navigate_workspace_down = "j"
 navigate_workspace_up = "k"
 last_pane = 'prefix+Space'
-[ui.toast]
-delivery = "terminal"
-delay_seconds = 1
-[ui.toast.herdr]
-position = "bottom-right"
-[theme]
-name = "one-light"
+[[keys.command]]
+key = "prefix+t"
+type = "popup"
+command = "exec \"${SHELL:-sh}\""
+description = "open scratch terminal"
+width = "80%"
+height = "80%"
