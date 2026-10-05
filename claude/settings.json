@@ -59,7 +59,7 @@
       "Bash(git ls-files:*)",
       "Bash(git grep:*)",
       "Bash(npm view:*)",
-      "Bash(osascript -e:*)",
+      "Bash(osascript -e:*)"
     ],
     "deny": [
       "NotebookEdit",
