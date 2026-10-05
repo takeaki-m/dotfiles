@@ -60,7 +60,6 @@
       "Bash(git grep:*)",
       "Bash(npm view:*)",
       "Bash(osascript -e:*)",
-      "mcp__codex__codex"
     ],
     "deny": [
       "NotebookEdit",
