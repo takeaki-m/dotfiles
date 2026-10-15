@@ -75,7 +75,8 @@ vim.pack.add({
   gh("MeanderingProgrammer/render-markdown.nvim"),
   -- colorscheme
   gh("EdenEast/nightfox.nvim"),
-  gh("kepano/flexoki-neovim")
+  gh("kepano/flexoki-neovim"),
+  gh("projekt0n/github-nvim-theme")
 })
 
 -- nvim-treesitter(main): インストール/更新時にパーサーを最新化する
@@ -913,5 +914,5 @@ vim.keymap.set('n', '<Leader>1', function() harpoon:list():select(1) end, { nore
 vim.keymap.set('n', '<Leader>2', function() harpoon:list():select(2) end, { noremap = true, silent = true, desc = "Harpoon file 2" })
 vim.keymap.set('n', '<Leader>3', function() harpoon:list():select(3) end, { noremap = true, silent = true, desc = "Harpoon file 3" })
 vim.keymap.set('n', '<Leader>4', function() harpoon:list():select(4) end, { noremap = true, silent = true, desc = "Harpoon file 4" })
-vim.cmd.colorscheme(_G.is_os_dark_mode() and "nightfox" or "flexoki-light")
+vim.cmd.colorscheme(_G.is_os_dark_mode() and "nightfox" or "github_light_colorblind")
 
