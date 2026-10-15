@@ -237,6 +237,24 @@ require("gitsigns").setup({
   end,
 })
 
+-- diff の削除行の背景補正(codediff.setup より前に置くこと)
+-- 背景: codediff は DiffDelete の背景色から削除行の色を作る。背景色が無いテーマ(Neovim 標準の
+--       default は light で「背景なし・赤字・太字」)では、codediff 内部の dark 用の既定色
+--       (#351d2b の濃い赤紫)で塗られ、light の画面では読めなくなる。
+-- 方針: 問題があるときだけ介入する。条件はテーマ名ではなく「背景色が無い」という原因そのもので書き、
+--       同じ作りの別テーマでも効くようにする。背景色を持つテーマの diff 色(作者の意図)には触らない。
+--       色は wildcharm(GitHub に近い淡い diff 色)の削除行に合わせた。
+-- 順序: codediff も ColorScheme のたびに DiffDelete を読み直して色を作るため、この autocmd を
+--       codediff より先に登録し、「補正 → codediff の再計算」の順で動くようにする(autocmd は登録順に実行される)。
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    if vim.o.background ~= "light" then return end
+    local hl = vim.api.nvim_get_hl(0, { name = "DiffDelete", link = false })
+    if hl.bg or hl.reverse then return end -- 背景色があるテーマは触らない
+    vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#ffd7d7" })
+  end,
+})
+
 -- codediff: VSCode 風の side-by-side diff でリポジトリ全体の変更をレビューする
 -- 役割分担: gitsigns = 編集中バッファの行単位の差分 / codediff = 複数ファイル横断のレビュー・履歴・コンフリクト解消
 require("codediff").setup({
