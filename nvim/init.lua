@@ -63,6 +63,7 @@ vim.pack.add({
   gh("stevearc/aerial.nvim"),
   gh("folke/snacks.nvim"),
   gh("coder/claudecode.nvim"),
+  gh("esmuellert/codediff.nvim"),
   -- harpoon は harpoon2 branch を使う(setup はファイル末尾でまとめて行う)
   gh("ThePrimeagen/harpoon", "harpoon2"),
   -- 補完(nvim-cmp 本体と各ソース。setup はファイル末尾の cmp.setup 周辺で行う)
@@ -235,6 +236,51 @@ require("gitsigns").setup({
     end, { desc = "List git hunks (Telescope)" })
   end,
 })
+
+-- codediff: VSCode 風の side-by-side diff でリポジトリ全体の変更をレビューする
+-- 役割分担: gitsigns = 編集中バッファの行単位の差分 / codediff = 複数ファイル横断のレビュー・履歴・コンフリクト解消
+require("codediff").setup({
+  diff = {
+    -- 変更のない部分を畳み、hunk の周りだけ表示する(gc で切り替え)
+    compact = true,
+    -- ファイル末尾の hunk から次のファイルの最初の hunk へ続けて進み、全変更を通しで読めるようにする
+    cycle_hunks_across_files = true,
+    -- 関数の移動などを「削除+追加」ではなく「移動」として表示する
+    compute_moves = true,
+  },
+  explorer = {
+    view_mode = "tree",
+    -- ファイルごとに +12 -4 の行数を表示し、変更の大きさが一目で分かるようにする
+    line_stats = { enabled = true },
+    -- ファイル選択から差分の精読へ、そのまま移れるようにする。
+    focus_on_select = true,
+  },
+  keymaps = {
+    view = {
+      -- gitsigns と同じ理由で ]c/[c をやめ、<C-j>/<C-k> にそろえる
+      -- (] を押し損ねると c の変更操作になり、事故の元になるため)
+      next_hunk = "<C-j>",
+      prev_hunk = "<C-k>",
+      -- ファイル送りも Corne で押しにくい [ ] を避け、hunk 送り(<C-j>/<C-k>)と同じく Ctrl 1回で押せるキーにする。
+      -- normal モードの <C-n>/<C-p> はグローバルでは使っていない(NvimTree の開閉は <Leader>nn へ移した)。
+      -- codediff の割り当てが無いバッファに当たっても、Vim 本来の動作(1行移動)になるだけで害は無い
+      next_file = "<C-n>",
+      prev_file = "<C-p>",
+    },
+  },
+})
+
+-- codediff の起動用キーマップ
+-- <leader>v = view diff の名前空間。<leader>g はローカル git(fugitive)、<leader>G は GitHub(Octo)用。
+-- <leader>gt に LSP の型定義もあるため、diff を <leader>g に入れると「go to」と紛らわしい
+vim.keymap.set("n", "<leader>vd", "<cmd>CodeDiff<cr>", { desc = "CodeDiff: working tree" })
+vim.keymap.set("n", "<leader>vs", "<cmd>CodeDiff --staged<cr>", { desc = "CodeDiff: staged" })
+-- develop... は merge-base との比較。develop 側で進んだ変更は混ざらず、このブランチで変えた部分だけを表示する(PR と同じ見え方)
+vim.keymap.set("n", "<leader>vm", "<cmd>CodeDiff develop...<cr>", { desc = "CodeDiff: branch vs develop (merge-base)" })
+vim.keymap.set("n", "<leader>vf", "<cmd>CodeDiff file HEAD<cr>", { desc = "CodeDiff: current file vs HEAD" })
+vim.keymap.set("n", "<leader>vh", "<cmd>CodeDiff history %<cr>", { desc = "CodeDiff: file history" })
+-- visual 選択した行を変更したコミットだけを表示する(:'<,'> の範囲を渡すため <cmd> ではなく : を使う)
+vim.keymap.set("x", "<leader>vh", ":CodeDiff history<cr>", { desc = "CodeDiff: line history" })
 
 -- lualine: ステータスライン
 require("lualine").setup({
