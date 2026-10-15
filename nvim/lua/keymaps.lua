@@ -134,7 +134,10 @@ vim.keymap.set('n', '<Leader>k', '[', { remap = true, desc = "[ prefix (prev ...
 keymap('n', '<Leader>ao', ':AerialToggle<CR>', with_desc("Toggle outline (aerial)"))
 keymap('n', '<Leader>an', ':AerialNavToggle<CR>', with_desc("Outline nav (aerial)"))
 
-keymap('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', with_desc("Toggle NvimTree"))
+-- 旧 <C-n>。<C-n>/<C-p> は CodeDiff のファイル送りに使うため移した
+-- (CodeDiff のタブで codediff の割り当てが無いバッファに当たると NvimTree が開閉され、
+--  そのバッファが削除イベント無しで消えて treesitter 折りたたみのエラーの原因になった)
+keymap('n', '<Leader>nn', ':NvimTreeFindFileToggle<CR>', with_desc("Toggle NvimTree"))
 keymap('n', '<Leader>nf', ':NvimTreeFindFile<CR>', with_desc("Find file in NvimTree"))
 keymap('n', '<Leader>nt', ':NvimTreeFocus<CR>', with_desc("Focus to NvimTree"))
 
@@ -300,18 +303,29 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Octo
 -- keymaps
--- GitHub操作を機能別に短縮（i=issue, p=PR, d=discussion, n=notification, g=GitHub）
+-- GitHub操作を機能別に短縮（i=issue, p=PR, d=discussion, n=notification, G=GitHub）
+-- G を大文字にするのは、小文字の <leader>g をローカル git(fugitive)用に空けておくため。
+-- (以前は <leader>gs が fugitive の :Git と重複し、後から定義したこちらが上書きしていた)
 vim.keymap.set("n", "<leader>il", "<CMD>Octo issue list<CR>", { desc = "List GitHub Issues" })
 vim.keymap.set("n", "<leader>ic", "<CMD>Octo issue create<CR>", { desc = "Create GitHub Issue" })
 vim.keymap.set("n", "<leader>pl", "<CMD>Octo pr list<CR>", { desc = "List GitHub PullRequests" })
 vim.keymap.set("n", "<leader>dl", "<CMD>Octo discussion list<CR>", { desc = "List GitHub Discussions" })
 vim.keymap.set("n", "<leader>nl", "<CMD>Octo notification list<CR>", { desc = "List GitHub Notifications" })
-vim.keymap.set("n", "<leader>gs", function()
+-- Octo は :Octo 実行時に遅延ロードする(init.lua の lazy.on_cmd)。キーマップから octo.* を
+-- 直接 require すると、:Octo を一度も実行していない状態では module not found になる。
+-- そのため呼ぶ前に pack_lazy.load で読み込む(<leader>hl の telescope と同じ方式。読み込み済みなら何もしない)
+vim.keymap.set("n", "<leader>Gs", function()
+  require("pack_lazy").load("octo.nvim")
   require("octo.utils").create_base_search_command({ include_current_repo = true })
 end, { desc = "Search GitHub" })
 -- カーソル下のissue/PRリンク・@user・リアクションのポップアップを即時表示する。
 -- Octo標準の CursorHold ホバー(updatetime=4秒待ち)と同じ処理を手動で呼び出すもの。
 -- on_cursor_hold は octoバッファ以外では早期returnするためグローバルマップでも安全。
-vim.keymap.set("n", "<leader>gh", function()
+-- octo バッファは Octo を読み込んだ後でしか存在しないので、未ロードなら何もせずに終える
+-- (ホバーのためだけに Octo を読み込まない)
+vim.keymap.set("n", "<leader>Gh", function()
+  if not package.loaded["octo"] then
+    return
+  end
   require("octo").on_cursor_hold()
 end, { desc = "Show GitHub link/user popup (Octo hover)" })
