@@ -103,7 +103,7 @@ function buildLine1Segments(data) {
   }
 
   // Issue(フォルダ名・worktree 名から抽出。番号が無いフォルダでは非表示)
-  const issue = resolveIssueFromFolder(data);
+  const issue = resolveIssueFromFolder(data, git.branch);
   if (issue) {
     const repo = data.workspace?.repo;
     const url = repo ? `https://${repo.host}/${repo.owner}/${repo.name}/issues/${issue}` : null;
@@ -248,16 +248,22 @@ function getGitInfo(cwd, sessionId) {
 //   運用であれば、外部コマンドもネットワークも使わずに即座に取得できる。
 //   候補は「作業単位を表す可能性が高い順」に見て、最初に番号が取れたものを採用する。
 //     1. worktree.name             … Claude Code の worktree セッション名
-//     2. workspace.git_worktree    … git worktree add で作られた linked worktree 名
-//     3. workspace.project_dir の末尾 … Claude Code を起動したフォルダ
-//     4. workspace.current_dir の末尾 … 現在の作業フォルダ
+//     2. workspace.project_dir の末尾 … Claude Code を起動したフォルダ
+//     3. workspace.current_dir の末尾 … 現在の作業フォルダ
+//     4. ブランチ名の末尾(/ 以降)   … feature/1119-foo のような命名用のフォールバック
+//
+//   workspace.git_worktree を候補にしない理由:
+//     この値はフォルダ名ではなく .git/worktrees/<name> の管理ディレクトリ名である。
+//     git 標準では概ねフォルダ名と同じだが、Orca 等のツールは「<数値>-<UUID>」のような
+//     独自の名前を付けるため、先頭の数値(Issue と無関係)を Issue 番号と誤認してしまう。
+//     フォルダ名と同じ場合は 2/3 で拾えるため、除外しても情報は失われない。
 //   どれにも番号が無ければ null を返し、Issue セグメントは非表示になる。
-function resolveIssueFromFolder(data) {
+function resolveIssueFromFolder(data, branch) {
   const candidates = [
     data.worktree?.name,
-    data.workspace?.git_worktree,
     data.workspace?.project_dir && path.basename(data.workspace.project_dir),
     (data.workspace?.current_dir || data.cwd) && path.basename(data.workspace?.current_dir || data.cwd),
+    branch && branch.split('/').pop(),
   ];
   for (const name of candidates) {
     const issue = parseIssueNumber(name);
