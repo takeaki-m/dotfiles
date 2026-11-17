@@ -60,6 +60,12 @@ keymap('i', '<C-j>', '<Cmd>stopinsert<CR>', { silent = true, desc = "Escape" })
 
 -- copy buffer all pages
 keymap('n', '<Leader>y', ':%y<CR>', with_desc("Yank entire buffer"))
+-- 文字数・単語数・行数のカウント
+-- 全体: 標準の `g<C-g>` を押しやすい leader 系キーに割り当て直したもの
+-- 詳細: normal はバッファ全体、visual は選択範囲を集計して表示する。
+--       remap=true にして標準の g<C-g> へ委譲するため、自前で集計は実装していない。
+--       <Leader>w は保存に使っており、<Leader>wc だと保存が timeoutlen 分遅延するため <Leader>cw とした。
+keymap({ 'n', 'x' }, '<Leader>cw', 'g<C-g>', { remap = true, silent = false, desc = "Count words/chars (g<C-g>)" })
 -- increment and decrement
 keymap('n', '+', '<C-a>', with_desc("Increment number"))
 keymap('n', '-', '<C-x>', with_desc("Decrement number"))

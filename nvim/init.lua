@@ -345,7 +345,37 @@ vim.keymap.set("n", "<leader>vh", "<cmd>CodeDiff history %<cr>", { desc = "CodeD
 -- visual 選択した行を変更したコミットだけを表示する(:'<,'> の範囲を渡すため <cmd> ではなく : を使う)
 vim.keymap.set("x", "<leader>vh", ":CodeDiff history<cr>", { desc = "CodeDiff: line history" })
 
+-- 文字数・単語数・バイト数を statusline に常時表示する(g<C-g> の内容と同じ wordcount() が元)
+-- 背景: g<C-g> を毎回押さなくても、執筆中に分量をリアルタイムで把握したい。
+-- 仕組み: lualine は再描画(カーソル移動のたび)にこの関数を呼ぶ。wordcount() はバッファ全体を
+--   走査するため、サイズに比例して重くなる。そこで負荷対策を2段で行う。
+--   1. 表示対象を markdown に限定する(下の cond)。ログ等の巨大ファイルでは一切走査しない。
+--   2. 非選択時は changedtick(変更回数)が同じ間は前回の結果を使い回し、wordcount() 自体を呼ばない。
+--      選択範囲(visual)はカーソル移動ごとに値が変わるため毎回取得する。
+local wc_cache = { buf = -1, tick = -1, text = "" }
+local function wordcount_component()
+  -- 選択中は選択範囲の分を、それ以外はバッファ全体を表示する
+  local mode = vim.fn.mode()
+  if mode == "v" or mode == "V" or mode == "\22" then
+    local wc = vim.fn.wordcount()
+    return string.format("Sel W:%d C:%d B:%d", wc.visual_words, wc.visual_chars, wc.visual_bytes)
+  end
+  local buf = vim.api.nvim_get_current_buf()
+  local tick = vim.b.changedtick
+  if wc_cache.buf ~= buf or wc_cache.tick ~= tick then
+    local wc = vim.fn.wordcount()
+    wc_cache = {
+      buf = buf,
+      tick = tick,
+      text = string.format("W:%d C:%d B:%d", wc.words, wc.chars, wc.bytes),
+    }
+  end
+  return wc_cache.text
+end
+
 -- lualine: ステータスライン
+-- 全体構成: 位置情報(progress/location)を視線が届きやすい左側(ファイル名の隣)へ集約し、
+--   右側は filetype と文字数(wordcount)とする。
 require("lualine").setup({
   options = {
     globalstatus = false,
@@ -356,7 +386,10 @@ require("lualine").setup({
   },
   sections = {
     lualine_a = { "mode" },
-    lualine_b = { "" },
+    lualine_b = {
+      "progress", -- ファイル全体に対するカーソル位置の割合(Top/xx%/Bot)
+      "location", -- 行:列
+    },
     lualine_c = {
       "filename",
       -- fugitive提供のstatusline表記を追加。
@@ -366,9 +399,13 @@ require("lualine").setup({
       --   を返すので、statuslineに出すだけでどちらのバッファにいるか一目で分かる。
       function() return vim.fn.FugitiveStatusline() end,
     },
-    lualine_x = { "filetype" }, -- encoding format を削除
-    lualine_y = { "progress" }, -- ファイル全体に対するカーソル位置の割合(Top/xx%/Bot)
-    lualine_z = { "location" },
+    lualine_x = {
+      -- markdown バッファのときだけ表示・計算する(cond が false なら関数自体が呼ばれない)
+      { wordcount_component, cond = function() return vim.bo.filetype == "markdown" end },
+      "filetype",
+    }, -- encoding format を削除
+    lualine_y = {},
+    lualine_z = {},
   },
 })
 
@@ -433,6 +470,17 @@ local ts_kinds = {
   "Constant", "Variable", "Object",
 }
 require("aerial").setup({
+  -- layout: サイドバーの幅
+  -- 全体設計: デフォルトは max_width={40, 0.2}(40列と画面20%の小さい方)で、
+  --   resize_to_content により中身に合わせて縮むため、長いシンボル名が切れて見づらかった。
+  --   手動リサイズ(<C-w>N>)は再描画時に上限内へ戻されうるため、上限/下限そのものを広げる。
+  -- 詳細:
+  --   - max_width: 「60列」と「画面の30%」の小さい方まで許可(狭い画面で本文を圧迫しすぎない)
+  --   - min_width: 短いシンボルしかないファイルでも極端に細くならないよう30列を確保
+  layout = {
+    max_width = { 60, 0.3 },
+    min_width = 30,
+  },
   filter_kind = {
     -- 既定(TS以外の全ファイルタイプ)。aerialのデフォルト8種を維持する
     ["_"] = { "Class", "Constructor", "Enum", "Function", "Interface", "Module", "Method", "Struct" },
