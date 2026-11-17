@@ -22,5 +22,6 @@ ls.add_snippets("all", {
   s(":pr",  { t("Provider") }),
   s(":ll",  { t("LLM") }),
   s(":ms",  { t("Microsoft") }),
+  s(":todo",  { t("- [ ] ") }),
 })
 
