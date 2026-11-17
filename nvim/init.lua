@@ -719,6 +719,8 @@ lazy.on_cmd(gh("pwntester/octo.nvim"), { "Octo" }, function()
   lazy.load("telescope.nvim")
   require("octo").setup({
     picker = "telescope",
+    -- ProjectsV2 の timeline イベントを有効化する(gh トークンに read:project スコープが必要)
+    default_to_projects_v2 = true,
   })
 end)
 
