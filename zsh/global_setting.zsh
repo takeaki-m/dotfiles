@@ -489,6 +489,8 @@ alias term='export TERM=xterm; echo $TERM'
 
 alias psql='psql-17'
 
+alias sql='cd apps/backend && ./scripts/with-worktree-env.sh docker compose exec db psql -U aim_master_user -d aim'
+
 # nvimがos themeに合わせて色が変更可能になったため以下の設定はコメントアウトする
 #nvim(){
     # if check_os_theme_is_dark; then
