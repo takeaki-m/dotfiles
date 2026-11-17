@@ -191,7 +191,21 @@ do
 end
 
 -- gitsigns: 行単位の git 差分表示とナビゲーション
+-- 全体構成: 通常バッファでは「行全体の背景(linehl) + 行番号(numhl) + サイン列」で変更を目立たせる。
+--           codediff 表示中だけは linehl を切り、行番号横の表示(numhl + サイン列)のみにする。
+-- 背景: codediff 自身が変更行を背景色で塗るため、gitsigns の linehl と二重になり見づらい。
+-- 仕組み: linehl は gitsigns のグローバル設定で、ウィンドウ単位では切り替えられない。
+--         そこで「現在のタブが codediff セッションか」で都度 toggle_linehl(値) を呼び直す。
+--         codediff は専用タブで開くため、タブ単位の判定で足りる。
+local function sync_gitsigns_linehl()
+  local ok, lifecycle = pcall(require, "codediff.ui.lifecycle")
+  local in_codediff = ok and lifecycle.get_session(vim.api.nvim_get_current_tabpage()) ~= nil
+  require("gitsigns").toggle_linehl(not in_codediff)
+end
+
 require("gitsigns").setup({
+  linehl = true,
+  numhl = true,
   on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
     local function map(mode, l, r, opts)
@@ -215,8 +229,26 @@ require("gitsigns").setup({
     --      されているため干渉しない。
     --   3. 潰すのは native <C-j>(= j と同等の下移動)/<C-k>(未割当) のみで実損なし。
     -- 新 API: next_hunk/prev_hunk は非推奨化されており、nav_hunk(方向) に統一された。
-    map("n", "<C-j>", function() gs.nav_hunk("next") end, { desc = "Next git hunk" })
-    map("n", "<C-k>", function() gs.nav_hunk("prev") end, { desc = "Previous git hunk" })
+    -- hunk 移動後、移動先がウィンドウの上端/下端付近なら zz で画面中央に寄せる
+    -- 背景: nav_hunk は最小限のスクロールしかしないため、hunk が画面の端に張り付いたり
+    --       はみ出したりして、毎回手動で zz を押す必要があった。
+    -- 仕組み: nav_hunk は非同期(async)でカーソル移動が完了してから callback が呼ばれるため、
+    --         その中で vim.schedule 経由(fast context 回避)で位置を判定する。
+    --         カーソルが上端/下端から edge_margin 行以内にあれば zz する(hunk の大きさは考慮しない)。
+    local edge_margin = 3
+    local function nav_hunk_centered(direction)
+      gs.nav_hunk(direction, nil, function()
+        vim.schedule(function()
+          local win_height = vim.api.nvim_win_get_height(0)
+          local row = vim.fn.winline() -- ウィンドウ内でのカーソルの表示行(1始まり)
+          if row <= edge_margin or row > win_height - edge_margin then
+            vim.cmd("normal! zz")
+          end
+        end)
+      end)
+    end
+    map("n", "<C-j>", function() nav_hunk_centered("next") end, { desc = "Next git hunk" })
+    map("n", "<C-k>", function() nav_hunk_centered("prev") end, { desc = "Previous git hunk" })
     -- 対象行の変更内容をフロートウィンドウで見る
     map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview git hunk" })
     -- <C-j>/<C-k> の逐次移動に加え、全 hunk を Telescope 一覧から選んでジャンプする
@@ -287,6 +319,18 @@ require("codediff").setup({
       prev_file = "<C-p>",
     },
   },
+})
+
+-- codediff の開閉・タブ移動に合わせて gitsigns の linehl を切り替える(理由は gitsigns 設定側のコメント参照)
+-- CodeDiffClose はセッション削除の直前に発火するため、vim.schedule で削除後に判定する。
+-- TabEnter は codediff タブと通常タブを行き来したときの再同期用。
+vim.api.nvim_create_autocmd({ "TabEnter", "User" }, {
+  pattern = { "*", "CodeDiffOpen", "CodeDiffClose" },
+  callback = function(ev)
+    -- User イベントは対象パターン以外(他プラグインの User)を無視する
+    if ev.event == "User" and ev.match ~= "CodeDiffOpen" and ev.match ~= "CodeDiffClose" then return end
+    vim.schedule(sync_gitsigns_linehl)
+  end,
 })
 
 -- codediff の起動用キーマップ
