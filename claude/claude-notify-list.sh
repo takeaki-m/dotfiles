@@ -7,7 +7,9 @@
 #
 #   record 役 : Claude Code のフックから呼ばれ、通知1件をログに追記する。
 #               あわせて従来どおり macOS 通知(osascript)も発火する。
-#               ただし herdr 配下(HERDR_ENV=1)では herdr の通知と重複するため何もしない。
+#               ただし herdr 配下(HERDR_ENV=1)と Claude Desktop 経由
+#               (CLAUDE_CODE_ENTRYPOINT=claude-desktop)、Orca 配下(ORCA_PANE_KEY あり)では、
+#               各々の通知と重複するため何もしない。
 #   menu   役 : tmux の keybind(prefix + a)から display-popup 経由で呼ばれ、
 #               ログを fzf 表示し、選んだ window へ switch-client で移動する。
 #
@@ -65,7 +67,18 @@ do_record() {
     # herdr 配下では herdr 自身が通知を出すため、ここでの通知は重複になる。
     # 判定は herdr-agent-state.sh と同じ HERDR_ENV=1 を使う(herdr が設定する変数)。
     # tmux ログも herdr 配下では $TMUX が無く記録されないため、丸ごとスキップしてよい。
-    if [ "${HERDR_ENV:-}" = "1" ]; then
+    #
+    # Claude Desktop 経由の場合も同様にスキップする。Desktop アプリが自前で通知を出すため
+    # osascript 通知は重複になり、また tmux 外なのでログ化の対象にもならない。
+    # Desktop は Claude Code 起動時に CLAUDE_CODE_ENTRYPOINT=claude-desktop を設定する。
+    #
+    # Orca(com.stablyai.orca)配下も同様にスキップする。Orca は自前でエージェントの
+    # 状態通知を行う。Orca は各ターミナルに ORCA_PANE_KEY 等の ORCA_* 変数を設定し、
+    # Orca 自身が settings.json に注入したフックも ORCA_PANE_KEY の有無で
+    # 「Orca 配下か」を判定しているため、同じ変数で判定する。
+    if [ "${HERDR_ENV:-}" = "1" ] \
+        || [ "${CLAUDE_CODE_ENTRYPOINT:-}" = "claude-desktop" ] \
+        || [ -n "${ORCA_PANE_KEY:-}" ]; then
         cat >/dev/null   # フックの JSON を読み捨てて終了(書き込み側の SIGPIPE 回避)
         return 0
     fi
