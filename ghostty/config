@@ -4,7 +4,10 @@ font-size = 16
 #theme = dark:IR Black,light:Vimbones
 #theme = Hybrid
 #theme = dark:Solarized Osaka Night,light:GitLab Light
-theme = dark:Solarized Osaka Night,light:Zenbones
+#theme = dark:Analyzed Dark,light:GitLab Light
+#theme = dark:Analyzed Dark,light:Catppuccin Latte
+theme = dark:Diary of a Lunatic,light:Analyzed Light
+#theme = dark:Solarized Osaka Night,light:GitHub Light High Contrast
 #theme = Raycast Light
 #theme = GitLab Light
 #theme = Zenbones
@@ -17,12 +20,10 @@ window-show-tab-bar = never
 macos-titlebar-style = hidden
 #font-family = Osaka-Mono
 #font-family = Andale Mono
-#font-family = Courier New
 #font-family = JetBrainsMono Nerd Font
 #font-family = Hack Nerd Font Mono
 #font-family = Menlo
-#font-family  = FiraCode Nerd Font Ret
-#font-family = "Hiragino Kaku Gothic ProN"
+font-family  = FiraCode Nerd Font Ret
 font-thicken = true
 # macOSのOptionキーをAlt(Meta)キーとして動作させる
 # Nvim/Vimの<M-x>キーバインドを有効にするために必要
