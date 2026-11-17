@@ -1073,5 +1073,5 @@ vim.keymap.set('n', '<Leader>1', function() harpoon:list():select(1) end, { nore
 vim.keymap.set('n', '<Leader>2', function() harpoon:list():select(2) end, { noremap = true, silent = true, desc = "Harpoon file 2" })
 vim.keymap.set('n', '<Leader>3', function() harpoon:list():select(3) end, { noremap = true, silent = true, desc = "Harpoon file 3" })
 vim.keymap.set('n', '<Leader>4', function() harpoon:list():select(4) end, { noremap = true, silent = true, desc = "Harpoon file 4" })
-vim.cmd.colorscheme(_G.is_os_dark_mode() and "nightfox" or "github_light_colorblind")
+vim.cmd.colorscheme(_G.is_os_dark_mode() and "github_dark_high_contrast" or "github_light_high_contrast")
 
