@@ -51,6 +51,7 @@
                 "^com\\.apple\\.Terminal$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.mitchellh\\.ghostty$",
+                "^com\\.stablyai\\.orca$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
                 "^io\\.alacritty$",
@@ -124,6 +125,7 @@
                 "^com\\.citrix\\.receiver\\.icaviewer",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.mitchellh\\.ghostty$",
+                "^com\\.stablyai\\.orca$",
                 "^com\\.apple\\.Terminal$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
@@ -210,6 +212,7 @@
               "bundle_identifiers": [
                 "^com\\.apple\\.Terminal$",
                 "^com\\.mitchellh\\.ghostty$",
+                "^com\\.stablyai\\.orca$",
                 "^com\\.googlecode\\.iterm2$"
              ]
             }
@@ -242,6 +245,7 @@
               "bundle_identifiers": [
                 "^com\\.apple\\.Terminal$",
                 "^com\\.mitchellh\\.ghostty$",
+                "^com\\.stablyai\\.orca$",
                 "^com\\.googlecode\\.iterm2$"
               ]
             }
@@ -291,6 +295,7 @@
                 "^com\\.citrix\\.receiver\\.icaviewer",
                 "^com\\.apple\\.Terminal$",
                 "^com\\.mitchellh\\.ghostty$",
+                "^com\\.stablyai\\.orca$",
                 "^com\\.googlecode\\.iterm2$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
@@ -365,6 +370,7 @@
                 "^com\\.citrix\\.receiver\\.icaviewer",
                 "^com\\.apple\\.Terminal$",
                 "^com\\.mitchellh\\.ghostty$",
+                "^com\\.stablyai\\.orca$",
                 "^com\\.googlecode\\.iterm2$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
@@ -439,6 +445,7 @@
                 "^com\\.citrix\\.receiver\\.icaviewer",
                 "^com\\.apple\\.Terminal$",
                 "^com\\.mitchellh\\.ghostty$",
+                "^com\\.stablyai\\.orca$",
                 "^com\\.googlecode\\.iterm2$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
@@ -513,6 +520,7 @@
                 "^com\\.citrix\\.receiver\\.icaviewer",
                 "^com\\.apple\\.Terminal$",
                 "^com\\.mitchellh\\.ghostty$",
+                "^com\\.stablyai\\.orca$",
                 "^com\\.googlecode\\.iterm2$",
                 "^co\\.zeit\\.hyperterm$",
                 "^co\\.zeit\\.hyper$",
