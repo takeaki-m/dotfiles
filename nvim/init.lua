@@ -64,6 +64,8 @@ vim.pack.add({
   gh("folke/snacks.nvim"),
   gh("coder/claudecode.nvim"),
   gh("esmuellert/codediff.nvim"),
+  gh("MunifTanjim/nui.nvim"),
+  gh("georgeguimaraes/review.nvim", "v1.12.0"),
   -- harpoon は harpoon2 branch を使う(setup はファイル末尾でまとめて行う)
   gh("ThePrimeagen/harpoon", "harpoon2"),
   -- 補完(nvim-cmp 本体と各ソース。setup はファイル末尾の cmp.setup 周辺で行う)
