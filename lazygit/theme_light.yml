@@ -4,34 +4,66 @@ git:
   #           トグルできるよう2つ用意している。
   # 補足: 旧名はgit.pagers(配列内のキーはpager)。lazygitのバージョンアップでリネームされており、
   #       旧名のまま起動すると自動マイグレーションで設定ファイルが書き換えられるため、新しい名前で記述する。
+  # 配色: 差分の背景色(plus/minus)は GitHub Light の差分表示色(Primer diffBlob)に合わせて直接指定している。
+  #       style値の先頭の syntax は「文字色はシンタックスハイライトのまま、背景色だけ指定」の意味。
+  #       command は ' で囲む。囲まないと値中の " #" 以降が YAML のコメント扱いになり切り捨てられるため。
   diffRenderers:
     # 1つ目(デフォルト): unified表示。1ファイル内で変更行を上下に並べて比較する。
     - colorArg: always
-      command: delta --paging=never --syntax-theme="Monokai Extended Light"
+      #command: delta --paging=never --syntax-theme="Monokai Extended Light"
+      command: 'delta --paging=never --syntax-theme="GitHub" --plus-style="syntax #dafbe1" --plus-emph-style="syntax #aceebb" --minus-style="syntax #ffebe9" --minus-emph-style="syntax #ffcecb"'
     # 2つ目: side-by-side表示。--side-by-side で旧/新を左右2カラムに分割する。
     #         `|` キーで1つ目との間をトグルする。
     - colorArg: always
-      command: delta --paging=never --side-by-side --syntax-theme="Monokai Extended Light"
+      #command: delta --paging=never --side-by-side --syntax-theme="Monokai Extended Light"
+      command: 'delta --paging=never --side-by-side --syntax-theme="GitHub" --plus-style="syntax #dafbe1" --plus-emph-style="syntax #aceebb" --minus-style="syntax #ffebe9" --minus-emph-style="syntax #ffcecb"'
+#gui:
+#  theme:
+#    activeBorderColor:
+#      - '#40a02b'
+#      - bold
+#    inactiveBorderColor:
+#      - '#6c6f85'
+#    optionsTextColor:
+#      - '#1e66f5'
+#    selectedLineBgColor:
+#      - '#ccd0da'
+#    cherryPickedCommitBgColor:
+#      - '#bcc0cc'
+#    cherryPickedCommitFgColor:
+#      - '#40a02b'
+#    unstagedChangesColor:
+#      - '#d20f39'
+#    defaultFgColor:
+#      - '#4c4f69'
+#    searchingActiveBorderColor:
+#      - '#df8e1d'
+#    authorColors:
+#      '*': '#7287fd'
+
+# GitHub Light テーマ
+# 配色は GitHub の Primer デザインシステム(light)のカラートークンに準拠している。
 gui:
   theme:
     activeBorderColor:
-      - '#40a02b'
+      - '#0969da' # accent.fg (青: フォーカス中のパネル)
       - bold
     inactiveBorderColor:
-      - '#6c6f85'
+      - '#8c959f' # border/fg.subtle (グレー)
     optionsTextColor:
-      - '#1e66f5'
+      - '#0969da' # accent.fg
     selectedLineBgColor:
-      - '#ccd0da'
+      - '#ddf4ff' # accent.subtle (選択行の背景)
     cherryPickedCommitBgColor:
-      - '#bcc0cc'
+      - '#d0d7de' # border.default
     cherryPickedCommitFgColor:
-      - '#40a02b'
+      - '#0969da' # accent.fg
     unstagedChangesColor:
-      - '#d20f39'
+      - '#cf222e' # danger.fg (赤)
     defaultFgColor:
-      - '#4c4f69'
+      - '#1f2328' # fg.default
     searchingActiveBorderColor:
-      - '#df8e1d'
+      - '#9a6700' # attention.fg (黄)
+    # authorColors は gui.theme ではなく gui 直下のキー
     authorColors:
-      '*': '#7287fd'
+      '*': '#8250df' # done.fg (紫)

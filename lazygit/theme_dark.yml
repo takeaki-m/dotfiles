@@ -4,39 +4,45 @@ git:
   #           トグルできるよう2つ用意している。
   # 補足: 旧名はgit.pagers(配列内のキーはpager)。lazygitのバージョンアップでリネームされており、
   #       旧名のまま起動すると自動マイグレーションで設定ファイルが書き換えられるため、新しい名前で記述する。
+  # 配色: 差分の背景色(plus/minus)は GitHub Dark の差分表示色(Primer diffBlob)に合わせて直接指定している。
+  #       GitHub Dark のシンタックステーマは delta に同梱されていないため、近い配色の Visual Studio Dark+ を使用。
+  #       style値の先頭の syntax は「文字色はシンタックスハイライトのまま、背景色だけ指定」の意味。
+  #       command は ' で囲む。囲まないと値中の " #" 以降が YAML のコメント扱いになり切り捨てられるため。
   diffRenderers:
     # 1つ目(デフォルト): unified表示。1ファイル内で変更行を上下に並べて比較する。
     - colorArg: always
-      command: delta --paging=never --syntax-theme="ansi"
+      #command: delta --paging=never --syntax-theme="ansi"
+      command: 'delta --paging=never --syntax-theme="Visual Studio Dark+" --plus-style="syntax #12261e" --plus-emph-style="syntax #1d572d" --minus-style="syntax #25171c" --minus-emph-style="syntax #542426"'
     # 2つ目: side-by-side表示。--side-by-side で旧/新を左右2カラムに分割する。
     #         `|` キーで1つ目との間をトグルする。
     - colorArg: always
-      command: delta --paging=never --side-by-side --syntax-theme="ansi"
-gui:
-  theme:
-    activeBorderColor:
-      - '#a7c080'  # 緑系（フォレストの葉）
-      - bold
-    inactiveBorderColor:
-      - '#7a8478'  # グレイッシュグリーン
-    optionsTextColor:
-      - '#7fbbb3'  # アクアブルー
-    selectedLineBgColor:
-      - '#3d484d'  # 暗めの背景（選択時）
-    cherryPickedCommitBgColor:
-      - '#475258'  # やや明るいグレー
-    cherryPickedCommitFgColor:
-      - '#a7c080'  # 緑系
-    unstagedChangesColor:
-      - '#e67e80'  # 柔らかい赤（エラー/変更）
-    defaultFgColor:
-      - '#d3c6aa'  # クリーム系の文字色
-    searchingActiveBorderColor:
-      - '#dbbc7f'  # 黄色系（検索時の強調）
+      #command: delta --paging=never --side-by-side --syntax-theme="ansi"
+      command: 'delta --paging=never --side-by-side --syntax-theme="Visual Studio Dark+" --plus-style="syntax #12261e" --plus-emph-style="syntax #1d572d" --minus-style="syntax #25171c" --minus-emph-style="syntax #542426"'
+#gui:
+#  theme:
+#    activeBorderColor:
+#      - '#a7c080'  # 緑系（フォレストの葉）
+#      - bold
+#    inactiveBorderColor:
+#      - '#7a8478'  # グレイッシュグリーン
+#    optionsTextColor:
+#      - '#7fbbb3'  # アクアブルー
+#    selectedLineBgColor:
+#      - '#3d484d'  # 暗めの背景（選択時）
+#    cherryPickedCommitBgColor:
+#      - '#475258'  # やや明るいグレー
+#    cherryPickedCommitFgColor:
+#      - '#a7c080'  # 緑系
+#    unstagedChangesColor:
+#      - '#e67e80'  # 柔らかい赤（エラー/変更）
+#    defaultFgColor:
+#      - '#d3c6aa'  # クリーム系の文字色
+#    searchingActiveBorderColor:
+#      - '#dbbc7f'  # 黄色系（検索時の強調）
 
-  authorColors:
-    '*': '#7fbbb3'  # アクアブルー
- 
+#  authorColors:
+#    '*': '#7fbbb3'  # アクアブルー
+
 #gui:
 #  theme:
 #    activeBorderColor:
@@ -61,3 +67,30 @@ gui:
 #
 #  authorColors:
 #    '*': '#babbf1'
+
+# GitHub Dark テーマ
+# 配色は GitHub の Primer デザインシステム(dark default)のカラートークンに準拠している。
+gui:
+  theme:
+    activeBorderColor:
+      - '#58a6ff' # accent.fg (青: フォーカス中のパネル)
+      - bold
+    inactiveBorderColor:
+      - '#8b949e' # fg.muted (グレー)
+    optionsTextColor:
+      - '#58a6ff' # accent.fg
+    selectedLineBgColor:
+      - '#30363d' # border.default (選択行の背景)
+    cherryPickedCommitBgColor:
+      - '#0d419d' # accent.subtle 相当の濃い青
+    cherryPickedCommitFgColor:
+      - '#58a6ff' # accent.fg
+    unstagedChangesColor:
+      - '#f85149' # danger.fg (赤)
+    defaultFgColor:
+      - '#e6edf3' # fg.default
+    searchingActiveBorderColor:
+      - '#d29922' # attention.fg (黄)
+    # authorColors は gui.theme ではなく gui 直下のキー
+    authorColors:
+      '*': '#bc8cff' # done.fg (紫)
