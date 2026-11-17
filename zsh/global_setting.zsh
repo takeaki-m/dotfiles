@@ -333,9 +333,12 @@ gwp() {
     fi
 }
 
+# worktree/branch削除: fzfで対象を選択して削除する
+# 第1引数: fzfの初期クエリ(任意)。絞り込み表示のみで自動確定はしない(誤削除防止のためEnterは人が押す)
 gwr() {
   local target
-  target=$(git worktree list | grep -v develop | grep -v main | fzf --header "削除するworktreeとbranchを選択してください")
+  local initial_query="${1:-}"
+  target=$(git worktree list | grep -v develop | grep -v main | fzf --query "$initial_query" --header "削除するworktreeとbranchを選択してください")
   [ -z "$target" ] && return
   local target_worktree target_branch
   target_worktree=$(echo "$target" | awk '{print $1}')
@@ -534,6 +537,22 @@ lazygit(){
 # nvim
 alias work="cd ~/work/aim/aim-suite"
 alias aim='vim ~/work/aim/aim-suite -c "cd ~/work/aim/aim-suite"'
+
+# aim-suite: PRマージ後のローカル後片付け
+# 全体: DB停止 → develop最新化(fetch --prune / pull) → 不要worktree・branch削除(fzfで選択)
+aim_cleanup() {
+  # 開始時のworktreeのルートを控える(workでcdする前に取得する。サブディレクトリ実行でもルートが取れる)
+  # gwrのfzf初期クエリに渡し、PRマージ済みのworktreeを絞り込み表示させる。削除は人がEnterで確定する
+  local start_worktree
+  start_worktree="$(git rev-parse --show-toplevel 2>/dev/null)"
+
+  # いずれかが失敗した時点で後続を止めるため && で連結する
+  pnpm -F backend exec make db-down && \
+    work && \
+    git fetch --prune -v && \
+    gpl && \
+    gwr "$start_worktree"
+}
 
 # github cli
 alias ghie='gh issue edit $(gh issue list | fzf | awk '\''{print $1}'\'')'
