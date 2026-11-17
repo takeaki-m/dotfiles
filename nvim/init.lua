@@ -77,9 +77,8 @@ vim.pack.add({
   -- render-markdown は treesitter の後にロードする(配列順で担保)
   gh("MeanderingProgrammer/render-markdown.nvim"),
   -- colorscheme
-  gh("EdenEast/nightfox.nvim"),
-  gh("kepano/flexoki-neovim"),
-  gh("projekt0n/github-nvim-theme")
+  gh("projekt0n/github-nvim-theme"),
+  gh("loctvl842/monokai-pro.nvim")
 })
 
 -- nvim-treesitter(main): インストール/更新時にパーサーを最新化する
