@@ -37,11 +37,20 @@ function M.load(name)
   if not entry or entry.loaded then
     return
   end
+  -- 再入防止のため先に立てるが、失敗したら下で戻す。
+  -- 背景: 初回はクローンを伴うため、通信失敗や setup の例外が起こりうる。
+  --   loaded を立てたままだと二度とロードされず、stub も消えているため E492 のまま復旧できない。
   entry.loaded = true
   -- confirm=false: 初回トリガ時のインストールを確認バッファ無しで即実行する(UXのため)
-  vim.pack.add({ entry.spec }, { load = true, confirm = false })
-  if entry.setup then
-    entry.setup()
+  local ok, err = pcall(function()
+    vim.pack.add({ entry.spec }, { load = true, confirm = false })
+    if entry.setup then
+      entry.setup()
+    end
+  end)
+  if not ok then
+    entry.loaded = false
+    vim.notify(("pack_lazy: %s のロードに失敗: %s"):format(name, err), vim.log.levels.ERROR)
   end
 end
 
@@ -50,6 +59,16 @@ local function register(spec, setup)
   local name = name_of(spec)
   registry[name] = { spec = spec, setup = setup, loaded = false }
   return name
+end
+
+-- 遅延ロード対象として登録済みか判定する
+-- 背景: 遅延ロード群はトリガ発火まで vim.pack 上で active=false のままになる。
+--   PackClean が active=false だけで削除対象を決めると、未発火の遅延 plugin まで消してしまうため、
+--   「設定で宣言済み」の判定に使う。
+--- @param name string プラグインのディレクトリ名
+--- @return boolean
+function M.is_registered(name)
+  return registry[name] ~= nil
 end
 
 -- コマンド発火で遅延ロードする
@@ -65,6 +84,7 @@ end
 --- @param setup? function ロード後に一度だけ実行する設定
 function M.on_cmd(spec, cmds, setup)
   local name = register(spec, setup)
+  local define_stubs -- load_body / complete から参照するため前方宣言
   -- stub を全削除してから本体をロードする共通処理(実行・補完の両方から呼ぶ)
   local function load_body()
     -- 本体が同名コマンドを再定義するため、先に stub を全削除しておく
@@ -72,27 +92,41 @@ function M.on_cmd(spec, cmds, setup)
       pcall(vim.api.nvim_del_user_command, c)
     end
     M.load(name)
+    -- ロード失敗時は stub を復元し、次のコマンド実行で再試行できるようにする
+    if not registry[name].loaded then
+      define_stubs()
+      return false
+    end
+    return true
   end
   -- 初回 <Tab> 時の補完: 本体をロードしてから、本体コマンドの補完候補を取り直して返す。
   -- complete が関数の場合 Neovim は customlist 相当(返り値をそのまま候補にする)で扱うため、
   -- getcompletion が ArgLead に一致するよう既に絞り込んだ候補をそのまま返せばよい。
   local function complete(_, cmdline, _)
-    load_body()
+    if not load_body() then
+      return {}
+    end
     return vim.fn.getcompletion(cmdline, "cmdline")
   end
-  for _, cmd in ipairs(cmds) do
-    vim.api.nvim_create_user_command(cmd, function(o)
-      load_body()
-      -- range / bang / args を引き継いで本体コマンドを再実行する
-      local range = ""
-      if o.range == 1 then
-        range = tostring(o.line2)
-      elseif o.range == 2 then
-        range = o.line1 .. "," .. o.line2
-      end
-      pcall(vim.cmd, string.format("%s%s%s %s", range, cmd, o.bang and "!" or "", o.args))
-    end, { nargs = "*", bang = true, range = true, complete = complete, desc = "lazy-load " .. name })
+  define_stubs = function()
+    for _, cmd in ipairs(cmds) do
+      vim.api.nvim_create_user_command(cmd, function(o)
+        -- 失敗時に本体コマンドを再実行すると stub に戻って無限ループするため、成功時のみ続行する
+        if not load_body() then
+          return
+        end
+        -- range / bang / args を引き継いで本体コマンドを再実行する
+        local range = ""
+        if o.range == 1 then
+          range = tostring(o.line2)
+        elseif o.range == 2 then
+          range = o.line1 .. "," .. o.line2
+        end
+        pcall(vim.cmd, string.format("%s%s%s %s", range, cmd, o.bang and "!" or "", o.args))
+      end, { nargs = "*", bang = true, range = true, complete = complete, desc = "lazy-load " .. name })
+    end
   end
+  define_stubs()
 end
 
 -- FileType 発火で遅延ロードする

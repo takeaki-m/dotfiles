@@ -307,6 +307,22 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- vim.pack には「未使用 plugin の一括削除」がないため自前で用意する。
+-- 設定から外れた plugin は active=false になるので、それを対象に削除する。
+-- ただし遅延ロード群(pack_lazy)は未発火だと active=false のままなため、
+-- 登録済みのものは「設定で宣言済み」として除外する(除外しないと telescope 等が毎回再インストールされる)。
+vim.api.nvim_create_user_command('PackClean', function()
+  local lazy = require('pack_lazy')
+  local names = vim.iter(vim.pack.get())
+    :filter(function(p) return not p.active and not lazy.is_registered(p.spec.name) end)
+    :map(function(p) return p.spec.name end)
+    :totable()
+  if #names == 0 then
+    vim.notify('削除対象の plugin はありません')
+    return
+  end
+  vim.pack.del(names)
+end, {})
 -- Octo
 -- keymaps
 -- GitHub操作を機能別に短縮（i=issue, p=PR, d=discussion, n=notification, G=GitHub）
