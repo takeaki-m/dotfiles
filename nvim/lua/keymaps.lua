@@ -340,6 +340,87 @@ vim.keymap.set("n", "<leader>Gs", function()
   require("pack_lazy").load("octo.nvim")
   require("octo.utils").create_base_search_command({ include_current_repo = true })
 end, { desc = "Search GitHub" })
+-- 「今の作業コンテキスト(カレントブランチ/cwd)から issue・PR を番号入力なしで開く」機能。
+--   全体構成: <leader>pp = ブランチに紐づく PR を Octo で開く
+--             <leader>ii = ブランチ名/cwd 名から Issue 番号を推定して Octo で開く
+--             <leader>Gd = gh-dash(俯瞰用 TUI)を terminal タブで開く
+--   背景: Octo の pr/issue edit は番号が必須で、毎回調べて入力するのが手間だったため。
+--         gh は git remote とブランチから対象を自動解決できるので、番号は人が入力せず導出する。
+
+-- 名前から Issue 番号を抽出する。claude/statusline.js の parseIssueNumber と同じ規則
+-- (issue-123 / gh-123 / #123 / 123-foo / feature-1510-foo。app2 や v2.1 は誤検出しない)。
+local function parse_issue_number(name)
+  if not name or name == "" then
+    return nil
+  end
+  local function try(pat)
+    return name:match(pat)
+  end
+  -- Lua のパターンは alternation が無いため、区切り文字の有無を分けて順に試す
+  for _, kw in ipairs({ "issues", "issue", "gh", "#" }) do
+    local escaped = vim.pesc(kw)
+    local n = try("^" .. escaped .. "[-_]?(%d+)$") or try("^" .. escaped .. "[-_]?(%d+)[_.%-]")
+      or try("[_.%-]" .. escaped .. "[-_]?(%d+)$") or try("[_.%-]" .. escaped .. "[-_]?(%d+)[_.%-]")
+    if n then
+      return tonumber(n)
+    end
+  end
+  -- 先頭の番号、または「英字の種別 + 区切り」に続く番号(例: 123-foo, feature-1510-foo)
+  local n = name:match("^#?(%d+)$") or name:match("^#?(%d+)[_.%-]")
+    or name:match("^%a+[-_]#?(%d+)$") or name:match("^%a+[-_]#?(%d+)[_.%-]")
+  return n and tonumber(n) or nil
+end
+
+-- Octo は遅延ロードのため、:Octo をコマンド経由で実行して読み込みを発火させる
+local function octo_open(kind, number)
+  vim.cmd(("Octo %s edit %d"):format(kind, number))
+end
+
+vim.keymap.set("n", "<leader>pp", function()
+  -- gh pr view はカレントブランチに紐づく PR を解決する(無ければ非0終了)
+  vim.system({ "gh", "pr", "view", "--json", "number", "-q", ".number" }, { text = true }, function(res)
+    vim.schedule(function()
+      local number = tonumber(vim.trim(res.stdout or ""))
+      if res.code ~= 0 or not number then
+        vim.notify("このブランチに紐づく PR がありません", vim.log.levels.WARN)
+        return
+      end
+      octo_open("pr", number)
+    end)
+  end)
+end, { desc = "Open PR for current branch (Octo)" })
+
+vim.keymap.set("n", "<leader>ii", function()
+  -- ブランチ名(末尾セグメント) → ブランチ全体 → cwd 名(worktree 名を想定) の順で番号を探す
+  local branch = vim.trim(vim.fn.system({ "git", "branch", "--show-current" }))
+  local candidates = { branch:match("[^/]+$"), branch, vim.fs.basename(vim.fn.getcwd()) }
+  for _, name in ipairs(candidates) do
+    local number = parse_issue_number(name)
+    if number then
+      octo_open("issue", number)
+      return
+    end
+  end
+  vim.notify("ブランチ名/ディレクトリ名から Issue 番号を推定できません", vim.log.levels.WARN)
+end, { desc = "Open Issue inferred from branch/cwd (Octo)" })
+
+-- gh-dash は git リポジトリ内で起動すると、そのリポジトリに自動で絞り込む(smartFilteringAtLaunch)。
+-- nvim の terminal を新規タブで開き、終了(q)したらタブごと閉じる。
+vim.keymap.set("n", "<leader>Gd", function()
+  vim.cmd("tabnew")
+  vim.fn.jobstart({ "gh", "dash" }, {
+    term = true,
+    on_exit = function()
+      vim.schedule(function()
+        if vim.api.nvim_buf_is_valid(0) then
+          vim.cmd("bwipeout!")
+        end
+      end)
+    end,
+  })
+  vim.cmd("startinsert")
+end, { desc = "Open gh-dash (GitHub TUI)" })
+
 -- カーソル下のissue/PRリンク・@user・リアクションのポップアップを即時表示する。
 -- Octo標準の CursorHold ホバー(updatetime=4秒待ち)と同じ処理を手動で呼び出すもの。
 -- on_cursor_hold は octoバッファ以外では早期returnするためグローバルマップでも安全。
