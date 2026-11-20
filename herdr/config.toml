@@ -16,6 +16,10 @@ split_vertical = "prefix+|"
 navigate_workspace_down = "j"
 navigate_workspace_up = "k"
 last_pane = 'prefix+Space'
+# Karabinerで Space+s/a → Option+n/p（Ghostty/iTerm2向け、tmuxと共通）に変換しているため、それに合わせる
+# next_tabを設定すると既定のprefix+n/pが上書きされるので、リストで残す
+next_tab = ["prefix+n", "alt+n"]
+previous_tab = ["prefix+p", "alt+p"]
 [[keys.command]]
 key = "prefix+t"
 type = "popup"
