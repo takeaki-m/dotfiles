@@ -63,12 +63,8 @@ local options = {
   -- --------------------
   -- folding
   -- --------------------
-  -- 折りたたみの制御を、式評価モード'expr'に設定
-  -- manualやindentではなく、計算された結果を利用する
-  foldmethod = "expr",
-  -- 折りたたみの計算ロジックに、treesitterを利用
-  -- 関数のブロックなど、コードの構造に基づいた正確な折りたたみを可能とする。
-  foldexpr = "v:lua.vim.treesitter.foldexpr()",
+  -- foldmethod / foldexpr(treesitter による折りたたみ)はここで全体設定しない。
+  -- 実ファイルのウィンドウにだけ適用する(理由はファイル後半の BufWinEnter autocmd を参照)
   -- ファイルを開いた際には、全て展開した状態とする
   foldlevel = 99,
   foldlevelstart = 99,
@@ -182,6 +178,35 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
       vim.opt_local.wrap = true
       vim.opt_local.linebreak = true   -- 単語境界(スペース等)で折り返す
       vim.opt_local.breakindent = true -- 折り返し行を元行のインデントに揃える
+    end
+  end,
+})
+
+-- 全体: treesitter による折りたたみを、実ファイル(buftype=="")のウィンドウにだけ適用する
+-- 背景:
+--   以前は foldmethod=expr / foldexpr=treesitter を全体設定していたため、codediff の一時バッファ
+--   (nofile)にも treesitter fold の管理情報が作られていた。codediff の compact 表示は
+--   ファイル切り替えのたびに vim.wo[win].foldminlines を設定し、これが「全体への変更」として
+--   OptionSet を発火させる。Neovim の treesitter fold はその際、管理中の全バッファの fold を
+--   作り直すが、削除済みの一時バッファが残っていると "Invalid buffer id" で落ちていた
+--   (review.nvim で r を押してファイルを切り替えた時に発生)。
+--   全体に効く設定はプラグインの一時バッファにも効いてしまうため、適用範囲を実ファイルに絞る。
+-- 詳細:
+--   - 実ファイル: treesitter fold を window-local で設定する(従来と同じ折りたたみ動作)。
+--   - それ以外: window-local 設定は「同じウィンドウで表示したバッファ」へ引き継がれるため、
+--     実ファイルを表示していたウィンドウで一時バッファを開くと treesitter fold が残る。
+--     そこで treesitter fold が残っている場合だけ既定(manual)に戻す。
+--     他プラグインが自分で設定した fold(codediff の compact 等)は treesitter ではないので触らない。
+local ts_foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  group = vim.api.nvim_create_augroup("TreesitterFoldOnRealFile", {}),
+  callback = function()
+    if vim.bo.buftype == "" then
+      vim.opt_local.foldmethod = "expr"
+      vim.opt_local.foldexpr = ts_foldexpr
+    elseif vim.wo.foldexpr == ts_foldexpr then
+      vim.opt_local.foldmethod = "manual"
+      vim.opt_local.foldexpr = "0"
     end
   end,
 })
