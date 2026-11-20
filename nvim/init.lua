@@ -292,6 +292,10 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 -- 役割分担: gitsigns = 編集中バッファの行単位の差分 / codediff = 複数ファイル横断のレビュー・履歴・コンフリクト解消
 require("codediff").setup({
   diff = {
+    -- 左右2ペインではなく、1ペイン内で削除行(旧)→追加行(新)を上下に並べる表示をデフォルトにする。
+    -- codediff は「2ペインを上下に積む」レイアウトを持たないため、上下比較は inline が該当する。
+    -- 左右比較が見たいときはセッション内で t(toggle_layout)で切り替えられる
+    layout = "inline",
     -- 変更のない部分を畳み、hunk の周りだけ表示する(gc で切り替え)
     compact = true,
     -- ファイル末尾の hunk から次のファイルの最初の hunk へ続けて進み、全変更を通しで読めるようにする
@@ -301,6 +305,11 @@ require("codediff").setup({
   },
   explorer = {
     view_mode = "tree",
+    -- ファイルツリーを左ではなく下に置き、diff に画面幅いっぱいを使わせる。
+    -- 本当は上に置きたいが、codediff の公式対応は "left" / "bottom" のみ("top" は高さ・文字幅の計算が崩れる)
+    position = "bottom",
+    -- 下に置いたツリーが diff の表示領域を食いすぎないよう、既定の15行から低くする
+    height = 10,
     -- ファイルごとに +12 -4 の行数を表示し、変更の大きさが一目で分かるようにする
     line_stats = { enabled = true },
     -- ファイル選択から差分の精読へ、そのまま移れるようにする。
@@ -330,6 +339,62 @@ vim.api.nvim_create_autocmd({ "TabEnter", "User" }, {
     -- User イベントは対象パターン以外(他プラグインの User)を無視する
     if ev.event == "User" and ev.match ~= "CodeDiffOpen" and ev.match ~= "CodeDiffClose" then return end
     vim.schedule(sync_gitsigns_linehl)
+  end,
+})
+
+-- 【一時的な回避策】review.nvim(v1.12.0)が、ファイル切り替え後の diff バッファに
+-- キーマップ(i でコメント追加など)と読み取り専用を付け損ねる問題への対処。
+-- review.nvim / codediff 側で修正されたら、この autocmd ごと削除すること。
+--
+-- 問題の流れ:
+--   1. codediff は CodeDiffFileSelect を「バッファ差し替えの前」に発火する
+--   2. review.nvim はそれを受けて 100ms 後に、その時点の diff バッファへキーマップを付ける
+--   3. リビジョン側(develop... / --staged / history など)は git から非同期で読むため、
+--      100ms を超えると review.nvim は「古いバッファ」に付けてしまい、新しいバッファは
+--      i が素の挿入モードのまま・編集可能のまま残る
+-- 対処: codediff には「更新完了」イベントが無いので、一定時間ポーリングして
+--       「新しいバッファに i の割り当てが無い」と分かった時点で review.nvim の再設定を1回だけ呼ぶ。
+-- 注意: require("review")._on_file_select は非公開関数のため、review.nvim の更新で壊れる可能性がある。
+vim.api.nvim_create_autocmd("User", {
+  pattern = "CodeDiffFileSelect",
+  callback = function(ev)
+    local ok_cfg, review_config = pcall(require, "review.config")
+    local ok_lc, lifecycle = pcall(require, "codediff.ui.lifecycle")
+    if not (ok_cfg and ok_lc) then return end
+    local tabpage = (ev.data and ev.data.tabpage) or vim.api.nvim_get_current_tabpage()
+
+    -- 100ms 間隔で最大 3 秒(30 回)確認する。差し替えが無い(同じファイルを選び直した等)場合は何もせず終わる
+    local interval, max_tries, tries = 100, 30, 0
+
+    -- バッファに review.nvim のコメント追加キー(既定 i)が buffer-local で付いているか
+    local function has_review_map(bufnr, lhs)
+      for _, m in ipairs(vim.api.nvim_buf_get_keymap(bufnr, "n")) do
+        if m.lhs == lhs then return true end
+      end
+      return false
+    end
+
+    local function check()
+      tries = tries + 1
+      -- 別タブへ移った・セッションが閉じた場合は打ち切る(_on_file_select は現在のタブに対して動くため)
+      if vim.api.nvim_get_current_tabpage() ~= tabpage or not lifecycle.get_session(tabpage) then return end
+      local cfg = review_config.get()
+      -- 編集モード(R で切り替え)では i を割り当てないのが正しい動作なので、補正しない
+      if not cfg.codediff.readonly then return end
+
+      local lhs = cfg.keymaps.readonly_add
+      local orig_buf, mod_buf = lifecycle.get_buffers(tabpage)
+      for _, bufnr in ipairs({ orig_buf, mod_buf }) do
+        if bufnr and vim.api.nvim_buf_is_valid(bufnr) and not has_review_map(bufnr, lhs) then
+          -- 新しいバッファに付け損ねている → キーマップと読み取り専用をまとめて付け直す
+          require("review")._on_file_select()
+          return
+        end
+      end
+      if tries < max_tries then vim.defer_fn(check, interval) end
+    end
+
+    vim.defer_fn(check, interval)
   end,
 })
 
